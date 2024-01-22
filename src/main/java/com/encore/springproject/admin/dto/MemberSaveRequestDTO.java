@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class MemberRequestDto {
+public class MemberSaveRequestDTO {
     private String emailId;
     private String nickname;
     private String password;
