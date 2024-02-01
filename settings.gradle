@@ -1,1 +1,8 @@
-rootProject.name = 'som'
+rootProject.name = 'springproject'
+
+include ':admin'
+include ':auth'
+include ':batch'
+include ':board'
+include ':common'
+include ':chat'

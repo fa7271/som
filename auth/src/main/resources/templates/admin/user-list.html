@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="UTF-8">
+<title>사용자 목록</title>
+</head>
+<body>
+<table>
+    <thead>
+    <th>emailId</th>
+    <th>nickname</th>
+    <th>password</th>
+    <th>상세보기</th>
+    </thead>
+    <tbody>
+    <tr th:each="member : ${members}">
+        <td th:text="${member.emailId}"></td>
+        <td th:text="${member.nickname}"></td>
+        <td th:text="${member.password}"></td>
+        <td><a th:href="@{|/admin/detail/${member.id}|}">상세보기</a></td>
+
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
