@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/api/admin/member")
 public class AdminController {
 
     private final MemberService memberService;
@@ -35,11 +35,6 @@ public class AdminController {
         return "admin/create-user";
     }
 
-//    @PostMapping("create")
-//    public SomException creteUser(SignUpRequest signUpRequest) {
-//        memberService.save(signUpRequest);
-//        return new SomException(ResponseCode.SUCCESS, HttpStatus.OK);
-//    }
 
     @GetMapping("update/{id}")
     public String updateUserView(@PathVariable(value = "id")Long id, Model model) {

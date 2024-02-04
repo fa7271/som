@@ -7,6 +7,7 @@ import com.encore.admin.dto.SignInResponse;
 import com.encore.admin.dto.SignUpRequest;
 import com.encore.admin.repository.MemberRepository;
 
+import com.encore.common.support.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class MemberService {
 
     public void save(SignUpRequest signUpRequest) {
         Member member = Member.builder()
-//                .role(Role.USER)
+                .role(Role.USER)
                 .emailId(signUpRequest.getEmailId())
                 .nickname(signUpRequest.getNickname())
                 .password(signUpRequest.getPassword())
@@ -38,13 +39,6 @@ public class MemberService {
                 .build();
 
         repository.save(member);
-    }
-
-    public void signUp(SignUpRequest request){
-
-    }
-    public void signIn(){
-
     }
 
     public void update(MemberUpdateRequest memberUpdateRequest) {

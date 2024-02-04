@@ -19,6 +19,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates' }
 }
 
 ext {
@@ -26,12 +27,14 @@ ext {
 }
 
 dependencies {
-	implementation(platform("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}"))
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
-
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 dependencyManagement {

@@ -2,6 +2,7 @@ package com.encore.common.support;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.http.HttpStatus;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
