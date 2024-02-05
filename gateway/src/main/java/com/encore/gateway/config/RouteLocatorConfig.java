@@ -11,10 +11,12 @@ public class RouteLocatorConfig {
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder){
         return builder.routes()
-                .route(r -> r.path("/api/admin/**")
-                        .uri("http://localhost:8005"))
-                .route(r -> r.path("/second-service/**")
-                        .uri("http://localhost:8081"))
+                .route(r -> r.path("/admin/**")
+                        .uri("http://localhost:8001"))
+                .route(r -> r.path("/board/**")
+                        .uri("http://localhost:8002"))
+                .route(r -> r.path("/chat/**")
+                        .uri("http://localhost:8003"))
                 .build();
     }
 

@@ -1,5 +1,4 @@
-package com.encore.admin.config;
-
+package com.encore.board.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -49,3 +48,4 @@ public class SecurityConfig {
                 .build();
     }
 }
+

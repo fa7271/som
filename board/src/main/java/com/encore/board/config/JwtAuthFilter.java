@@ -1,4 +1,5 @@
-package com.encore.admin.config;
+package com.encore.board.config;
+
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Component
 public class JwtAuthFilter extends GenericFilter {
@@ -71,3 +71,4 @@ public class JwtAuthFilter extends GenericFilter {
         }
     }
 }
+

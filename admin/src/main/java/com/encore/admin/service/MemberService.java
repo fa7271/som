@@ -32,7 +32,7 @@ public class MemberService {
     public void save(SignUpRequest signUpRequest) {
         Member member = Member.builder()
                 .role(Role.USER)
-                .emailId(signUpRequest.getEmailId())
+                .email(signUpRequest.getEmail())
                 .nickname(signUpRequest.getNickname())
                 .password(signUpRequest.getPassword())
                 .ranking(0L)

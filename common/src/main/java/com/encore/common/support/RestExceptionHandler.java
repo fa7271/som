@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RestExceptionHandler {
 
     @ExceptionHandler({SomException.class})
-    public ResponseEntity handlerSymptomCheckerException(SomException ex) {
+    public ResponseEntity handlerSomException(SomException ex) {
         return new ResponseEntity(DefaultResponse.ErrorResponse.builder().error(ex.getData()).build(), HttpStatus.CONFLICT);
     }
 }

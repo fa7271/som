@@ -1,7 +1,7 @@
 package com.encore.admin.service;
 
 import com.encore.admin.domain.Member;
-import com.encore.admin.dto.SignInResponse;
+import com.encore.admin.dto.SignInRequest;
 import com.encore.admin.dto.SignUpRequest;
 import com.encore.admin.repository.MemberRepository;
 import com.encore.common.support.Role;
@@ -26,17 +26,16 @@ public class AccountService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void
-    signup(SignUpRequest signUpRequest) {
+    public void signup(SignUpRequest signUpRequest) {
 
-        Optional<Member> findMember = repository.findByEmail(signUpRequest.getEmailId());
+        Optional<Member> findMember = repository.findByEmail(signUpRequest.getEmail());
         if(findMember.isPresent()) {
             // 존재
         }
 
         Member member = Member.builder()
                 .role(Role.USER)
-                .emailId(signUpRequest.getEmailId())
+                .email(signUpRequest.getEmail())
                 .nickname(signUpRequest.getNickname())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .ranking(0L)
@@ -45,7 +44,17 @@ public class AccountService {
         repository.save(member);
     }
 
-    public SignInResponse signin(SignUpRequest signUpRequest){
-        return null;
+    public Member signin(SignInRequest signInRequest){
+
+
+        Member member = repository.findByEmail(signInRequest.getEmail()).orElseThrow(
+                ()->new IllegalArgumentException("존재하지 않는 이메일입니다."));
+
+        System.out.println(member.getEmail());
+        if(!passwordEncoder.matches(signInRequest.getPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("비밀번호 불일치");
+        }
+
+        return member;
     }
 }

@@ -23,7 +23,7 @@ public class Member {
     private Long id;
 
     @Column(nullable = false, length = 50, unique = true)
-    private String emailId;
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;

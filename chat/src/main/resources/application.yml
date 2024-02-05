@@ -1,5 +1,5 @@
 server:
-  port: 8006
+  port: 8003
 spring:
   application:
     name: chat

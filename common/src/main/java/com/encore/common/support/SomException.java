@@ -2,13 +2,17 @@ package com.encore.common.support;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.http.HttpStatus;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class SomException extends RuntimeException{
 
     Object data;
+
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
 
     public SomException() {
         super();
@@ -30,6 +34,7 @@ public class SomException extends RuntimeException{
 
     public SomException(ResponseCode responseCode, Object data) {
         super(responseCode.getLabel());
+
         this.data = data;
     }
 }

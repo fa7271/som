@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8002
 spring:
   application:
     name: board
@@ -22,3 +22,8 @@ eureka:
     enabled: true
   instance:
     instance-id: ${spring.application.name}:${random.value}
+
+
+jwt:
+  expiration: 30
+  secretKey: mysecret
