@@ -1,6 +1,8 @@
 server:
-  port: 8006
+  port: 8003
 spring:
+  application:
+    name: chat
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/som # basic
@@ -13,3 +15,12 @@ spring:
     hibernate:
       ddl-auto: none #update
     show-sql: true
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    enabled: true
+  instance:
+    instance-id: ${spring.application.name}:${random.value}

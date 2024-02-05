@@ -1,13 +1,29 @@
 package com.encore.board.controller;
 
-import org.springframework.stereotype.Controller;
+import com.encore.board.service.FeignService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class IndexController {
-    @GetMapping("/")
-    public String index() {
-        return "index";
 
+    private final FeignService service;
+
+    public IndexController(FeignService service) {
+        this.service = service;
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/board")
+    public String index() {
+        return "board OK";
+
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/board/admin")
+    public String adminHealthCheck() {
+        return service.adminPing();
     }
 }

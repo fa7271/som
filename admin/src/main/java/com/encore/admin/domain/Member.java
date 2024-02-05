@@ -3,8 +3,9 @@ package com.encore.admin.domain;
 import com.encore.admin.dto.MemberUpdateRequest;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import com.encore.common.support.Role;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -22,10 +23,10 @@ public class Member {
     private Long id;
 
     @Column(nullable = false, length = 50, unique = true)
-    private String emailId;
+    private String email;
 
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(nullable = false, length = 50, unique = true)
     private String nickname;
@@ -39,13 +40,11 @@ public class Member {
     @ColumnDefault("0")
     private Long ranking;
 
-    @CreationTimestamp
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdTime;
+    @CreatedDate
+    private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    @Column(columnDefinition = "TIMESTAMP ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime updatedTime;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public Member updateMember(Member member, MemberUpdateRequest dto) {
 
