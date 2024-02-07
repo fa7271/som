@@ -1,6 +1,5 @@
-import com.encore.ad
-
 package com.encore.post.service;
+
 
 import com.encore.post.domain.Post;
 import com.encore.post.dto.PostSaveReqDto;
@@ -20,7 +19,6 @@ import java.time.format.DateTimeFormatter;
 @Transactional
 public class PostService{
     private final PostRepository postRepository;
-    private final
 
     @Autowired
     public PostService(PostRepository postRepository) {
@@ -30,15 +28,12 @@ public class PostService{
     public Post create(PostSaveReqDto postSaveReqDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Member post = postRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotFoundException("not found email"));
-
-
 
 
         Post new_post = Post.builder()
                 .title(postSaveReqDto.getTitle())
                 .contents(postSaveReqDto.getContents())
+                .email(email)
                 .build();
         Post post = postRepository.save(new_post);
         return post;

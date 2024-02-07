@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,10 +27,8 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CommonResponse> postCreate(PostSaveReqDto postSaveReqDto){
+    public ResponseEntity<CommonResponse> postCreate(@RequestBody PostSaveReqDto postSaveReqDto){
         Post post = postService.create(postSaveReqDto);
-        System.out.println(postSaveReqDto.getTitle());
-        System.out.println(postSaveReqDto.getContents());
         return new ResponseEntity<>(
                 new CommonResponse(HttpStatus.CREATED, "post succesfully create", post.getEmail())
                 , HttpStatus.CREATED);
