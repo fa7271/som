@@ -7,6 +7,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -50,5 +52,12 @@ public class Post {
     private String appointment;
 
     private LocalDateTime appointmentTime;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.N; // 삭제 관리 ,삭제시 Y으로
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Post> comments = new ArrayList<>();
 
 }
