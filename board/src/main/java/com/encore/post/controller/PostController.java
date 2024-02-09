@@ -28,8 +28,6 @@ public class PostController {
     @PostMapping("/create")
     public ResponseEntity<CommonResponse> postCreate(PostSaveReqDto postSaveReqDto){
         Post post = postService.create(postSaveReqDto);
-        System.out.println(postSaveReqDto.getTitle());
-        System.out.println(postSaveReqDto.getContents());
         return new ResponseEntity<>(
                 new CommonResponse(HttpStatus.CREATED, "post succesfully create", post.getEmail())
                 , HttpStatus.CREATED);
