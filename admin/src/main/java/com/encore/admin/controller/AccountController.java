@@ -38,7 +38,7 @@ public class AccountController {
     }
 
     @PostMapping("/signin")
-    public SomException signin(@RequestBody SignInRequest signInRequest) {
+    public SomException signin( @RequestBody SignInRequest signInRequest) {
         System.out.println(signInRequest.getEmail());
         Member member = service.signin(signInRequest);
         System.out.println(member.getEmail());
