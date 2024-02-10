@@ -7,7 +7,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Specification<Post> spec, Pageable pageable);
+    List<Post> findByEmailAndCreatedAtBetween(String email, LocalDateTime startOfDay, LocalDateTime endOfDay);
 }
