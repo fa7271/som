@@ -1,21 +1,23 @@
 package com.encore.post.controller;
 
 import com.encore.common.CommonResponse;
+import com.encore.common.support.ResponseCode;
+import com.encore.common.support.SomException;
 import com.encore.post.domain.Post;
-import com.encore.post.dto.PostSaveReqDto;
+import com.encore.post.dto.PostReqDto;
+import com.encore.post.dto.PostResDto;
+import com.encore.post.dto.PostSearchDto;
 import com.encore.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("/board/post")
@@ -27,16 +29,41 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<CommonResponse> postCreate(PostSaveReqDto postSaveReqDto, HttpServletRequest httpServletRequest){
-        String filteredContents = (String) httpServletRequest.getAttribute("filteredContents");
+    @PreAuthorize("hasRole('ADMIN')") // 관리자만 create 가능
+    @PostMapping("/create") // Post create
+    public SomException postCreate(PostReqDto postReqDto, HttpServletRequest httpServletRequest){
+        String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
-            postSaveReqDto.setContents(filteredContents);
+            postReqDto.setContents(filteredContents);
         }
 
-        Post post = postService.create(postSaveReqDto);
-        return new ResponseEntity<>(
-                new CommonResponse(HttpStatus.CREATED, "post succesfully create", post.getEmail())
-                , HttpStatus.CREATED);
+        Post post = postService.create(postReqDto);
+        return new SomException(ResponseCode.SUCCESS, post.getId());
+    }
+
+    @GetMapping("/list")
+    public SomException postList(Pageable pageable) {
+        List<PostResDto> postResDtos= postService.findAll(pageable);
+        return new SomException(ResponseCode.SUCCESS, postResDtos);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{id}/update")
+    public SomException itemUpdate(@PathVariable Long id, PostReqDto postReqDto, HttpServletRequest httpServletRequest) {
+        String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
+        if (filteredContents != null) {
+            postReqDto.setContents(filteredContents);
+        }
+        System.out.println(postReqDto);
+        Post post = postService.update(id, postReqDto);
+        return new SomException(ResponseCode.SUCCESS, post);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}/delete")
+    public SomException itemDelete(@PathVariable Long id) {
+        Post post = postService.delete(id);
+
+        return new SomException(ResponseCode.SUCCESS, post.getId());
     }
 }

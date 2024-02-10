@@ -13,7 +13,7 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: none #update
+      ddl-auto: create #update
     show-sql: true
 eureka:
   client:
@@ -26,4 +26,4 @@ eureka:
 
 jwt:
   expiration: 30
-  secretKey: mysecret2
+  secretKey: mysecret

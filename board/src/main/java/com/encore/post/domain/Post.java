@@ -25,9 +25,14 @@ public class Post {
         this.title = title;
         this.contents = contents;
     }
-    public void updateAppointMent(String appointment){
-        this.appointment = appointment;
+
+    public void deletePost(){ // item 삭제 시 호출
+        this.delYn = "Y";
     }
+
+//    public void updateAppointment(String appointment){
+//        this.appointment = appointment;
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,12 +55,11 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private String appointment;
+//    private String appointment;
+//    private LocalDateTime appointmentTime;
 
-    private LocalDateTime appointmentTime;
-
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.N; // 삭제 관리 ,삭제시 Y으로
+    @Builder.Default // Builder.Default 를 붙혀주지 않으면 Builder에 기본 null로 세팅되어 있기 때문에 db에 null이 들어간다.
+    private String delYn="N"; // item 삭제 유무
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     @Builder.Default
