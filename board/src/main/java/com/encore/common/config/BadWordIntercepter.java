@@ -25,7 +25,7 @@ public class BadWordIntercepter implements HandlerInterceptor {
         if (handler != null && handler instanceof HandlerMethod) {
             HandlerMethod hm = (HandlerMethod) handler;
             RequestMethod[] methods = hm.getMethodAnnotation(RequestMapping.class).method();
-            if (Arrays.asList(methods).contains(RequestMethod.POST)){
+            if (Arrays.asList(methods).contains(RequestMethod.POST) || Arrays.asList(methods).contains(RequestMethod.PATCH)){
                 String contents = badWordFiltering.pre_change(request.getParameter("contents"));
                 if (contents != null) {
                     contents = badWordFiltering.pre_change(contents);
