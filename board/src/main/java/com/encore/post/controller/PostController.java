@@ -4,6 +4,7 @@ import com.encore.common.CommonResponse;
 import com.encore.common.support.ResponseCode;
 import com.encore.common.support.SomException;
 import com.encore.post.domain.Post;
+import com.encore.post.dto.PostDetailResDto;
 import com.encore.post.dto.PostReqDto;
 import com.encore.post.dto.PostResDto;
 import com.encore.post.dto.PostSearchDto;
@@ -46,8 +47,14 @@ public class PostController {
         return new SomException(ResponseCode.SUCCESS, postResDtos);
     }
 
+    @GetMapping("/{id}/detail")
+    public SomException postDetail(@PathVariable Long id){
+        PostDetailResDto postDetailResDto = postService.findPostDetail(id);
+        return new SomException(ResponseCode.SUCCESS, postDetailResDto);
+    }
+
     @PatchMapping("/{id}/update")
-    public SomException itemUpdate(@PathVariable Long id, PostReqDto postReqDto, HttpServletRequest httpServletRequest) {
+    public SomException postUpdate(@PathVariable Long id, PostReqDto postReqDto, HttpServletRequest httpServletRequest) {
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
             postReqDto.setContents(filteredContents);
@@ -57,7 +64,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}/delete")
-    public SomException itemDelete(@PathVariable Long id) {
+    public SomException postDelete(@PathVariable Long id) {
         Post post = postService.delete(id);
 
         return new SomException(ResponseCode.SUCCESS, post.getId());

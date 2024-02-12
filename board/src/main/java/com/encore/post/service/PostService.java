@@ -2,6 +2,7 @@ package com.encore.post.service;
 
 
 import com.encore.post.domain.Post;
+import com.encore.post.dto.PostDetailResDto;
 import com.encore.post.dto.PostReqDto;
 import com.encore.post.dto.PostResDto;
 import com.encore.post.dto.PostSearchDto;
@@ -93,6 +94,17 @@ public class PostService{
 //        Page<PostResDto> postResDtos
 //                = posts.map(p -> new PostResDto(p.getId(), p.getTitle(), p.getEmail()==null? "익명유저" : email));
         return postResDtos;
+    }
+
+    public PostDetailResDto findPostDetail(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 회원이 없습니다."));
+        PostDetailResDto postDetailResDto = new PostDetailResDto();
+        postDetailResDto.setId(post.getId());
+        postDetailResDto.setEmail(post.getEmail());
+        postDetailResDto.setTitle(post.getTitle());
+        postDetailResDto.setContents(post.getContents());
+        postDetailResDto.setCreatedAt(post.getCreatedAt());
+        return postDetailResDto;
     }
 
     public Post update(Long id, PostReqDto postReqDto) {

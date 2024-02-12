@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Getter
 @Builder
+@Getter
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Post {
 //        author객체의 posts를 초기화시켜준 후,
 //        this.author.getPosts().add(this); // Author posts에 Setter를 사용하지 않고 사용하는 방법
