@@ -10,11 +10,9 @@ import com.encore.common.support.ResponseCode;
 import com.encore.common.support.SomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +30,7 @@ public class AccountController {
     }
 
     @PostMapping("/signup")
-    public SomException signup(@RequestBody SignUpRequest signUpRequest) {
+    public SomException signup(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
         service.signup(signUpRequest);
         return new SomException(ResponseCode.SUCCESS, HttpStatus.OK);
     }
@@ -52,5 +50,15 @@ public class AccountController {
         memberInfo.put("token", jwt);
 
         return new SomException(ResponseCode.SUCCESS, memberInfo);
+    }
+
+    @GetMapping("/verify-code/{email}/{code}")
+    public SomException sendCode (
+            @PathVariable String email,
+            @PathVariable String code
+    ) {
+        System.out.println("start");
+        service.verifyEmailCode(email, code);
+        return new SomException(ResponseCode.SUCCESS_CREATE_MEMBER);
     }
 }

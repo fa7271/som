@@ -33,9 +33,6 @@ public class Member {
 
     @Setter
     private String password;
-    @Setter
-    private String tempPassword;
-    private boolean shouldChangePw;
 
     @ColumnDefault("0")
     private Long ranking;
@@ -45,6 +42,8 @@ public class Member {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    private boolean active;
 
     public Member updateMember(Member member, MemberUpdateRequest dto) {
 
@@ -56,5 +55,9 @@ public class Member {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public void active() {
+        this.active = true;
     }
 }

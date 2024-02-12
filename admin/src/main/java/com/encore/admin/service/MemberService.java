@@ -2,9 +2,7 @@ package com.encore.admin.service;
 
 
 import com.encore.admin.domain.Member;
-import com.encore.admin.dto.MemberUpdateRequest;
-import com.encore.admin.dto.SignInResponse;
-import com.encore.admin.dto.SignUpRequest;
+import com.encore.admin.dto.*;
 import com.encore.admin.repository.MemberRepository;
 
 import com.encore.common.support.Role;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -64,4 +63,18 @@ public class MemberService {
         repository.delete(member);
     }
 
+    public RankingListResponse loadRankingList(RankingListRequst requst) {
+        List<Member> members = repository.findAllByEmailIn(requst.getEmailList());
+        List<Ranking> rankingList = members.stream().map(Ranking::of).collect(Collectors.toList());
+        return RankingListResponse.builder().rankingList(rankingList).build();
+    }
+
+    public RankingListResponse loadRankingListTop10() {
+
+        System.out.println("1");
+        List<Member> members = repository.findTop10ByOrderByRankingDesc();
+        System.out.println(members.get(0).getRanking());
+        List<Ranking> rankingList = members.stream().map(Ranking::of).collect(Collectors.toList());
+        return RankingListResponse.builder().rankingList(rankingList).build();
+    }
 }
