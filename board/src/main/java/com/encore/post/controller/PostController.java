@@ -29,7 +29,6 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')") // 관리자만 create 가능
     @PostMapping("/create") // Post create
     public SomException postCreate(PostReqDto postReqDto, HttpServletRequest httpServletRequest){
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
@@ -47,19 +46,16 @@ public class PostController {
         return new SomException(ResponseCode.SUCCESS, postResDtos);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/update")
     public SomException itemUpdate(@PathVariable Long id, PostReqDto postReqDto, HttpServletRequest httpServletRequest) {
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
             postReqDto.setContents(filteredContents);
         }
-        System.out.println(postReqDto);
         Post post = postService.update(id, postReqDto);
         return new SomException(ResponseCode.SUCCESS, post);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}/delete")
     public SomException itemDelete(@PathVariable Long id) {
         Post post = postService.delete(id);
