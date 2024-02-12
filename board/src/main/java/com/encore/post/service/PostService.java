@@ -25,6 +25,10 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @Transactional
@@ -40,11 +44,18 @@ public class PostService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
+        LocalDate today = LocalDate.now();
+        List<Post> pst = postRepository.findByEmailAndCreatedAtBetween(email, today.atStartOfDay(), today.atTime(23, 59, 59));
+        if (pst.size() >= 5) {
+            throw new IllegalArgumentException("하루 최대 포스팅 횟수를 넘겼습니다.");
+        }
+      
         Post new_post = Post.builder()
                 .title(postReqDto.getTitle())
                 .contents(postReqDto.getContents())
                 .email(email)
                 .build();
+
         Post post = postRepository.save(new_post);
         return post;
     }
