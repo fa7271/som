@@ -64,5 +64,4 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Comment> comment = new ArrayList<>();
-
 }

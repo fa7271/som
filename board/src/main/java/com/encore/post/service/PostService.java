@@ -2,9 +2,9 @@ package com.encore.post.service;
 
 
 import com.encore.post.domain.Post;
-import com.encore.post.dto.PostDetailResDto;
 import com.encore.post.dto.PostReqDto;
 import com.encore.post.dto.PostResDto;
+import com.encore.post.dto.PostDetailResDto;
 import com.encore.post.dto.PostSearchDto;
 import com.encore.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
