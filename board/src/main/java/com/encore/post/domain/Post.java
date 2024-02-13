@@ -1,6 +1,7 @@
 package com.encore.post.domain;
 
 import com.encore.comment.domain.Comment;
+import com.encore.like.domain.Likes;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -64,4 +65,9 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     @Builder.Default
     private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Likes> likes = new ArrayList<>();
+
+    private Integer view = 0;
 }
