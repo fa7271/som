@@ -1,10 +1,18 @@
 package com.encore.comment.service;
 
+import com.encore.comment.domain.Comment;
+import com.encore.comment.dto.CommentReqDto;
+import com.encore.comment.dto.CommentResDto;
 import com.encore.comment.repository.CommentRepository;
+import com.encore.post.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -14,5 +22,31 @@ public class CommentService {
     @Autowired
     public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
+    }
+
+    public Comment create(CommentReqDto commentReqDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        Comment new_comment = Comment.builder()
+                .contents(commentReqDto.getContents())
+                .email(email)
+                .build();
+
+        Comment comment = commentRepository.save(new_comment);
+        return comment;
+    }
+
+    public List<CommentResDto> list(){ //⭐⭐중요패턴 코드 외우기
+        List<Comment> comments = commentRepository.findAll();
+        List<CommentResDto> commentResDtos = new ArrayList<>();
+        for(Comment comment : comments){
+            CommentResDto commentResDto = new CommentResDto();
+            commentResDto.setId(comment.getId());
+            commentResDto.setMember_email(commentResDto.getMember_email());
+            commentResDto.setContents(commentResDto.getContents());
+            commentResDtos.add(commentResDto);
+        }
+        return commentResDtos;
     }
 }
