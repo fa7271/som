@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/board/comment")
+@RequestMapping("/board")
 public class CommentController {
     private final CommentService commentService;
 
@@ -28,14 +28,14 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/create") // Post create
-    public SomException commentCreate(CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
+    @PostMapping("/{id}/comment") // comment create
+    public SomException commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
             commentReqDto.setContents(filteredContents);
         }
-        Comment comment = commentService.create(commentReqDto);
-        return new SomException(ResponseCode.SUCCESS, comment.getId());
+        Comment comment = commentService.create(id, commentReqDto);
+        return new SomException(ResponseCode.SUCCESS, comment);
     }
 
     @GetMapping("/list")

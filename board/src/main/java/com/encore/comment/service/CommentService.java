@@ -5,6 +5,7 @@ import com.encore.comment.dto.CommentReqDto;
 import com.encore.comment.dto.CommentResDto;
 import com.encore.comment.repository.CommentRepository;
 import com.encore.post.domain.Post;
+import com.encore.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,23 +19,30 @@ import java.util.List;
 @Transactional
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
     }
 
-    public Comment create(CommentReqDto commentReqDto) {
+    public Comment create(Long id, CommentReqDto commentReqDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
+
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found"));
 
         Comment new_comment = Comment.builder()
                 .contents(commentReqDto.getContents())
                 .email(email)
+                .post(post)
+                .createdAt(commentReqDto.getCreatedAt())
                 .build();
-
-        Comment comment = commentRepository.save(new_comment);
-        return comment;
+//        commentRepository.save(new_comment);
+//        Comment comment =
+        return commentRepository.save(new_comment);
+//        return comment;
     }
 
     public List<CommentResDto> list(){ //⭐⭐중요패턴 코드 외우기

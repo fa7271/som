@@ -62,9 +62,9 @@ public class Post {
     @Builder.Default // Builder.Default 를 붙혀주지 않으면 Builder에 기본 null로 세팅되어 있기 때문에 db에 null이 들어간다.
     private String delYn="N"; // item 삭제 유무
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Comment> comment = new ArrayList<>();
+//    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
     private List<Likes> likes = new ArrayList<>();

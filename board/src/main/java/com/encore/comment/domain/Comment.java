@@ -13,19 +13,23 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 public class Comment  {
 
     public void deleteComment(){ // item 삭제 시 호출
         this.delYn = "Y";
+    }
+    public void update(String contents){
+        this.contents = contents;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String contents; // 욕설 filter 때문에
 
     private String email;
@@ -43,7 +47,7 @@ public class Comment  {
     private List<Likes> likes = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(nullable = false)
     private Post post;
 
 }
