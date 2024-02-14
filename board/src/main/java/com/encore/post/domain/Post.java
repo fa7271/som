@@ -69,5 +69,10 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Likes> likes = new ArrayList<>();
 
-    private Integer view = 0;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
+
+    public void increaseView(int view) {
+        this.view = view + 1;
+    }
 }

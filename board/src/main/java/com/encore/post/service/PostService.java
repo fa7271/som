@@ -50,7 +50,7 @@ public class PostService{
         if (pst.size() >= 5) {
             throw new IllegalArgumentException("하루 최대 포스팅 횟수를 넘겼습니다.");
         }
-      
+
         Post new_post = Post.builder()
                 .title(postReqDto.getTitle())
                 .contents(postReqDto.getContents())
@@ -99,11 +99,23 @@ public class PostService{
     public PostDetailResDto findPostDetail(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 회원이 없습니다."));
         PostDetailResDto postDetailResDto = new PostDetailResDto();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+//        내가 쓴 게시글이 아닐경우
+        if (!post.getEmail().equals(userEmail)){
+            post.increaseView(post.getView());
+            postRepository.save(post);
+        }
+
         postDetailResDto.setId(post.getId());
         postDetailResDto.setEmail(post.getEmail());
         postDetailResDto.setTitle(post.getTitle());
         postDetailResDto.setContents(post.getContents());
         postDetailResDto.setCreatedAt(post.getCreatedAt());
+        postDetailResDto.setViews(post.getView());
+
         return postDetailResDto;
     }
 
