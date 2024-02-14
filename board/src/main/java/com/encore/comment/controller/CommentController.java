@@ -38,23 +38,23 @@ public class CommentController {
         return new SomException(ResponseCode.SUCCESS, comment);
     }
 
+    @GetMapping("/{id}/comment/list")
+    public SomException commentList(@PathVariable Long id){
+        List<CommentResDto> commentResDtos= commentService.findAll(id);
+        return new SomException(ResponseCode.SUCCESS, commentResDtos);
+    }
+
     @GetMapping("/{id}/comment/{commentId}/update")
-    public SomException commentUpdate(@PathVariable Long id, @PathVariable Long commentId, CommentReqDto commentReqDto) {
-        Comment comment = commentService.create(id, commentReqDto);
-        return new SomException(ResponseCode.SUCCESS, comment);
+    public SomException commentUpdate(@PathVariable Long commentId, CommentReqDto commentReqDto) {
+        Comment comment = commentService.update(commentId, commentReqDto);
+        return new SomException(ResponseCode.SUCCESS, comment.getContents());
 //        List<CommentResDto> commentResDtos = commentService.list();
     }
 
-
-//    @GetMapping("/list")
-//    public SomException postList(Pageable pageable) {
-//        List<PostResDto> postResDtos= postService.findAll(pageable);
-//        return new SomException(ResponseCode.SUCCESS, postResDtos);
-//    }
-
-//    @GetMapping("/{id}/detail")
-//    public SomException postDetail(@PathVariable Long id){
-//        CommentDetailResDto commentDetailResDto = commentService.findCommentDetail(id);
-//        return new SomException(ResponseCode.SUCCESS, commentDetailResDto);
-//    }
+    @GetMapping("/{id}/comment/{commentId}/delete")
+    public SomException commentDelete(@PathVariable Long commentId) {
+        Comment comment = commentService.delete(commentId);
+        return new SomException(ResponseCode.SUCCESS, comment.getId());
+//        List<CommentResDto> commentResDtos = commentService.list();
+    }
 }
