@@ -38,11 +38,14 @@ public class CommentController {
         return new SomException(ResponseCode.SUCCESS, comment);
     }
 
-    @GetMapping("/list")
-    public SomException commentList() {
-        List<CommentResDto> commentResDtos = commentService.list();
-        return new SomException(ResponseCode.SUCCESS, commentResDtos);
+    @GetMapping("/{id}/comment/{commentId}/update")
+    public SomException commentUpdate(@PathVariable Long id, @PathVariable Long commentId, CommentReqDto commentReqDto) {
+        Comment comment = commentService.create(id, commentReqDto);
+        return new SomException(ResponseCode.SUCCESS, comment);
+//        List<CommentResDto> commentResDtos = commentService.list();
     }
+
+
 //    @GetMapping("/list")
 //    public SomException postList(Pageable pageable) {
 //        List<PostResDto> postResDtos= postService.findAll(pageable);
