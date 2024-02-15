@@ -12,11 +12,20 @@ public class RouteLocatorConfig {
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder){
         return builder.routes()
                 .route(r -> r.path("/admin/**")
-                        .uri("http://localhost:8001"))
+                        .filters( f ->
+                                f.rewritePath("/admin/(.*)", "/$1")
+                        )
+                        .uri("lb://admin"))
                 .route(r -> r.path("/board/**")
-                        .uri("http://localhost:8002"))
+                        .filters( f ->
+                                f.rewritePath("/board/(.*)", "/$1")
+                        )
+                        .uri("lb://board"))
                 .route(r -> r.path("/chat/**")
-                        .uri("http://localhost:8003"))
+                        .filters( f ->
+                                f.rewritePath("/chat/(.*)", "/$1")
+                        )
+                        .uri("lb://chat"))
                 .build();
     }
 

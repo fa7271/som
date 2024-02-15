@@ -1,9 +1,9 @@
 FROM openjdk:11-jdk
 
-WORKDIR /som/admin
+WORKDIR /admin
 
 COPY build/libs/*.jar admin.jar
 
-EXPOSE 8080
+EXPOSE 8001
 
-CMD ["java", "-jar", "admin.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "admin.jar"]
