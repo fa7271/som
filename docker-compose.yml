@@ -1,0 +1,135 @@
+version: '3.3'
+services:
+  eureka:
+    platform: linux/amd64
+    container_name: eureka-service
+    build:
+      context: ./eureka
+      dockerfile: Dockerfile
+    #image: eureka:0.0.1-SNAPSHOT  # 이미지 이름과 태그를 여기에 명시
+    privileged: true
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "8761:8761"
+    networks:
+      - som_network
+  gateway:
+    depends_on:
+      - eureka
+    platform: linux/amd64
+    container_name: gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    #image:   # 이미지 이름과 태그를 여기에 명시
+    privileged: true
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "8000:8000"
+    networks:
+      - som_network
+  common:
+    depends_on:
+      - jdbc
+    platform: linux/amd64
+    container_name: common
+    build:
+      context: ./common
+      dockerfile: Dockerfile
+    #image:   # 이미지 이름과 태그를 여기에 명시
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "8005:8005"
+    networks:
+      - som_network
+  admin:
+    depends_on:
+      - eureka
+      - jdbc
+      - redis
+    platform: linux/amd64
+    container_name: admin
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    #image:   # 이미지 이름과 태그를 여기에 명시
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "8001:8001"
+    networks:
+      - som_network
+  board:
+    depends_on:
+      - eureka
+      - jdbc
+      - redis
+    platform: linux/amd64
+    container_name: board
+    build:
+      context: ./board
+      dockerfile: Dockerfile
+    #image:   # 이미지 이름과 태그를 여기에 명시
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "8002:8002"
+    networks:
+      - som_network
+  jdbc: 	#service 이름
+    image: mysql	#불러올 image
+    container_name: som_db 	#container 이름 지정
+    environment:	# 환경 설정
+      - MYSQL_DATABASE=som
+      - MYSQL_ROOT_HOST=root #%
+      - MYSQL_ROOT_PASSWORD=1234
+    ports:		#port 지정
+      - 3306:3306
+    volumes:	#볼륨 지정
+      - ./db/data:/var/lib/mysql
+    networks:
+      - som_network
+  redis:
+    image: redis:alpine
+    command: redis-server --port 6379
+    container_name: redis_boot
+    hostname: redis_boot
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 6379:6379
+    networks:
+      - som_network
+
+networks:
+  som_network:
+    driver: bridge
