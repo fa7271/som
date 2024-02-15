@@ -4,13 +4,16 @@ package com.encore.post.service;
 import com.encore.post.domain.Post;
 import com.encore.post.dto.PostReqDto;
 import com.encore.post.dto.PostResDto;
+import com.encore.post.dto.PostDetailResDto;
 import com.encore.post.dto.PostSearchDto;
 import com.encore.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,14 +96,39 @@ public class PostService{
         return postResDtos;
     }
 
+    public PostDetailResDto findPostDetail(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 회원이 없습니다."));
+        PostDetailResDto postDetailResDto = new PostDetailResDto();
+        postDetailResDto.setId(post.getId());
+        postDetailResDto.setEmail(post.getEmail());
+        postDetailResDto.setTitle(post.getTitle());
+        postDetailResDto.setContents(post.getContents());
+        postDetailResDto.setCreatedAt(post.getCreatedAt());
+        return postDetailResDto;
+    }
+
     public Post update(Long id, PostReqDto postReqDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // email 정보 꺼내기
+
         Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("not found post"));
+        if (!post.getEmail().equals(email) && !authentication.getAuthorities().contains((new SimpleGrantedAuthority("ROLE_ADMIN")))) { // order한 사람이 아니고 admin이 아니면
+            throw new AccessDeniedException("권한이 없습니다.");
+        }
+
         post.updatePost(postReqDto.getTitle(), postReqDto.getContents());
         return post;
     }
 
     public Post delete(Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // email 정보 꺼내기
+
         Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("not found post"));
+        if (!post.getEmail().equals(email) && !authentication.getAuthorities().contains((new SimpleGrantedAuthority("ROLE_ADMIN")))) { // order한 사람이 아니고 admin이 아니면
+            throw new AccessDeniedException("권한이 없습니다.");
+        }
+
         post.deletePost();
         return post;
     }

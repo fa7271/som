@@ -1,6 +1,7 @@
 package com.encore.post.domain;
 
 import com.encore.comment.domain.Comment;
+import com.encore.like.domain.Likes;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,12 +12,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Getter
 @Builder
+@Getter
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class Post {
 //        author객체의 posts를 초기화시켜준 후,
 //        this.author.getPosts().add(this); // Author posts에 Setter를 사용하지 않고 사용하는 방법
@@ -61,8 +62,12 @@ public class Post {
     @Builder.Default // Builder.Default 를 붙혀주지 않으면 Builder에 기본 null로 세팅되어 있기 때문에 db에 null이 들어간다.
     private String delYn="N"; // item 삭제 유무
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Comment> comment = new ArrayList<>();
+//    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private List<Comment> comment = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    private List<Likes> likes = new ArrayList<>();
+
+    private Integer view = 0;
 }
