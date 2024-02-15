@@ -150,5 +150,4 @@ modules.xml
 
 .gradle
 
-.build
-.out
+build/
