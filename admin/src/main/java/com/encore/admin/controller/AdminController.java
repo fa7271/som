@@ -1,13 +1,19 @@
 package com.encore.admin.controller;
 
 import com.encore.admin.dto.MemberUpdateRequest;
+import com.encore.admin.dto.RankingListRequst;
+import com.encore.admin.dto.RankingListResponse;
 import com.encore.admin.service.MemberService;
+import com.encore.common.support.ResponseCode;
+import com.encore.common.support.SomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.awt.print.Pageable;
+
+@RestController
 @RequestMapping("/admin/member")
 public class AdminController {
 
@@ -20,7 +26,6 @@ public class AdminController {
 
     //@PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
-    @ResponseBody
     public String getUserList(Model model) {
         model.addAttribute("members", memberService.findAll());
         return "admin/user-list";
@@ -61,5 +66,16 @@ public class AdminController {
     public String deleteUser (@PathVariable(value = "id")Long id) {
         memberService.delete(id);
         return "OK";
+    }
+
+    @PostMapping("/ranking")
+    public RankingListResponse loadRankingList(@RequestBody RankingListRequst requst) {
+
+        return memberService.loadRankingList(requst);
+    }
+
+    @GetMapping("/ranking/top10")
+    public SomException loadRankingTop10List() {
+        return new SomException(ResponseCode.SUCCESS, memberService.loadRankingListTop10());
     }
 }
