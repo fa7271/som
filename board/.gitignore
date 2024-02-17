@@ -150,4 +150,4 @@ modules.xml
 
 .gradle
 
-.build
+build/

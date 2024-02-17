@@ -18,7 +18,7 @@ public class JwtTokenProvider {
     private String secretKey;
 
     @Value("${jwt.expiration}")
-    private int expiration;
+    private Long expiration;
 
     //사용자 이메일과 롤
     public String createdToken(String email, String role){
