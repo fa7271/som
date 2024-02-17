@@ -2,6 +2,7 @@ package com.encore.post.domain;
 
 import com.encore.comment.domain.Comment;
 import com.encore.like.domain.Likes;
+import com.encore.views.Views;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -69,10 +70,7 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Likes> likes = new ArrayList<>();
 
-    @Column(columnDefinition = "integer default 0", nullable = false)
-    private int view;
+    @OneToMany(mappedBy = "post")
+    private List<Views> views = new ArrayList<>();
 
-    public void increaseView(int view) {
-        this.view = view + 1;
-    }
 }
