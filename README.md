@@ -4,7 +4,7 @@
 
 </div>
 
-<div style="text-align: right; margin-right: 40px;">
+<div style="text-align: right; margin-right: 5%;">
  
 **[플레이 데이터] 한화시스템 BEYOND SW캠프 3기**
 </div>
