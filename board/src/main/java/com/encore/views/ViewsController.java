@@ -25,9 +25,10 @@ public class ViewsController {
     public SomException getMostViewedPostsAllPeriods() {
 
         Map<String, List<ViewsDto>> allPeriodsData = new HashMap<>();
-        allPeriodsData.put("daily", viewsService.DailyMostViewd());
-        allPeriodsData.put("weekly", viewsService.WeekMostViewd());
-        allPeriodsData.put("monthly", viewsService.MontMostViewd());
+        //dto를 한개 더?
+        allPeriodsData.put("daily", viewsService.DailyMostTop10Viewd());
+        allPeriodsData.put("weekly", viewsService.WeekMostTop10Viewd());
+        allPeriodsData.put("monthly", viewsService.MonthMostTop10Viewd());
 
         return new SomException(ResponseCode.SUCCESS, allPeriodsData);
 //        return ResponseEntity.ok(allPeriodsData);

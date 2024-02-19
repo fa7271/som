@@ -21,7 +21,7 @@ public class ViewsService {
     * @most view API
     * Month, Week, Day
     * */
-    public List<ViewsDto> DailyMostViewd() {
+    public List<ViewsDto> DailyMostTop10Viewd() {
         LocalDate now = LocalDate.now();
         LocalDateTime today = now.atStartOfDay();
 
@@ -29,7 +29,7 @@ public class ViewsService {
         return calculateAndSetRank(mostViewPostsDaily);
     }
 
-    public List<ViewsDto> WeekMostViewd() {
+    public List<ViewsDto> WeekMostTop10Viewd() {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
         List<Post> mostViewPostWeek = viewsRepository.findMostViewedPostsSince(oneWeekAgo);
 
@@ -37,7 +37,7 @@ public class ViewsService {
     }
 
 
-    public List<ViewsDto> MontMostViewd() {
+    public List<ViewsDto> MonthMostTop10Viewd() {
         LocalDateTime oneMonthAgo = LocalDateTime.now().minusYears(1);
         List<Post> mostViewedPostsMonthly = viewsRepository.findMostViewedPostsSince(oneMonthAgo);
 
