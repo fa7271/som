@@ -5,6 +5,7 @@ import com.encore.comment.dto.CommentDetailResDto;
 import com.encore.comment.dto.CommentReqDto;
 import com.encore.comment.dto.CommentResDto;
 import com.encore.comment.service.CommentService;
+import com.encore.common.support.DefaultResponse;
 import com.encore.common.support.ResponseCode;
 import com.encore.common.support.SomException;
 import com.encore.post.domain.Post;
@@ -29,32 +30,31 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/comment") // comment create
-    public SomException commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
+    public DefaultResponse<Comment> commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
             commentReqDto.setContents(filteredContents);
         }
         Comment comment = commentService.create(id, commentReqDto);
-        return new SomException(ResponseCode.SUCCESS, comment);
+        return new DefaultResponse<Comment>(comment);
     }
 
     @GetMapping("/{id}/comment/list")
-    public SomException commentList(@PathVariable Long id){
+    public DefaultResponse.ListResponse<CommentResDto> commentList(@PathVariable Long id){
         List<CommentResDto> commentResDtos= commentService.findAll(id);
-        return new SomException(ResponseCode.SUCCESS, commentResDtos);
+        return new DefaultResponse.ListResponse<CommentResDto>(commentResDtos);
     }
 
     @GetMapping("/{id}/comment/{commentId}/update")
-    public SomException commentUpdate(@PathVariable Long commentId, CommentReqDto commentReqDto) {
+    public DefaultResponse<String> commentUpdate(@PathVariable Long commentId, CommentReqDto commentReqDto) {
         Comment comment = commentService.update(commentId, commentReqDto);
-        return new SomException(ResponseCode.SUCCESS, comment.getContents());
-//        List<CommentResDto> commentResDtos = commentService.list();
+        return new DefaultResponse<>(comment.getContents());
     }
 
     @GetMapping("/{id}/comment/{commentId}/delete")
-    public SomException commentDelete(@PathVariable Long commentId) {
+    public DefaultResponse<Long> commentDelete(@PathVariable Long commentId) {
         Comment comment = commentService.delete(commentId);
-        return new SomException(ResponseCode.SUCCESS, comment.getId());
-//        List<CommentResDto> commentResDtos = commentService.list();
+        return new DefaultResponse<Long>(comment.getId());
+
     }
 }

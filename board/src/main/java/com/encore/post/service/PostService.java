@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -78,7 +79,32 @@ public class PostService{
 
         Page<Post> posts = postRepository.findAll(spec, pageable); // select * from post
         List<Post> postList = posts.getContent();
-        return postList.stream().map(x -> PostResDto.ToPostRestDto(x)).collect(Collectors.toList());
+
+        if(!postList.isEmpty()) {
+            List<String> emailList = postList.stream()
+                    .map(Post::getEmail).collect(Collectors.toList());
+
+            MemberReqDto memberReqDto = new MemberReqDto();
+            memberReqDto.setEmailList(emailList);
+            MemberDto memberDto = adminInternalClient.memberList(memberReqDto);
+
+            System.out.println("memberDto = " + memberDto.getRankingList());
+        }
+
+        List<PostResDto> postResDtos = new ArrayList<>();
+        postResDtos = postList.stream()
+                .map(p -> PostResDto.builder()
+                        .id(p.getId())
+                        .title(p.getTitle())
+                        .contents(p.getContents())
+                        .member_email(p.getEmail())
+                        .build()).collect(Collectors.toList());
+
+//        Page<PostResDto> postResDtos
+//                = posts.map(p -> new PostResDto(p.getId(), p.getTitle(), p.getEmail()==null? "익명유저" : email));
+
+//         return postList.stream().map(x -> PostResDto.ToPostRestDto(x)).collect(Collectors.toList());
+        return postResDtos;
     }
 
     public PostDetailResDto findPostDetail(Long id) {

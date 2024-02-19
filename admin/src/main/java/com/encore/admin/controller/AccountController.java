@@ -6,6 +6,7 @@ import com.encore.admin.domain.Member;
 import com.encore.admin.dto.SignInRequest;
 import com.encore.admin.dto.SignUpRequest;
 import com.encore.admin.service.AccountService;
+import com.encore.common.support.DefaultResponse;
 import com.encore.common.support.ResponseCode;
 import com.encore.common.support.SomException;
 import lombok.extern.slf4j.Slf4j;
@@ -30,35 +31,30 @@ public class AccountController {
     }
 
     @PostMapping("/signup")
-    public SomException signup(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
+    public DefaultResponse<ResponseCode> signup(@RequestBody SignUpRequest signUpRequest) throws MessagingException {
         service.signup(signUpRequest);
-        return new SomException(ResponseCode.SUCCESS, HttpStatus.OK);
+        return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS_CREATE_MEMBER);
     }
 
     @PostMapping("/signin")
-    public SomException signin( @RequestBody SignInRequest signInRequest) {
-        System.out.println(signInRequest.getEmail());
-        Member member = service.signin(signInRequest);
-        System.out.println(member.getEmail());
+    public DefaultResponse<Map<String, Object>> signin( @RequestBody SignInRequest signInRequest) {
 
-        //json web token
-        //토큰 생성 로직
+        Member member = service.signin(signInRequest);
         String jwt = jwtTokenProvider.createdToken(member.getEmail(), member.getRole().name());
 
         Map<String, Object> memberInfo = new HashMap<>();
         memberInfo.put("email", member.getEmail());
         memberInfo.put("token", jwt);
         memberInfo.put("role", member.getRole().name());
-        return new SomException(ResponseCode.SUCCESS, memberInfo);
+        return new DefaultResponse<Map<String, Object>>(memberInfo);
     }
 
     @GetMapping("/verify-code/{email}/{code}")
-    public SomException sendCode (
+    public DefaultResponse<ResponseCode> sendCode (
             @PathVariable String email,
             @PathVariable String code
     ) {
-        System.out.println("start");
         service.verifyEmailCode(email, code);
-        return new SomException(ResponseCode.SUCCESS_CREATE_MEMBER);
+        return new DefaultResponse<>(ResponseCode.SUCCESS_CREATE_MEMBER);
     }
 }

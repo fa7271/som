@@ -1,6 +1,7 @@
 package com.encore.post.controller;
 
 import com.encore.common.CommonResponse;
+import com.encore.common.support.DefaultResponse;
 import com.encore.common.support.ResponseCode;
 import com.encore.common.support.SomException;
 import com.encore.post.domain.Post;
@@ -31,42 +32,42 @@ public class PostController {
     }
 
     @PostMapping("/create") // Post create
-    public SomException postCreate(PostReqDto postReqDto, HttpServletRequest httpServletRequest){
+    public DefaultResponse<Long> postCreate(PostReqDto postReqDto, HttpServletRequest httpServletRequest){
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
             postReqDto.setContents(filteredContents);
         }
 
         Post post = postService.create(postReqDto);
-        return new SomException(ResponseCode.SUCCESS, post.getId());
+        return new DefaultResponse<>(post.getId());
     }
 
     @GetMapping("/list")
-    public SomException postList(Pageable pageable) {
+    public DefaultResponse.ListResponse<PostResDto> postList(Pageable pageable) {
         List<PostResDto> postResDtos= postService.findAll(pageable);
-        return new SomException(ResponseCode.SUCCESS, postResDtos);
+        return new DefaultResponse.ListResponse<>(postResDtos);
     }
 
     @GetMapping("/{id}/detail")
-    public SomException postDetail(@PathVariable Long id){
+    public DefaultResponse<PostDetailResDto> postDetail(@PathVariable Long id){
         PostDetailResDto postDetailResDto = postService.findPostDetail(id);
-        return new SomException(ResponseCode.SUCCESS, postDetailResDto);
+        return new DefaultResponse<>(postDetailResDto);
     }
 
     @PatchMapping("/{id}/update")
-    public SomException postUpdate(@PathVariable Long id, PostReqDto postReqDto, HttpServletRequest httpServletRequest) {
+    public DefaultResponse<Post> postUpdate(@PathVariable Long id, PostReqDto postReqDto, HttpServletRequest httpServletRequest) {
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
             postReqDto.setContents(filteredContents);
         }
         Post post = postService.update(id, postReqDto);
-        return new SomException(ResponseCode.SUCCESS, post);
+        return new DefaultResponse<>(post);
     }
 
     @DeleteMapping("/{id}/delete")
-    public SomException postDelete(@PathVariable Long id) {
+    public DefaultResponse<Long> postDelete(@PathVariable Long id) {
         Post post = postService.delete(id);
 
-        return new SomException(ResponseCode.SUCCESS, post.getId());
+        return new DefaultResponse<Long>(post.getId());
     }
 }
