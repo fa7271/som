@@ -2,6 +2,7 @@ package com.encore.post.domain;
 
 import com.encore.comment.domain.Comment;
 import com.encore.like.domain.Likes;
+import com.encore.views.Views;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -62,12 +63,14 @@ public class Post {
     @Builder.Default // Builder.Default 를 붙혀주지 않으면 Builder에 기본 null로 세팅되어 있기 때문에 db에 null이 들어간다.
     private String delYn="N"; // item 삭제 유무
 
-//    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-//    @Builder.Default
-//    private List<Comment> comment = new ArrayList<>();
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Comment> comment = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
     private List<Likes> likes = new ArrayList<>();
 
-    private Integer view = 0;
+    @OneToMany(mappedBy = "post")
+    private List<Views> views = new ArrayList<>();
+
 }

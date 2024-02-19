@@ -11,4 +11,6 @@ public class PostDetailResDto {
     private String title;
     private String contents;
     private LocalDateTime createdAt;
+
+    private int views;
 }
