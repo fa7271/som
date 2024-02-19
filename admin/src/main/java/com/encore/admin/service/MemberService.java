@@ -2,10 +2,8 @@ package com.encore.admin.service;
 
 
 import com.encore.admin.domain.Member;
-
 import com.encore.admin.dto.*;
 import com.encore.admin.repository.MemberRepository;
-
 import com.encore.common.support.ResponseCode;
 import com.encore.common.support.Role;
 import com.encore.common.support.SomException;
@@ -16,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -32,10 +31,13 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository repository;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public MemberService(MemberRepository repository) {
+    public MemberService(MemberRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void save(SignUpRequest signUpRequest) {
@@ -50,26 +52,26 @@ public class MemberService {
         repository.save(member);
     }
 
-    public void update(MemberUpdateRequest memberUpdateRequest) {
-        Member member = repository.findById(memberUpdateRequest.getId()).orElseThrow(() -> new NoSuchElementException("찾는 회원이 없습니다."));
-        member.updateMember(member, memberUpdateRequest);
+    public void update(Long id ,MemberUpdateRequest memberUpdateRequest) {
+        Member member = repository.findById(id).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
+        member.updateMember(memberUpdateRequest.getNickname(),passwordEncoder.encode(memberUpdateRequest.getPassword()));
         repository.save(member);
 
     }
 
     public List<SignInResponse> findAll(Pageable pageable) {
-        List<Member> members = repository.findAll();
+        Page<Member> members = repository.findAll(pageable);
 
         return members.stream().map(SignInResponse::of).collect(Collectors.toList());
     }
 
     public SignInResponse findById(Long id) {
-        Member member = repository.findById(id).orElseThrow(() -> new NoSuchElementException("찾는 회원이 없습니다."));
+        Member member = repository.findById(id).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
         return SignInResponse.of(member);
     }
 
     public void delete(Long id) {
-        Member member = repository.findById(id).orElseThrow(() -> new NoSuchElementException("찾는 회원이 없습니다."));
+        Member member = repository.findById(id).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
         member.inactive();
 
     }
@@ -82,9 +84,7 @@ public class MemberService {
 
     public RankingListResponse loadRankingListTop10() {
 
-        System.out.println("1");
-        List<Member> members = repository.findTop10ByOrderByRankingDesc();
-        System.out.println(members.get(0).getRanking());
+        List<Member> members = repository.findTop10ByRoleOrderByRankingDesc(Role.USER);
         List<Ranking> rankingList = members.stream().map(Ranking::of).collect(Collectors.toList());
         return RankingListResponse.builder().rankingList(rankingList).build();
     }
@@ -94,7 +94,8 @@ public class MemberService {
         Page<Member> members = repository.findAll(pageable);
         return members;
     }
-    public MemberResponse findMyInfo()  {
+
+    public MemberResponse findMyInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Member findmember = repository.findByEmail(email)
@@ -103,7 +104,5 @@ public class MemberService {
 
 
     }
-
-
 }
 

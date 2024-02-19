@@ -1,6 +1,7 @@
 package com.encore.admin.repository;
 
 import com.encore.admin.domain.Member;
+import com.encore.common.support.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +17,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findAllByEmailIn(List<String> email);
 
-    List<Member> findTop10ByOrderByRankingDesc();
+    List<Member> findTop10ByRoleOrderByRankingDesc(Role role);
 
     Page<Member> findAll(Pageable pageable);
 }

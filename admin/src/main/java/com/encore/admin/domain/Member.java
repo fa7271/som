@@ -47,12 +47,11 @@ public class Member {
     private LocalDateTime updatedAt;
 
 
-    public Member updateMember(Member member, MemberUpdateRequest dto) {
+    public void updateMember(String nickname, String password) {
 
-        this.nickname = dto.getNickname();
-        this.password = dto.getPassword();
+        this.nickname = nickname;
+        this.password = password;
 
-        return member;
     }
 
     public void changePassword(String password) {

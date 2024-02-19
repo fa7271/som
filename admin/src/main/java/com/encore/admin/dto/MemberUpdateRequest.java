@@ -2,10 +2,12 @@ package com.encore.admin.dto;
 
 import com.encore.common.support.ResponseCode;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class MemberUpdateRequest {
-    private Long id;
+
     private String nickname;
     private String password;
 

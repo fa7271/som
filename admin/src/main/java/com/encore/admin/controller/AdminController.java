@@ -22,6 +22,7 @@ public class AdminController {
 
     private final MemberService memberService;
 
+
     @Autowired
     public AdminController(MemberService memberService) {
         this.memberService = memberService;
@@ -34,33 +35,21 @@ public class AdminController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/detail/{id}")
-    public MemberDetailResponse getMemberDetail(@PathVariable(name = "id") Long id) {
-        return new MemberDetailResponse(ResponseCode.SUCCESS, memberService.findById(id));
+    public SomException getMemberDetail(@PathVariable(name = "id") Long id) {
+        return new SomException(ResponseCode.SUCCESS, memberService.findById(id));
     }
 
 
-//    @GetMapping("create")
-//    public SignUpRequest createUser() {
-//        return new SomException(ResponseCode.SUCCESS_CREATE_MEMBER, memberService.save);
-//
-//    }
-
-
-    //@PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("update/{id}")
-    public MemberUpdateRequest updateUser(@PathVariable(value = "id") Long id) {
-
-        return new MemberUpdateRequest(ResponseCode.SUCCESS, memberService.findById(id));
-
-    }
-
-    //@PreAuthorize("hasRole('ADMIN',)")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("update/{id}")
-    public String updateUser(MemberUpdateRequest memberUpdateRequest, Model model) {
-        memberService.update(memberUpdateRequest);
-        return "admin/update-user";
+    public SomException updateMember(@PathVariable(value = "id") Long id, @RequestBody MemberUpdateRequest memberUpdateRequest) {
+        memberService.update(id,memberUpdateRequest);
+        return new SomException(ResponseCode.SUCCESS);
+
     }
+
 
     //@PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("delete/{id}")
@@ -70,9 +59,8 @@ public class AdminController {
     }
 
 
-    @PostMapping("/ranking")
+    @PostMapping("/info")
     public RankingListResponse loadRankingList(@RequestBody RankingListRequest request) {
-
         return memberService.loadRankingList(request);
     }
 
@@ -88,17 +76,12 @@ public class AdminController {
     }
 
 
-    @GetMapping("/myinfo")
-    public SomException myInfo(MemberResponse memberResponse) {
-        return new SomException(ResponseCode.SUCCESS, memberService.findMyInfo());
-
-    }
-
 
     @PatchMapping("/updateUser")
     public SomException UpdateUserPage(@RequestParam("id") Long id) {
         return new SomException(ResponseCode.SUCCESS, memberService.findById(id));
-    }
 
+
+    }
 }
 
