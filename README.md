@@ -10,7 +10,7 @@
 
 ## 팀명
 
-☁️**TEAM SOM**☁️ 
+☁️TEAM SOM☁️ 
 
 <br>
 
