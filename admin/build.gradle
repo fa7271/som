@@ -35,6 +35,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
 
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.data:spring-data-redis:2.7.5'
+	implementation 'io.lettuce:lettuce-core:6.2.1.RELEASE'
+
 	//	Getter, Setter, Log 관련 의존
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
