@@ -2,8 +2,9 @@ package com.encore.post.service;
 
 
 import com.encore.post.domain.Post;
-import com.encore.post.dto.*;
-import com.encore.post.feign.admin.AdminInternalClient;
+import com.encore.post.dto.PostReqDto;
+import com.encore.post.dto.PostResDto;
+import com.encore.post.dto.PostDetailResDto;
 import com.encore.post.repository.PostRepository;
 import com.encore.views.Views;
 import com.encore.views.ViewsRepository;
@@ -34,15 +35,11 @@ import java.time.LocalDate;
 public class PostService{
     private final PostRepository postRepository;
     private final ViewsRepository viewsRepository;
-    private final AdminInternalClient adminInternalClient;
-
-
 
     @Autowired
-    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient) {
+    public PostService(PostRepository postRepository, ViewsRepository viewsRepository) {
         this.postRepository = postRepository;
         this.viewsRepository = viewsRepository;
-        this.adminInternalClient = adminInternalClient;
     }
 
     public Post create(PostReqDto postReqDto) {
@@ -55,13 +52,9 @@ public class PostService{
             throw new IllegalArgumentException("하루 최대 포스팅 횟수를 넘겼습니다.");
         }
 
-        Post new_post = Post.builder()
-                .title(postReqDto.getTitle())
-                .contents(postReqDto.getContents())
-                .email(email)
-                .build();
 
-        Post post = postRepository.save(new_post);
+        Post post = Post.CreatePost(postReqDto.getTitle(), postReqDto.getContents(), email);
+        postRepository.save(post);
         return post;
     }
 
@@ -86,6 +79,7 @@ public class PostService{
 
         Page<Post> posts = postRepository.findAll(spec, pageable); // select * from post
         List<Post> postList = posts.getContent();
+
         if(!postList.isEmpty()) {
             List<String> emailList = postList.stream()
                     .map(Post::getEmail).collect(Collectors.toList());
@@ -108,12 +102,14 @@ public class PostService{
 
 //        Page<PostResDto> postResDtos
 //                = posts.map(p -> new PostResDto(p.getId(), p.getTitle(), p.getEmail()==null? "익명유저" : email));
+
+//         return postList.stream().map(x -> PostResDto.ToPostRestDto(x)).collect(Collectors.toList());
         return postResDtos;
     }
 
     public PostDetailResDto findPostDetail(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 회원이 없습니다."));
-        PostDetailResDto postDetailResDto = new PostDetailResDto();
+//        PostDetailResDto postDetailResDto = new PostDetailResDto();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
@@ -126,13 +122,7 @@ public class PostService{
             viewsRepository.save(view);
             post.getViews().add(view);
         }
-        postDetailResDto.setId(post.getId());
-        postDetailResDto.setEmail(post.getEmail());
-        postDetailResDto.setTitle(post.getTitle());
-        postDetailResDto.setContents(post.getContents());
-        postDetailResDto.setCreatedAt(post.getCreatedAt());
-        postDetailResDto.setViews(post.getViews().size());
-        return postDetailResDto;
+        return PostDetailResDto.ToPostDto(post);
     }
 
     public Post update(Long id, PostReqDto postReqDto) {

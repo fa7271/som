@@ -2,6 +2,8 @@ package com.encore.post.domain;
 
 import com.encore.comment.domain.Comment;
 import com.encore.like.domain.Likes;
+import com.encore.post.dto.PostDetailResDto;
+import com.encore.post.dto.PostReqDto;
 import com.encore.views.Views;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,16 +15,17 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+//@Builder
 @Getter
-@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Post {
 //        author객체의 posts를 초기화시켜준 후,
 //        this.author.getPosts().add(this); // Author posts에 Setter를 사용하지 않고 사용하는 방법
 
+    protected Post() {
+
+    }
     public void updatePost(String title, String contents){
         this.title = title;
         this.contents = contents;
@@ -73,4 +76,13 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Views> views = new ArrayList<>();
 
+//    factory Method
+    public Post(String title, String contents, String email) {
+        this.title = title;
+        this.contents = contents;
+        this.email = email;
+    }
+    public static Post CreatePost(String title, String contents, String email) {
+        return new Post(title, contents, email);
+    }
 }
