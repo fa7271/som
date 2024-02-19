@@ -8,20 +8,18 @@
 
 <br><br>
 
-## 팀명
-
-☁️**TEAM SOM**☁️ 
+## 팀명 : ☁️**TEAM SOM**☁️
 
 <br>
 
 ## 팀원
 
 
-[**이혜선** 🐴](https://github.com/hyesunlee30)
+- [**이혜선** 🐴](https://github.com/hyesunlee30)
 <br>
-[**신보석** 🐭](https://github.com/fa7271)
+- [**신보석** 🐭](https://github.com/fa7271)
 <br>
-[**이창선** 🐷](https://github.com/keepself)
-<br>
+- [**이창선** 🐷](https://github.com/keepself)
+- <br>
 [**장준혁** 🐰](https://github.com/GreatJang)
 
