@@ -48,7 +48,7 @@ public class AccountController {
         Map<String, Object> memberInfo = new HashMap<>();
         memberInfo.put("email", member.getEmail());
         memberInfo.put("token", jwt);
-
+        memberInfo.put("role", member.getRole().name());
         return new SomException(ResponseCode.SUCCESS, memberInfo);
     }
 

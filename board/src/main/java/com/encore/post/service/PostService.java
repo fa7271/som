@@ -5,8 +5,9 @@ import com.encore.post.domain.Post;
 import com.encore.post.dto.PostReqDto;
 import com.encore.post.dto.PostResDto;
 import com.encore.post.dto.PostDetailResDto;
-import com.encore.post.dto.PostSearchDto;
 import com.encore.post.repository.PostRepository;
+import com.encore.views.Views;
+import com.encore.views.ViewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,18 +28,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Service
 @Transactional
 public class PostService{
     private final PostRepository postRepository;
+    private final ViewsRepository viewsRepository;
 
     @Autowired
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, ViewsRepository viewsRepository) {
         this.postRepository = postRepository;
+        this.viewsRepository = viewsRepository;
     }
 
     public Post create(PostReqDto postReqDto) {
@@ -50,7 +50,7 @@ public class PostService{
         if (pst.size() >= 5) {
             throw new IllegalArgumentException("하루 최대 포스팅 횟수를 넘겼습니다.");
         }
-      
+
         Post new_post = Post.builder()
                 .title(postReqDto.getTitle())
                 .contents(postReqDto.getContents())
@@ -99,11 +99,24 @@ public class PostService{
     public PostDetailResDto findPostDetail(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 회원이 없습니다."));
         PostDetailResDto postDetailResDto = new PostDetailResDto();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+
+//        내가 쓴 게시글이 아닐경우
+        if (!post.getEmail().equals(userEmail)){
+            Views view = Views.builder()
+                    .post(post)
+                    .build();
+            viewsRepository.save(view);
+            post.getViews().add(view);
+        }
         postDetailResDto.setId(post.getId());
         postDetailResDto.setEmail(post.getEmail());
         postDetailResDto.setTitle(post.getTitle());
         postDetailResDto.setContents(post.getContents());
         postDetailResDto.setCreatedAt(post.getCreatedAt());
+        postDetailResDto.setViews(post.getViews().size());
         return postDetailResDto;
     }
 
