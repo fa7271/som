@@ -4,7 +4,10 @@
 
 </div>
 
-> **[플레이 데이터] 한화시스템 BEYOND SW캠프 3기** 
+<div style="text-align: right; margin-right: 10px;">
+ 
+**[플레이 데이터] 한화시스템 BEYOND SW캠프 3기**
+</div>
 
 <br>
 
