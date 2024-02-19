@@ -28,6 +28,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
+    private boolean active;
+
     @Column(nullable = false, length = 50, unique = true)
     private String nickname;
 
@@ -43,7 +46,6 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    private boolean active;
 
     public Member updateMember(Member member, MemberUpdateRequest dto) {
 
@@ -57,7 +59,8 @@ public class Member {
         this.password = password;
     }
 
-    public void active() {
-        this.active = true;
+
+    public void inactive() {
+        this.active = false;
     }
 }
