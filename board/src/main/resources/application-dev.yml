@@ -1,0 +1,29 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: board
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://som_db/som?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: 1234 # 1234
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create #update
+    show-sql: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka
+    enabled: true
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+
+
+jwt:
+  expiration: 30
+  secretKey: mysecret

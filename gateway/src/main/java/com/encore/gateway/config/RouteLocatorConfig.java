@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Configuration;
 public class RouteLocatorConfig {
 
     @Bean
-    public RouteLocator gatewayRoutes(RouteLocatorBuilder builder){
+    public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(r -> r.path("/admin/**")
-                        .uri("http://localhost:8001"))
+                        .uri("lb://admin"))
                 .route(r -> r.path("/board/**")
-                        .uri("http://localhost:8002"))
+                        .uri("lb://board"))
                 .route(r -> r.path("/chat/**")
-                        .uri("http://localhost:8003"))
+                        .uri("lb://chat"))
                 .build();
     }
 

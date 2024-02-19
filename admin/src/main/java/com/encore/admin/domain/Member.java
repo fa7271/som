@@ -28,14 +28,14 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
+    private boolean active;
+
     @Column(nullable = false, length = 50, unique = true)
     private String nickname;
 
     @Setter
     private String password;
-    @Setter
-    private String tempPassword;
-    private boolean shouldChangePw;
 
     @ColumnDefault("0")
     private Long ranking;
@@ -46,15 +46,20 @@ public class Member {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public Member updateMember(Member member, MemberUpdateRequest dto) {
 
-        this.nickname = dto.getNickname();
-        this.password = dto.getPassword();
+    public void updateMember(String nickname, String password) {
 
-        return member;
+        this.nickname = nickname;
+        this.password = password;
+
     }
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+
+    public void inactive() {
+        this.active = false;
     }
 }
