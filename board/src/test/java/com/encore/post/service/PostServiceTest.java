@@ -7,27 +7,36 @@ import com.encore.post.repository.PostRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Equals;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.then;
 
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
@@ -81,16 +90,59 @@ class PostServiceTest {
     @WithMockUser(username = "test@naver.com", roles = {"USER"})
     @DisplayName("findAll")
     public void findAll() {
-        // when
+        // given
         PageRequest pr = PageRequest.of(0, 3);
         Specification<Post> spec = (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("delYn"), "N");
         Page<Post> PostPage = postRepository.findAll(spec, pr);
 
-        // then
+        // when
         List<Post> content = PostPage.getContent();
 
         //then
         Assertions.assertThat(3).isEqualTo(content.size()); // 현재 페이지 포스팅 수 3
         assertEquals(0, PostPage.getNumber()); // 현재 페이지 1
+    }
+
+    @Test
+    @WithMockUser(username = "test@naver.com", roles = {"USER"})
+    @DisplayName("Delete_Post_With_permission")
+    public void deletePost() {
+        //given
+        List<Post> posts = postRepository.findAll();
+
+        PostReqDto postReqDto = new PostReqDto();
+        postReqDto.setTitle("test title");
+        postReqDto.setContents("test contents");
+        Post post = postService.create(postReqDto);
+
+        assertEquals(posts.size()+1,postRepository.count());
+//         when
+        postRepository.delete(post);
+//         then
+        assertEquals(posts.size(), postRepository.count());
+
+    }
+    @Test
+    @DisplayName("Delete_Post_By_Different_User")
+    @WithMockUser(username = "user1@example.com", roles = {"USER"})
+    void deletePostByDifferentUser() {
+        // Given
+        // Create a post by user1
+        PostReqDto postReqDto = new PostReqDto();
+        postReqDto.setTitle("test title");
+        postReqDto.setContents("test contents");
+        Post post = postService.create(postReqDto);
+
+        // When
+        postRepository.save(post);
+
+        // Then
+        // Attempt to delete the post by user2 should throw AccessDeniedException
+        assertThrows(AccessDeniedException.class, () -> {
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken("user2@example.com", "password", Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")))
+            );
+            postService.delete(post.getId());
+        });
     }
 }

@@ -48,11 +48,11 @@ class LikesServiceTest {
 
         Likes existingLike = Likes.builder()
                 .post(post)
-                .email("test@naver.com")
+                .email("fa7271@naver.com")
                 .build();
 
         when(postRepository.findById(1L)).thenReturn(java.util.Optional.of(post));
-        when(likesRepository.findByIdAndEmail(1L, "fa7271@naver.com")).thenReturn(existingLike);
+        when(likesRepository.findByPostAndEmail(post, "fa7271@naver.com")).thenReturn(existingLike);
 
         // when
         likesService.like(1L, "fa7271@naver.com");
@@ -66,19 +66,19 @@ class LikesServiceTest {
     @DisplayName("Add_Like")
     public void AddLike() {
 
-//        given
+        // given
         Post post = Post.builder()
                 .id(1L) // Set ID for the post
                 .title("test title")
                 .contents("test contents")
                 .build();
-//        when
         when(postRepository.findById(1L)).thenReturn(java.util.Optional.of(post));
-        when(likesRepository.findByIdAndEmail(1L, "test@naver.com")).thenReturn(null);
+        when(likesRepository.findByPostAndEmail(post, "test@naver.com")).thenReturn(null);
 
-        likesService.like(1L,"test@naver.com");
-//        then
-//        인스턴스 있는지 확인
+        // when
+        likesService.like(1L, "test@naver.com");
+
+        // then
         verify(likesRepository, times(1)).save(any(Likes.class));
     }
 }
