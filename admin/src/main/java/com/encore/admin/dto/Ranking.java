@@ -7,13 +7,15 @@ import lombok.Data;
 @Builder
 @Data
 public class Ranking {
-    private String email;
+    private String nickname;
     private Long ranking;
+    private String email;
 
     public static Ranking of(Member member) {
         return Ranking.builder()
-                .email(member.getEmail())
+                .nickname(member.getNickname())
                 .ranking(member.getRanking())
+                .email(member.getEmail())
                 .build();
     }
 }

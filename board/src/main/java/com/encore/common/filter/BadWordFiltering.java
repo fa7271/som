@@ -15,9 +15,9 @@ public class BadWordFiltering extends HashSet<String> implements BadWords {
         addAll(List.of(koreaWord1));
     }
 
-    public BadWordFiltering(String substituteValue) {
-        this.substituteValue = substituteValue;
-    }
+//    public BadWordFiltering(String substituteValue) {
+//        this.substituteValue = substituteValue;
+//    }
 
     public String pre_change(String text) {
         Pattern pattern = Pattern.compile("[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z\\s]");

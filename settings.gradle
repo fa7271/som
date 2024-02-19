@@ -1,4 +1,4 @@
-rootProject.name = 'springproject'
+rootProject.name = 'som'
 
 include ':admin'
 include ':batch'

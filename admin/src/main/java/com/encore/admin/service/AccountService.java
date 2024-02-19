@@ -94,7 +94,7 @@ public class AccountService {
         if(codeFoundByEmail.equals(code)){
             Optional<Member> findMember = repository.findByEmail(email);
             if(findMember.isPresent()) {
-                findMember.get().active();
+                findMember.get().inactive();
             }
         }
         return true;

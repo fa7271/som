@@ -11,15 +11,14 @@ public class SignInResponse {
     private Long id;
     private String email;
     private String nickname;
-    private String password;
     private Role role;
 
     public static SignInResponse of(Member member) {
         SignInResponse signInResponse = SignInResponse.builder()
                 .id(member.getId())
                 .nickname(member.getNickname())
-                .password(member.getPassword())
                 .email(member.getEmail())
+                .role(member.getRole())
                 .build();
 
         return signInResponse;
