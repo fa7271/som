@@ -14,7 +14,7 @@
 
 ## ☁️팀원☁️
 
-[**이혜선** 🐴](https://github.com/hyesunlee30)
+- [**이혜선** 🐴](https://github.com/hyesunlee30)
 <br>
 [**신보석** 🐭](https://github.com/fa7271)
 <br>
