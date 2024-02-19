@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class RouteLocatorConfig {
 
     @Bean
-    public RouteLocator gatewayRoutes(RouteLocatorBuilder builder){
+    public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route(r -> r.path("/admin/**")
                         .uri("lb://admin"))

@@ -7,6 +7,10 @@ import com.encore.post.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LikesService {
@@ -18,18 +22,22 @@ public class LikesService {
         this.postRepository = postRepository;
     }
 
-    public void like(Long id, String email) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("없는 게시글 입니다."));
-        Likes likeExist = likeRepository.findByIdAndEmail(id, email);
+    public List<String> like(Long id, String email) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("없는 게시글입니다."));
+        Likes likeExist = likeRepository.findByPostAndEmail(post, email);
         if (likeExist != null) {
             likeRepository.delete(likeExist);
-        }else{
+        } else {
             Likes likes = Likes.builder()
                     .email(email)
                     .post(post)
                     .build();
-
             likeRepository.save(likes);
         }
+        Optional<List<Likes>> likesOptional = likeRepository.findByPostId(id);
+        return likesOptional.orElse(Collections.emptyList())
+                .stream()
+                .map(Likes::getEmail)
+                .collect(Collectors.toList());
     }
 }
