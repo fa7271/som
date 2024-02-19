@@ -2,9 +2,8 @@ package com.encore.post.service;
 
 
 import com.encore.post.domain.Post;
-import com.encore.post.dto.PostReqDto;
-import com.encore.post.dto.PostResDto;
-import com.encore.post.dto.PostDetailResDto;
+import com.encore.post.dto.*;
+import com.encore.post.feign.admin.AdminInternalClient;
 import com.encore.post.repository.PostRepository;
 import com.encore.views.Views;
 import com.encore.views.ViewsRepository;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,11 +33,12 @@ import java.time.LocalDate;
 public class PostService{
     private final PostRepository postRepository;
     private final ViewsRepository viewsRepository;
-
+    private final AdminInternalClient adminInternalClient;
     @Autowired
-    public PostService(PostRepository postRepository, ViewsRepository viewsRepository) {
+    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient) {
         this.postRepository = postRepository;
         this.viewsRepository = viewsRepository;
+        this.adminInternalClient = adminInternalClient;
     }
 
     public Post create(PostReqDto postReqDto) {
