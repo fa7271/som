@@ -16,7 +16,6 @@
 
 ## 팀원
 
-&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;　&nbsp;
 
 [**이혜선** 🐴](https://github.com/hyesunlee30)
 <br>
