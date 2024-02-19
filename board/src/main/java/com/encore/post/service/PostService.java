@@ -2,9 +2,8 @@ package com.encore.post.service;
 
 
 import com.encore.post.domain.Post;
-import com.encore.post.dto.PostReqDto;
-import com.encore.post.dto.PostResDto;
-import com.encore.post.dto.PostDetailResDto;
+import com.encore.post.dto.*;
+import com.encore.post.feign.admin.AdminInternalClient;
 import com.encore.post.repository.PostRepository;
 import com.encore.views.Views;
 import com.encore.views.ViewsRepository;
@@ -34,11 +33,15 @@ import java.time.LocalDate;
 public class PostService{
     private final PostRepository postRepository;
     private final ViewsRepository viewsRepository;
+    private final AdminInternalClient adminInternalClient;
+
+
 
     @Autowired
-    public PostService(PostRepository postRepository, ViewsRepository viewsRepository) {
+    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient) {
         this.postRepository = postRepository;
         this.viewsRepository = viewsRepository;
+        this.adminInternalClient = adminInternalClient;
     }
 
     public Post create(PostReqDto postReqDto) {
@@ -82,6 +85,12 @@ public class PostService{
 
         Page<Post> posts = postRepository.findAll(spec, pageable); // select * from post
         List<Post> postList = posts.getContent();
+        List<String> emailList = postList.stream()
+                        .map(p-> p.getEmail()).collect(Collectors.toList());
+        MemberReqDto memberReqDto = new MemberReqDto();
+        memberReqDto.setEmailList(emailList);
+        MemberDto memberDto = adminInternalClient.memberList(memberReqDto);
+        System.out.println("memberDto = " + memberDto);
         List<PostResDto> postResDtos = new ArrayList<>();
         postResDtos = postList.stream()
                 .map(p -> PostResDto.builder()
