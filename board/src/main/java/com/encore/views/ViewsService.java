@@ -26,22 +26,23 @@ public class ViewsService {
         LocalDateTime today = now.atStartOfDay();
 
         List<Post> mostViewPostsDaily = viewsRepository.findMostViewedPostsSince(today);
-        return calculateAndSetRank(mostViewPostsDaily);
+        List<ViewsDto> DailyMostTop10Viewd = calculateAndSetRank(mostViewPostsDaily);
+        return DailyMostTop10Viewd;
     }
 
     public List<ViewsDto> WeekMostTop10Viewd() {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusWeeks(1);
         List<Post> mostViewPostWeek = viewsRepository.findMostViewedPostsSince(oneWeekAgo);
-
-        return calculateAndSetRank(mostViewPostWeek);
+        List<ViewsDto> MonthMostTop10Viewd = calculateAndSetRank(mostViewPostWeek);
+        return MonthMostTop10Viewd;
     }
 
 
     public List<ViewsDto> MonthMostTop10Viewd() {
         LocalDateTime oneMonthAgo = LocalDateTime.now().minusYears(1);
         List<Post> mostViewedPostsMonthly = viewsRepository.findMostViewedPostsSince(oneMonthAgo);
-
-        return calculateAndSetRank(mostViewedPostsMonthly);
+        List<ViewsDto> MonthMostTop10Viewd = calculateAndSetRank(mostViewedPostsMonthly);
+        return MonthMostTop10Viewd;
     }
 
     private List<ViewsDto> calculateAndSetRank(List<Post> mostViewedPosts) {
