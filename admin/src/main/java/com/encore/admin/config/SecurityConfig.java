@@ -39,7 +39,7 @@ public class SecurityConfig {
 //                .httpBasic().disable()
                 .authorizeRequests()
                 //** 뒤에 모든 경로, * 자식 경로
-                .antMatchers("/*","/admin/account/**")
+                .antMatchers("/*","/admin/account/**","/admin/internal/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
