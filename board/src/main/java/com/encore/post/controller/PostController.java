@@ -50,6 +50,7 @@ public class PostController {
     @GetMapping("/list")
     public DefaultResponse.ListResponse<PostResDto> postList(Pageable pageable) {
         List<PostResDto> postResDtos= postService.findAll(pageable);
+        System.out.println(postResDtos);
         return new DefaultResponse.ListResponse<>(postResDtos);
     }
 
