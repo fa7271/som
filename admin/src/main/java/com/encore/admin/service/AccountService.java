@@ -51,13 +51,6 @@ public class AccountService {
             throw new SomException(ResponseCode.EXISTING_RESOURCE);
         }
 
-        log.debug("sign up {}",signUpRequest.getEmail());
-        if (redisUtil.existData(signUpRequest.getEmail())) {
-            redisUtil.deleteData(signUpRequest.getEmail());
-        }
-
-        sendEmail(signUpRequest.getEmail());
-
         Member member = Member.builder()
                 .role(Role.USER)
                 .email(signUpRequest.getEmail())
@@ -67,7 +60,15 @@ public class AccountService {
                 .active(false)
                 .build();
 
-        repository.save(member);
+        Member newMember = repository.save(member);
+
+        if (redisUtil.existData(newMember.getId().toString())) {
+            redisUtil.deleteData(newMember.getId().toString());
+        }
+
+        sendEmail(signUpRequest.getEmail(), newMember.getId());
+
+
     }
 
 
@@ -87,22 +88,21 @@ public class AccountService {
 
     public Boolean verifyEmailCode(String email, String code) {
         String codeFoundByEmail = redisUtil.getData(email);
-        System.out.println(codeFoundByEmail);
         if (codeFoundByEmail == null) {
             throw new SomException(ResponseCode.CODE_EXPIRED);
         }
         if(codeFoundByEmail.equals(code)){
             Optional<Member> findMember = repository.findByEmail(email);
             if(findMember.isPresent()) {
-                findMember.get().inactive();
+                findMember.get().active();
             }
         }
         return true;
     }
 
-    public void sendEmail(String toEmail) throws MessagingException {
-        if (redisUtil.existData(toEmail)) {
-            redisUtil.deleteData(toEmail);
+    public void sendEmail(String toEmail, Long userId) throws MessagingException {
+        if (redisUtil.existData(userId.toString())) {
+            redisUtil.deleteData(userId.toString());
         }
 
         MimeMessage emailForm = createEmailForm(toEmail);
@@ -117,9 +117,10 @@ public class AccountService {
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
-        message.setSubject("안녕하세요 인증번호입니다.");
+        message.setSubject("The Sound Of Mind 가입 인증");
         message.setFrom(configEmail);
         message.setText("아래 링크를 눌러 인증을 완료하세요.");
+        message.setText("");
         message.setText(LINK);
 
         redisUtil.setDataExpire(email, uuid.toString(), 60 * 30L);
@@ -127,6 +128,59 @@ public class AccountService {
         return message;
     }
 
+    private MimeMessage createEmailFormForPassword(String email,Long userId) throws MessagingException {
+
+        UUID uuid = UUID.randomUUID();
+        String LINK = "http://localhost:8000/admin/account/password/verify-code/"+email+"/"+uuid.toString();
+
+        MimeMessage message = mailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, email);
+        message.setSubject("The Sound Of Mind 패스워드 변경 인증");
+        message.setFrom(configEmail);
+        message.setText("아래 링크를 눌러 인증을 완료하세요.");
+        message.setText(LINK);
+
+        redisUtil.setDataExpire(userId.toString(), uuid.toString(), 60 * 30L);
+
+        return message;
+    }
+
+    public void findPassword(String email) throws MessagingException {
+        Member findMember = repository.findByEmail(email).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
+
+        if (redisUtil.existData(findMember.getEmail())) {
+            redisUtil.deleteData(findMember.getEmail());
+        }
+
+        MimeMessage emailForm = createEmailFormForPassword(email, findMember.getId());
+
+        sendEmail(email, findMember.getId());
 
 
+    }
+
+    public Boolean verifyEmailCodeForPassword(String userId, String code) {
+
+        String codeFoundByUserId = redisUtil.getData(userId);
+        if (codeFoundByUserId == null) {
+            throw new SomException(ResponseCode.CODE_EXPIRED);
+        }
+        if(codeFoundByUserId.equals(code)){
+            Optional<Member> findMember = repository.findById(Long.valueOf(userId));
+            if(findMember.isPresent()) {
+                findMember.get().active();
+            }
+        }
+        return true;
+    }
+
+    public void sendEmailForPassword(String toEmail, Long userId) throws MessagingException {
+        if (redisUtil.existData(userId.toString())) {
+            redisUtil.deleteData(userId.toString());
+        }
+
+        MimeMessage emailForm = createEmailForm(toEmail);
+
+        mailSender.send(emailForm);
+    }
 }
