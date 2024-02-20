@@ -60,7 +60,6 @@ public class PostService{
             throw new IllegalArgumentException("하루 최대 포스팅 횟수를 넘겼습니다.");
         }
 
-
         Post post = Post.CreatePost(postReqDto.getTitle(), postReqDto.getContents(), email);
         postRepository.save(post);
         return post;
@@ -94,6 +93,7 @@ public class PostService{
 
             MemberReqDto memberReqDto = new MemberReqDto();
             memberReqDto.setEmailList(emailList);
+
             //MemberDto memberDto = adminInternalClient.memberList(memberReqDto);
             ResponseEntity<Map<String,Object>> response = adminInternalClient.memberList(memberReqDto);
 
