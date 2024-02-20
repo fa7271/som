@@ -2,9 +2,8 @@ package com.encore.post.service;
 
 
 import com.encore.post.domain.Post;
-import com.encore.post.dto.PostReqDto;
-import com.encore.post.dto.PostResDto;
-import com.encore.post.dto.PostDetailResDto;
+import com.encore.post.dto.*;
+import com.encore.post.feign.admin.AdminInternalClient;
 import com.encore.post.repository.PostRepository;
 import com.encore.views.Views;
 import com.encore.views.ViewsRepository;
@@ -39,7 +38,6 @@ import java.time.LocalDate;
 public class PostService{
     private final PostRepository postRepository;
     private final ViewsRepository viewsRepository;
-<<<<<<< HEAD
     private final AdminInternalClient adminInternalClient;
 
     private final ObjectMapper objectMapper;
@@ -51,13 +49,6 @@ public class PostService{
         this.viewsRepository = viewsRepository;
         this.adminInternalClient = adminInternalClient;
         this.objectMapper = objectMapper;
-=======
-
-    @Autowired
-    public PostService(PostRepository postRepository, ViewsRepository viewsRepository) {
-        this.postRepository = postRepository;
-        this.viewsRepository = viewsRepository;
->>>>>>> 2f045c1db39db253bb5d0707f79371048dd34193
     }
 
     public Post create(PostReqDto postReqDto) {
