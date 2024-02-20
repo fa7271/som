@@ -7,14 +7,10 @@ import com.encore.post.feign.admin.AdminInternalClient;
 import com.encore.post.repository.PostRepository;
 import com.encore.views.Views;
 import com.encore.views.ViewsRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,7 +25,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
 
@@ -39,16 +34,11 @@ public class PostService{
     private final PostRepository postRepository;
     private final ViewsRepository viewsRepository;
     private final AdminInternalClient adminInternalClient;
-
-    private final ObjectMapper objectMapper;
-
-
     @Autowired
-    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient, ObjectMapper objectMapper) {
+    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient) {
         this.postRepository = postRepository;
         this.viewsRepository = viewsRepository;
         this.adminInternalClient = adminInternalClient;
-        this.objectMapper = objectMapper;
     }
 
     public Post create(PostReqDto postReqDto) {
@@ -95,16 +85,9 @@ public class PostService{
 
             MemberReqDto memberReqDto = new MemberReqDto();
             memberReqDto.setEmailList(emailList);
-            //MemberDto memberDto = adminInternalClient.memberList(memberReqDto);
-            ResponseEntity<Map<String,Object>> response = adminInternalClient.memberList(memberReqDto);
-            try {
-                List<MemberDto> list = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("rankingList")), new TypeReference<List<MemberDto>>() {});
-                System.out.println(list.get(0));
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
+            MemberDto memberDto = adminInternalClient.memberList(memberReqDto);
 
-
+            System.out.println("memberDto = " + memberDto.getRankingList());
         }
 
         List<PostResDto> postResDtos = new ArrayList<>();
