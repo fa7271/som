@@ -6,6 +6,7 @@ import com.encore.post.dto.*;
 import com.encore.post.feign.admin.AdminInternalClient;
 import com.encore.post.repository.PostRepository;
 import com.encore.views.Views;
+import com.encore.views.ViewsDto;
 import com.encore.views.ViewsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -86,6 +87,7 @@ public class PostService{
 
         Page<Post> posts = postRepository.findAll(spec, pageable); // select * from post
         List<Post> postList = posts.getContent();
+        List<MemberDto> list = new ArrayList<>();
         if(!postList.isEmpty()) {
             List<String> emailList = postList.stream()
                     .map(Post::getEmail).collect(Collectors.toList());
@@ -94,28 +96,19 @@ public class PostService{
             memberReqDto.setEmailList(emailList);
             //MemberDto memberDto = adminInternalClient.memberList(memberReqDto);
             ResponseEntity<Map<String,Object>> response = adminInternalClient.memberList(memberReqDto);
+
             try {
-                List<MemberDto> list = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("rankingList")), new TypeReference<List<MemberDto>>() {});
-                System.out.println(list.get(0));
+                list = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("rankingList")), new TypeReference<List<MemberDto>>() {});
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-
-
         }
 
         List<PostResDto> postResDtos = new ArrayList<>();
-        postResDtos = postList.stream()
-                .map(p -> PostResDto.builder()
-                        .id(p.getId())
-                        .title(p.getTitle())
-                        .contents(p.getContents())
-                        .member_email(p.getEmail())
-                        .build()).collect(Collectors.toList());
 
-//        Page<PostResDto> postResDtos
-//                = posts.map(p -> new PostResDto(p.getId(), p.getTitle(), p.getEmail()==null? "익명유저" : email));
-        return postResDtos;
+        List<MemberDto> finalList = list;
+        return postList.stream()
+                .map(post -> PostResDto.ToPostRestDto(post, finalList)).collect(Collectors.toList());
     }
 
     public PostDetailResDto findPostDetail(Long id) {
