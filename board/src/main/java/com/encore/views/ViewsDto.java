@@ -1,12 +1,13 @@
 package com.encore.views;
 
+import com.encore.post.domain.Post;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class ViewsDto {
 
     private LocalDateTime createdAt;
@@ -16,12 +17,15 @@ public class ViewsDto {
     private int rank;
 
 
-    @Builder
-    public ViewsDto(LocalDateTime createdAt, Long postId, String title, int views, int rank) {
-        this.createdAt = createdAt;
-        this.postId = postId;
-        this.title = title;
-        this.views = views;
-        this.rank = rank;
+    public static ViewsDto ToViewsDto(Post post, int rank) {
+        ViewsDtoBuilder builder = ViewsDto.builder();
+        builder
+                .postId(post.getId())
+                .title(post.getTitle())
+                .views(post.getViews().size())
+                .createdAt(post.getCreatedAt())
+                .rank(rank)
+                .build();
+        return builder.build();
     }
 }
