@@ -158,6 +158,20 @@
 
 </br>
 
+##  📋ERD 
+
+<div align="center">
+ 
+<img src="https://github.com/fa7271/som/assets/150704738/5722a510-9e79-4e60-ae85-aca6912cfdc0" width="800" height="600"/>
+
+</div>
+
+<br>
+
+---
+
+</br>
+
 ##  📝테스트 및 결과
 
 <details>
