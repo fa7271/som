@@ -146,7 +146,11 @@
 
 ##  📋기술 설계도
 
-<img src="img/ProjectSOM.png" width="800" height="600"/>
+<div align="center">
+
+<img src="https://github.com/fa7271/som/assets/150704738/dec95846-474d-43d9-99e5-15a9ead76fc8)" width="800" height="600"/>
+
+</div>
 
 <br>
 
