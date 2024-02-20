@@ -8,5 +8,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class MemberDto {
-    private List<String> rankingList;
+    private String nickname;
+    private String email;
+    private Long ranking;
 }
