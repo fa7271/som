@@ -146,6 +146,8 @@
 
 ##  📋기술 설계도
 
+<img src="img/ProjectSOM.png" width="800" height="600"/>
+
 <br>
 
 ---
