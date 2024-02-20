@@ -136,6 +136,30 @@
 ||댓글 작성|"게시글에 댓글을 달 수 있는 부분이 있고 댓글을 작성 후 다시 상세정보를 호출해 댓글을 확인할 수 있다"|
 ||댓글 수정|자신이 단 댓글을 수정할 수 있다.|
 ||댓글 삭제|"자신이 단 댓글을 삭제할 수 있다. 어드민의 경우 자신이 작성한 댓글이아니어도 삭제할 수 있다"|
+</details>
+
+<br>
+
+---
+
+</br>
+
+##  📋기술 설계도
+
+<br>
+
+---
+
+</br>
+
+##  📝테스트 및 결과
+
+<details>
+<summary>테스트 및 결과보기(click)</summary>
+</details>
+
+![footer](https://capsule-render.vercel.app/api?type=shark&height=200&text=Thank%20you&section=footer&reversal=true&fontColor=FFFFFF&fontAlign=83&fontAlignY=89&fontSize=38)
+
 
 
    
