@@ -6,6 +6,7 @@ import com.encore.admin.dto.*;
 import com.encore.admin.service.MemberService;
 import com.encore.common.support.DefaultResponse;
 import com.encore.common.support.ResponseCode;
+import io.lettuce.core.ScriptOutputType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Pageable;
@@ -30,9 +31,9 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
-    public DefaultResponse.ListResponse<SignInResponse> getUserList(@RequestBody SearchReq searchReq, Pageable pageable) {
+    public DefaultResponse.ListResponse<SignInResponse> getUserList(@RequestParam(value = "nickname") String nickname, Pageable pageable) {
 
-        return new DefaultResponse.ListResponse<SignInResponse>(memberService.findAll(searchReq,pageable));
+        return new DefaultResponse.ListResponse<SignInResponse>(memberService.findAll(nickname, pageable));
     }
 
 
@@ -46,16 +47,24 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("update/{id}")
     public DefaultResponse<ResponseCode> updateMember(@PathVariable(value = "id") Long id, @RequestBody MemberUpdateRequest memberUpdateRequest) {
-        memberService.update(id,memberUpdateRequest);
+        memberService.update(id, memberUpdateRequest);
         return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS);
 
     }
 
 
-    //@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("delete/{id}")
     public DefaultResponse<ResponseCode> deleteUser(@PathVariable(value = "id") Long id) {
         memberService.delete(id);
+        return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS);
+    }
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("active/{id}")
+    public DefaultResponse<ResponseCode> activeUser(@PathVariable(value = "id") Long id) {
+        System.out.println("########### actite");
+
+        memberService.active(id);
         return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS);
     }
 
@@ -69,7 +78,6 @@ public class AdminController {
             direction = Sort.Direction.DESC) Pageable pageable) {
         return new DefaultResponse.PagedResponse<Member>(memberService.findAllPage(pageable));
     }
-
 
 
     @PatchMapping("/updateUser")
