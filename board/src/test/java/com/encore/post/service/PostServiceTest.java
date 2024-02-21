@@ -1,9 +1,12 @@
 package com.encore.post.service;
 
+import com.encore.post.config.RedisConfig;
 import com.encore.post.domain.Post;
+import com.encore.post.dto.PostDetailResDto;
 import com.encore.post.dto.PostReqDto;
 import com.encore.post.dto.PostResDto;
 import com.encore.post.repository.PostRepository;
+import com.encore.util.RedisUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +21,10 @@ import static org.mockito.BDDMockito.then;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,6 +53,8 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @MockBean
+    private RedisUtil redisUtil;
 
     @Test
     @WithMockUser(username = "test@naver.com", roles = {"USER"})
@@ -144,5 +151,21 @@ class PostServiceTest {
             );
             postService.delete(post.getId());
         });
+    }
+    @Test
+    @DisplayName("RedisPostViewd")
+    @WithMockUser(username = "amdin@test.com", roles = {"USER"})
+    void RedisPostViewd(){
+        Long postId = 17L;
+
+        when(redisUtil.getData("admin@test.com")).thenReturn(null);
+
+        // 메소드 호출
+        PostDetailResDto postDetailResDto = postService.findPostDetail(postId);
+
+        // 결과 확인
+        assertThat(postDetailResDto).isNotNull();
+
+
     }
 }
