@@ -65,11 +65,9 @@ public class MemberService {
 
     }
 
-    public List<SignInResponse> findAll(SearchReq searchReq, Pageable pageable) {
-        System.out.println(searchReq.getNickname());
+    public List<SignInResponse> findAll(String nickname, Pageable pageable) {
 
-        Page<Member> members = repository.findAllByNicknameContainingOrderByCreatedAtDesc(searchReq.getNickname(), pageable);
-        System.out.println(members.getContent().get(0));
+        Page<Member> members = repository.findAllByNicknameContainingOrderByCreatedAtDesc(nickname, pageable);
         return members.stream().map(SignInResponse::of).collect(Collectors.toList());
     }
 
@@ -111,6 +109,13 @@ public class MemberService {
         return MemberResponse.from(findmember);
 
 
+    }
+
+    public void active(Long id) {
+
+        Member member = repository.findById(id).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
+        member.active();
+        System.out.println(member.isActive());
     }
 }
 
