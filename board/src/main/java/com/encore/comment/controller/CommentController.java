@@ -30,13 +30,14 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/comment") // comment create
-    public DefaultResponse<Comment> commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
+    public DefaultResponse<ResponseCode> commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
             commentReqDto.setContents(filteredContents);
         }
-        Comment comment = commentService.create(id, commentReqDto);
-        return new DefaultResponse<Comment>(comment);
+        System.out.println(id);
+        commentService.create(id, commentReqDto);
+        return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS_CREATE_COMMENT);
     }
 
     @GetMapping("/{id}/comment/list")

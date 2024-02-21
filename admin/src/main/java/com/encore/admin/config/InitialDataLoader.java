@@ -32,15 +32,17 @@ public class InitialDataLoader implements CommandLineRunner {
                     .password(passwordEncoder.encode("1234"))
                     .ranking(0L)
                     .role(Role.ADMIN)
+                    .active(true)
                     .build();
             members.add(adminMember);
-            for (int i = 0; i<10; i++) {
+            for (int i = 0; i<100; i++) {
                 Member member = Member.builder()
                         .nickname("test"+i)
                         .email("test"+i+"@test.com")
                         .password(passwordEncoder.encode("1234"))
                         .ranking(0L + i)
                         .role(Role.USER)
+                        .active(true)
                         .build();
                 members.add(member);
             }

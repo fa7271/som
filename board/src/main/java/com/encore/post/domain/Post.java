@@ -79,7 +79,7 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Views> views = new ArrayList<>();
 
-//    factory Method
+    //    factory Method
     public Post(String title, String contents, String email) {
         this.title = title;
         this.contents = contents;
