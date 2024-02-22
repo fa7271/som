@@ -15,7 +15,9 @@ spring:
     hibernate:
       ddl-auto: update #update
     show-sql: true
-
+  batch:
+    jdbc:
+      initialize-schema: ALWAYS
 eureka:
   client:
     service-url:
