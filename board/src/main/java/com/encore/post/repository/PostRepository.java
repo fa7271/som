@@ -19,7 +19,9 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Specification<Post> spec, Pageable pageable);
 
-    Page<Post> findAllByOrderByCreatedAtDesc(Specification<Post> spec, Pageable pageable);
+    //Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
+
+    Page<Post> findAllByTitleContainingAndDelYnIsNotOrderByCreatedAtDesc(String title, String delYn, Pageable pageable);
 
     List<Post> findByEmailAndCreatedAtBetween(String email, LocalDateTime startOfDay, LocalDateTime endOfDay);
 

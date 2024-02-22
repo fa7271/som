@@ -2,6 +2,7 @@ import { createRouter,createWebHistory } from "vue-router";
 import SOMMain from '@/views/SOMMain.vue';
 import LoginComponent from '@/views/LoginComponent.vue';
 import PostTest from '@/views/PostTest.vue';
+import EmailVerify from '@/views/EmailVerify.vue';
 // Routes
 import { memberRoutes } from './memberRouter.js';
 import { postRoutes } from './postRouter.js';
@@ -24,6 +25,11 @@ const routes = [
         path:'/posttest',
         name : 'PostTest',
         component: PostTest,
+    },
+    {
+        path:'/emailverify',
+        name : 'EmailVerify',
+        component: EmailVerify,
     },
     ...memberRoutes,
     ...postRoutes,

@@ -22,6 +22,7 @@ public class SignInResponse {
                 .email(member.getEmail())
                 .role(member.getRole())
                 .active(member.isActive())
+                .ranking(member.getRanking()) // 멤버조회 랭킹 추가
                 .build();
 
         return signInResponse;
