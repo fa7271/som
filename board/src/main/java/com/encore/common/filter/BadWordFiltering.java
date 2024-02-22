@@ -49,7 +49,7 @@ public class BadWordFiltering extends HashSet<String> implements BadWords {
     public String change(String text) {
         for (String badWord : this) {
 //            대소문자를 무시하고 정규 표현식을 만듭니다.
-            Pattern pattern = Pattern.compile("(?i)" + Pattern.quote(badWord));
+            Pattern pattern = Pattern.compile("[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]*" + Pattern.quote(badWord) + "[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]*", Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(text);
 
             while (matcher.find()) {
