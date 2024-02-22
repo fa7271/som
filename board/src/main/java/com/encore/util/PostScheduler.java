@@ -26,12 +26,10 @@ public class PostScheduler {
     }
 
 
-    @Scheduled(cron = "0 0 0 * * *") // 매일 자정
+    @Scheduled(cron = "0 0 0 * * *")
     public void Datainit() {
-        System.out.println("scheduler start");
         Set<String> AllViewEmail = stringRedisTemplate.keys("*@*.*");
         Map<Long, Long> postIdAllUserIds = new HashMap<>();
-
 //        key = email, value = ViewdPostByEmail
         for (String email : AllViewEmail) {
             String[] PostIdViewdByEmail= stringRedisTemplate.opsForValue().get(email).split("_");

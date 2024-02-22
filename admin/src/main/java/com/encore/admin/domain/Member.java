@@ -67,7 +67,4 @@ public class Member {
     public void inactive() {
         this.active = false;
     }
-    public void active() {
-        this.active = true;
-    }
 }
