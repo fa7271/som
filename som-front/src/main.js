@@ -4,6 +4,8 @@ import './index.css';
 import router from '@/router/index.js'
 import '@/assets/css/bootstrap.min.css' // bootstrap import
 import axios from 'axios';
+import '@fortawesome/fontawesome-free/css/all.css'
+
 
 const app = createApp(App);
 

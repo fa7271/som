@@ -1,5 +1,10 @@
 package com.encore.common.filter;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -15,10 +20,6 @@ public class BadWordFiltering extends HashSet<String> implements BadWords {
         addAll(List.of(koreaWord1));
     }
 
-//    public BadWordFiltering(String substituteValue) {
-//        this.substituteValue = substituteValue;
-//    }
-
     public String pre_change(String text) {
         Pattern pattern = Pattern.compile("[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z\\s]");
         Matcher matcher = pattern.matcher(text);
@@ -29,11 +30,26 @@ public class BadWordFiltering extends HashSet<String> implements BadWords {
         }
         return filteredTextBuilder.toString();
     }
+    public String export_html(String html_text) {
+        Document doc = Jsoup.parse(html_text);
+        for (Element element : doc.getAllElements()) {
+            // 구분자 제거
+            String pureBadWord = pre_change(element.ownText());
+            // 태그 내용이 있는 경우에만 처리
+            if (!element.ownText().isEmpty()) {
+
+                String filteredText = change(pureBadWord);
+                element.text(filteredText); // 욕설 필터링된 텍스트로 변경
+            }
+        }
+        return doc.outerHtml();
+    }
+
 
     public String change(String text) {
         for (String badWord : this) {
 //            대소문자를 무시하고 정규 표현식을 만듭니다.
-            Pattern pattern = Pattern.compile("(?i)" + Pattern.quote(badWord));
+            Pattern pattern = Pattern.compile("[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]*" + Pattern.quote(badWord) + "[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]*", Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(text);
 
             while (matcher.find()) {

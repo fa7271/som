@@ -1,8 +1,8 @@
 server:
-  port: 8001
+  port: 8003
 spring:
   application:
-    name: admin
+    name: batch
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://som_db/som?allowPublicKeyRetrieval=true&useSSL=false
@@ -13,21 +13,13 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: update #create
+      ddl-auto: update #update
     show-sql: true
-  mail:
-    host: smtp.naver.com
-    port: 465
-    username: 
-    password: 
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true
-      mail.smtp.ssl.trust: smtp.naver.com
-
-  redis:
-    host: localhost
-    port: 6379
+  batch:
+#    job:
+#      names: ${job.name:NONE}
+    jdbc:
+      initialize-schema: ALWAYS
 
 eureka:
   client:
@@ -36,12 +28,3 @@ eureka:
     enabled: true
   instance:
     instance-id: ${spring.application.name}:${random.value}
-
-jwt:
-  expiration: 30
-  secretKey: mysecret
-
-
-logging:
-  level:
-    root: info

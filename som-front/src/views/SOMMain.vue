@@ -130,6 +130,7 @@
           console.log(response1);
         } catch (error) {
           console.error("데이터 불러오기 오류:", error);
+          console.error("데이터 불러오기 오류:", error);
         }
       }
     }
@@ -137,7 +138,7 @@
   </script>
   <style scoped>
   .container {
-    max-width: 1200px; /* 컨테이너의 최대 너비를 조정합니다. */
+    max-width: 1500px; /* 컨테이너의 최대 너비를 조정합니다. */
     margin-left: auto;
     margin-right: auto;
   }
