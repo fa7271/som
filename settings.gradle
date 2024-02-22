@@ -1,1 +1,9 @@
 rootProject.name = 'som'
+
+include ':admin'
+include ':batch'
+include ':board'
+include ':common'
+include ':chat'
+include ':gateway'
+include ':eureka'
