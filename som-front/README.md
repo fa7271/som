@@ -1,4 +1,4 @@
-# som-front
+# spring-project
 
 ## Project setup
 ```

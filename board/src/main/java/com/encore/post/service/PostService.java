@@ -108,11 +108,8 @@ public class PostService {
                 throw new RuntimeException(e);
             }
         }
-        return posts.map(p -> PostResDto.builder()
-                .id(p.getId())
-                .title(p.getTitle())
-                .contents(p.getContents())
-                .build());
+        List<MemberDto> finalList = list;
+        return posts.map(p -> PostResDto.ToPostRestDto(p, finalList));
 
     }
 
