@@ -154,6 +154,19 @@
 중점기술명세와 구현방식기술
 활동성 랭킹 - SpringBatch 오늘부터 30일 전의 활동 기록으로 5분마다 배치를 돌며 랭킹을 변경함, 
 대용량 데이터의 select 및 update가 동시에 실행되어 동시에 실행되는 다른 프로그램을 방해하지 않기 위해 구현함
+확장성 (Scalability): 코드는 대용량 데이터를 처리하는데 적합한 Spring Batch의 특성을 활용하고 있습니다. Batch 작업은 매일 30일 전의 데이터를 기반으로 랭킹을 업데이트하며, 대용량 데이터에 대한 효율적인 처리가 이루어집니다.
+
+모니터링 및 관리 (Monitoring and Management): Spring Batch는 내부적으로 메타 테이블을 활용하여 배치 작업의 상태와 진행 정보를 추적합니다. 이를 통해 코드에서 작성한 배치 작업에 대한 모니터링 및 관리가 가능합니다.
+
+트랜잭션 관리 (Transaction Management): 코드는 안전한 트랜잭션 처리를 보장하기 위해 Spring Batch의 트랜잭션 관리 기능을 활용하고 있습니다. 배치 작업 내에서 일관성 있는 데이터 처리가 이루어집니다.
+
+재시도 및 복구 (Retry and Recovery): 코드는 예외가 발생한 경우에도 안전하게 처리되도록 try-catch 블록을 활용하고 있습니다. 이는 재시도 및 복구 기능을 적용할 수 있는 출발점이 됩니다.
+
+유연한 구성 (Flexible Configuration): Spring Batch의 구성 요소들을 활용하여 Job, Step, Tasklet 등을 선언하고 구성함으로써 유연하고 강력한 배치 프로세스를 구현하고 있습니다. 코드에서는 JobLauncher, JobBuilderFactory, StepBuilderFactory 등을 사용하여 배치를 선언하고 구성하고 있습니다.
+
+따라서 주어진 코드는 확장성, 모니터링 및 관리, 트랜잭션 관리, 재시도 및 복구, 그리고 유연한 구성과 같은 Spring Batch의 다양한 장점을 활용하고 있습니다.
+
+
 Spring Cloud를 사용한 MSA (gateway, eureka, feign) Spring Batch의 단독 실행을 위해 MSA 구성으로 개발함 
 금칙어 필터 익명게시판의 장점도 있지만 단점도 있기때문에 미리 방지하기 위해 금칙어 필터를 구현함 
 redis 이메일 인증, 조회수 구현(중복 조회 막음) redis를 통해 인증 토큰을 reids에 넣고 expire 시간과 함께 저장해 토큰을 날림. userId를 키값으로 조회한 postId를 value로 저장해 중복 조회 방지와 조회할 때마다 insert 하는 것을 방지함
