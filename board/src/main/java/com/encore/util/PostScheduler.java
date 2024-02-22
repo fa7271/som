@@ -25,7 +25,6 @@ public class PostScheduler {
         this.stringRedisTemplate = stringRedisTemplate;
     }
 
-
     @Scheduled(cron = "0 0 0 * * *")
     public void Datainit() {
         Set<String> AllViewEmail = stringRedisTemplate.keys("*@*.*");
