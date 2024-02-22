@@ -1,4 +1,4 @@
-<template>
+  <template>
   <HeaderComponent/>
   <div>
     <router-view/>

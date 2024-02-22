@@ -12,29 +12,37 @@
                 <input v-model="searchValue" type="text"/>
                 <button type="submit">검색</button>
             </form>
-            <a href="/postcreate"><button class="btn btn-primary" type="submit" value="작성">게시글 작성</button></a>
+            <a href="/postcreate">
+                <button class="btn btn-outline-primary" type="submit" value="작성" style="margin-top: -3px; background-color: transparent; border-color: transparent; color: #007bff;">
+                    <i class="fas fa-pencil-alt" style="margin-right: 5px;"></i>게시글 작성
+                </button>
+            </a>
+            
+            
+                    </div>
+        <div class="table-container shadow-sm">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>게시글 번호</th>
+                        <th>제목</th>
+                        <th>글쓴이(rank)</th>
+                        <th>작성일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="post in postList" :key="post.postId">
+                        <td>{{post.id}}</td>
+                        <td>
+                            <a :href="`/posts/${post.id}/detail`">{{ truncate(post.title) }}</a>
+                        </td>
+                        <td>{{post.nickname + '(' + post.rank + ')'}}</td>
+                        <td>{{post.createdAt}}</td>
+                        <td v-if="isAdmin"><button @click="deletePost(post.id)" class="btn btn-secondary">삭제</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>게시글 번호</th>
-                    <th>제목</th>
-                    <th>글쓴이(rank)</th>
-                    <th>작성일</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="post in postList" :key="post.postId">
-                    <td>{{post.id}}</td>
-                    <td>
-                        <a :href="`/posts/${post.id}/detail`">{{ truncate(post.title) }}</a>
-                    </td>
-                    <td>{{post.nickname + '(' + post.rank + ')'}}</td>
-                    <td>{{post.createdAt}}</td>
-                    <td v-if="isAdmin"><button @click="deletePost(post.id)" class="btn btn-secondary">삭제</button></td>
-                </tr>
-            </tbody>
-        </table>
         <!-- 페이지네이션 컴포넌트 추가 -->
         <PaginationComponent :currentPage="currentPage" :totalPages="totalPageCount" @page-change="changePage" />
     </div>
@@ -44,9 +52,9 @@
 import axios from 'axios';
 import PaginationComponent  from '@/components/PaginationComponent.vue'; // 컴포넌트 이름 변경
 export default {
-  components: {
-    PaginationComponent  // 컴포넌트 이름 변경된 것을 등록합니다.
-  },
+    components: {
+        PaginationComponent  // 컴포넌트 이름 변경된 것을 등록합니다.
+    },
     props: ['isAdmin', 'pageTitle'],
     data() {
         return {
@@ -118,3 +126,9 @@ export default {
     }
 }
 </script>
+
+<style>
+    .table-container {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
