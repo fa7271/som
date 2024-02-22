@@ -9,38 +9,40 @@
             <option value="nickname">닉네임</option>
           </select>
           <input v-model="searchValue" type="text" placeholder="닉네임을 입력하세요"/>
-          <button type="submit">검색</button>
+          <button type="submit" style="background-color: transparent; border: none;">검색</button>
         </form>
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>email</th>
-            <th>nickname</th>
-            <th>role</th>
-            <th>휴면상태</th>
-            <th>랭킹</th>
-            <th>활성화</th>
-            <th>비활성화</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="member in filteredMembers" :key="member.id">
-            <td>{{ member.id }}</td>
-            <!-- <td>{{ member.email }}</td> -->
-            <td>
-              <a :href="`/admin/member/detail/${member.id}`">{{ truncate(member.email) }}</a>
-            </td>
-            <td>{{ member.nickname }}</td>
-            <td>{{ member.role }}</td>
-            <td>{{ member.active }}</td>
-            <td>{{ member.ranking }}</td>
-            <td><button @click="activeMember(member.id)" class="btn btn-secondary">활성화</button></td>
-            <td><button @click="deleteMember(member.id)" class="btn btn-secondary">비활성화</button></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>email</th>
+              <th>nickname</th>
+              <th>role</th>
+              <th>휴면상태</th>
+              <th>랭킹</th>
+              <th>활성화</th>
+              <th>비활성화</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="member in filteredMembers" :key="member.id">
+              <td>{{ member.id }}</td>
+              <!-- <td>{{ member.email }}</td> -->
+              <td>
+                <a :href="`/admin/member/detail/${member.id}`">{{ truncate(member.email) }}</a>
+              </td>
+              <td>{{ member.nickname }}</td>
+              <td>{{ member.role }}</td>
+              <td>{{ member.active }}</td>
+              <td>{{ member.ranking }}</td>
+              <td><button @click="activeMember(member.id)" class="btn btn-outline-dark">활성화</button></td>
+              <td><button @click="deleteMember(member.id)" class="btn btn-outline-dark">비활성화</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <!-- 페이지네이션 컴포넌트 추가 -->
       <PaginationComponent :currentPage="currentPage" :totalPages="totalPageCount" @page-change="changePage" />
     </div>
@@ -125,3 +127,8 @@ export default {
   }
 };
 </script>
+<style>
+  .table-container {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+</style>

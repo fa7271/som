@@ -24,15 +24,19 @@
           <div class="card-body py-8">
             <div class="mb-4">
               <strong>이름:</strong> {{ memberinfo.nickname }}
+              <hr class="my-2 border-gray-300">
             </div>
             <div class="mb-4">
               <strong>이메일:</strong> {{ memberinfo.email }}
+              <hr class="my-2 border-gray-300">
             </div>
             <div class="mb-4">
               <strong>역할:</strong> {{ memberinfo.role }}
+              <hr class="my-2 border-gray-300">
             </div>
             <div class="mb-4">
               <strong>랭킹:</strong> {{ memberinfo.ranking }}
+              <hr class="my-2 border-gray-300">
             </div>
           </div>
         </div>
