@@ -12,6 +12,7 @@
     "vue": "^3.2.13"
   },
   "devDependencies": {
+    "vue/compiler-sfc": "npm:@vue/compiler-sfc@^3",
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~5.0.0",

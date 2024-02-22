@@ -59,7 +59,7 @@ public class AccountController {
     }
 
     @PostMapping("/password")
-    public DefaultResponse<ResponseCode> signup(@RequestParam String email) throws MessagingException {
+    public DefaultResponse<ResponseCode> findPassword(@RequestParam String email) throws MessagingException {
         service.findPassword(email);
         return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS_CREATE_MEMBER);
     }

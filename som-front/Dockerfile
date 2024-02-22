@@ -8,5 +8,7 @@ COPY package.json .
 ADD . .
 #package.json 에 정의한 moduel download
 RUN npm install -g @vue/cli
+RUN npm install vue@3.2.13
+RUN npm install @vue/complier-sfc
 #최종적으로 실행할 command
 CMD ["npm", "run", "serve"]

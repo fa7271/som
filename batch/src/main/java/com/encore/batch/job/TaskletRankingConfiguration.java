@@ -88,7 +88,7 @@ public class TaskletRankingConfiguration {
                             LocalDateTime.now(),
                             member.getEmail());
 
-                    member.updatePoint(postCount*3L + commentCount * 5L);
+                    member.updatePoint(postCount*3L + commentCount * 10L);
                 }
 
                 Collections.sort(members, Comparator.comparing(Member::getPoint).reversed());

@@ -13,7 +13,7 @@ RUN ./gradlew2 bootJar
 FROM openjdk:11-jre-slim
 WORKDIR /app
 # 빌드 단계에서 생성된 실행 가능한 jar 파일을 복사합니다.
-COPY --from=build /app/build/libs/*.jar eureka.jar
+COPY --from=build /eureka/build/libs/*.jar eureka.jar
 # 컨테이너가 시작될 때 애플리케이션을 실행합니다.
 
 
