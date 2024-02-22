@@ -59,7 +59,7 @@ export default {
                 console.log(formData)
                 await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/post/create`, formData, { headers });
                 // 성공적으로 작성된 경우 리다이렉트 또는 다른 처리 수행
-                this.$router.push({ name: 'SOMMain' });
+                this.$router.push({ name: 'PostList' });
             } catch (error) {
                 // 오류 발생 시 처리
                 console.error(error);

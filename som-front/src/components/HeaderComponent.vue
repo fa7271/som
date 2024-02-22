@@ -18,6 +18,9 @@
         <div class="navbar-collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="/posttest">테스트용 페이지</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/postlist">게시글 목록</a>
                 </li>
                 <li class="nav-item" v-if="isLogin">
