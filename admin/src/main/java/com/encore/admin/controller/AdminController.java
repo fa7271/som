@@ -9,6 +9,7 @@ import com.encore.common.support.ResponseCode;
 import io.lettuce.core.ScriptOutputType;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -31,16 +32,16 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
-    public DefaultResponse.ListResponse<SignInResponse> getUserList(@RequestParam(value = "nickname") String nickname, Pageable pageable) {
+    public DefaultResponse.PagedResponse<SignInResponse> getUserList(@RequestParam(value = "nickname") String nickname, Pageable pageable) {
 
-        return new DefaultResponse.ListResponse<SignInResponse>(memberService.findAll(nickname, pageable));
+        return new DefaultResponse.PagedResponse<SignInResponse>(memberService.findAll(nickname, pageable));
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/detail/{id}")
-    public DefaultResponse<SignInResponse> getMemberDetail(@PathVariable(name = "id") Long id) {
-        return new DefaultResponse<SignInResponse>(memberService.findById(id));
+
+    @GetMapping("/mypage")
+    public DefaultResponse<SignInResponse> getMemberDetail() {
+        return new DefaultResponse<SignInResponse>(memberService.findMyInfo());
     }
 
 

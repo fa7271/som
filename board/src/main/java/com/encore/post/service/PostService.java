@@ -68,7 +68,7 @@ public class PostService {
         return post;
     }
 
-    public List<PostResDto> findAll(Pageable pageable) {
+    public Page<PostResDto> findAll(Pageable pageable) {
         Specification<Post> spec = new Specification<Post>() {
             @Override
             public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -108,12 +108,12 @@ public class PostService {
                 throw new RuntimeException(e);
             }
         }
+        return posts.map(p -> PostResDto.builder()
+                .id(p.getId())
+                .title(p.getTitle())
+                .contents(p.getContents())
+                .build());
 
-        List<PostResDto> postResDtos = new ArrayList<>();
-
-        List<MemberDto> finalList = list;
-        return postList.stream()
-                .map(post -> PostResDto.ToPostRestDto(post, finalList)).collect(Collectors.toList());
     }
 
     public PostDetailResDto findPostDetail(Long id) {
