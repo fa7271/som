@@ -28,7 +28,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
     private boolean active;
 
     @Column(nullable = false, length = 50, unique = true)
@@ -39,6 +38,9 @@ public class Member {
 
     @ColumnDefault("0")
     private Long ranking;
+
+    @ColumnDefault("0")
+    private Long point;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -58,11 +60,11 @@ public class Member {
         this.password = password;
     }
 
+    public void active() {
+        this.active = true;
+    }
 
     public void inactive() {
         this.active = false;
-    }
-    public void active() {
-        this.active = true;
     }
 }

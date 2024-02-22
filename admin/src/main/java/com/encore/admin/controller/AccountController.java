@@ -5,6 +5,7 @@ import com.encore.admin.config.JwtTokenProvider;
 import com.encore.admin.domain.Member;
 import com.encore.admin.dto.SignInRequest;
 import com.encore.admin.dto.SignUpRequest;
+import com.encore.admin.dto.VertifyCodeDtoReq;
 import com.encore.admin.service.AccountService;
 import com.encore.common.support.DefaultResponse;
 import com.encore.common.support.ResponseCode;
@@ -50,11 +51,32 @@ public class AccountController {
     }
 
     @GetMapping("/verify-code/{email}/{code}")
-    public DefaultResponse<ResponseCode> sendCode (
+    public DefaultResponse<ResponseCode> sendCodeVerify (
             @PathVariable String email,
             @PathVariable String code
     ) {
         service.verifyEmailCode(email, code);
         return new DefaultResponse<>(ResponseCode.SUCCESS_CREATE_MEMBER);
+    }
+
+    @PostMapping("/findPassword")
+    public DefaultResponse<ResponseCode> findPassword(@RequestParam String email) throws MessagingException {
+        service.findPassword(email);
+        return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS_CREATE_MEMBER);
+    }
+
+    @GetMapping("/password/verify-code/{email}/{code}")
+    public DefaultResponse<ResponseCode> sendCode (
+            @PathVariable String email,
+            @PathVariable String code
+    ) {
+        service.verifyEmailCodeForPassword(email, code);
+        return new DefaultResponse<>(ResponseCode.SUCCESS_CREATE_MEMBER);
+    }
+
+    @PostMapping("/vertifycode")
+    public DefaultResponse<ResponseCode> vertifyCode(@RequestBody VertifyCodeDtoReq vertifyCodeDtoReq) {
+        service.vertifyCode(vertifyCodeDtoReq);
+        return new DefaultResponse<>(ResponseCode.SUCCESS_CHANGE_MEMBER_PASSWORD);
     }
 }

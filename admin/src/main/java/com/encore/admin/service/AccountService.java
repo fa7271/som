@@ -4,6 +4,7 @@ import com.encore.admin.config.RedisUtil;
 import com.encore.admin.domain.Member;
 import com.encore.admin.dto.SignInRequest;
 import com.encore.admin.dto.SignUpRequest;
+import com.encore.admin.dto.VertifyCodeDtoReq;
 import com.encore.admin.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -51,13 +52,6 @@ public class AccountService {
             throw new SomException(ResponseCode.EXISTING_RESOURCE);
         }
 
-        log.debug("sign up {}",signUpRequest.getEmail());
-        if (redisUtil.existData(signUpRequest.getEmail())) {
-            redisUtil.deleteData(signUpRequest.getEmail());
-        }
-
-        sendEmail(signUpRequest.getEmail());
-
         Member member = Member.builder()
                 .role(Role.USER)
                 .email(signUpRequest.getEmail())
@@ -67,7 +61,15 @@ public class AccountService {
                 .active(false)
                 .build();
 
-        repository.save(member);
+        Member newMember = repository.save(member);
+        String redisMemberKey = String.valueOf(newMember.getId());
+        if (redisUtil.existData(redisMemberKey)) {
+            redisUtil.deleteData(redisMemberKey);
+        }
+
+        sendEmail(signUpRequest.getEmail(), redisMemberKey);
+
+
     }
 
 
@@ -86,47 +88,123 @@ public class AccountService {
     }
 
     public Boolean verifyEmailCode(String email, String code) {
-        String codeFoundByEmail = redisUtil.getData(email);
-        System.out.println(codeFoundByEmail);
-        if (codeFoundByEmail == null) {
+
+
+        Member findMember = repository.findByEmail(email).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
+        String codeFoundByid = redisUtil.getData(findMember.getId().toString());
+
+        if (codeFoundByid == null) {
             throw new SomException(ResponseCode.CODE_EXPIRED);
         }
-        if(codeFoundByEmail.equals(code)){
-            Optional<Member> findMember = repository.findByEmail(email);
-            if(findMember.isPresent()) {
-                findMember.get().inactive();
-            }
+        if(codeFoundByid.equals(code)){
+            findMember.active();
         }
         return true;
     }
 
-    public void sendEmail(String toEmail) throws MessagingException {
-        if (redisUtil.existData(toEmail)) {
-            redisUtil.deleteData(toEmail);
-        }
+    public void sendEmail(String toEmail, String redisMemberKey) throws MessagingException {
 
-        MimeMessage emailForm = createEmailForm(toEmail);
+        MimeMessage emailForm = createEmailForm(toEmail, redisMemberKey);
 
         mailSender.send(emailForm);
     }
 
-    private MimeMessage createEmailForm(String email) throws MessagingException {
+    private MimeMessage createEmailForm(String email, String redisMemberKey) throws MessagingException {
 
         UUID uuid = UUID.randomUUID();
         String LINK = "http://localhost:8000/admin/account/verify-code/"+email+"/"+uuid.toString();
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
-        message.setSubject("안녕하세요 인증번호입니다.");
+        message.setSubject("The Sound Of Mind 가입 인증");
         message.setFrom(configEmail);
-        message.setText("아래 링크를 눌러 인증을 완료하세요.");
-        message.setText(LINK);
+        message.setContent(
+                "<h1 style=\"color: #5e9ca0;\">The Sound Of Mind 회원가입 인증</h1><br>"
+                        + "<p>아래 링크를 클릭하면 인증이 완료됩니다.:</p>"
+                        + "<p><strong>" + LINK + "</strong></p>",
+                "text/html; charset=utf-8"
+        );
 
-        redisUtil.setDataExpire(email, uuid.toString(), 60 * 30L);
+        redisUtil.setDataExpire(redisMemberKey, uuid.toString(), 60 * 30L);
 
         return message;
     }
 
+    private MimeMessage createEmailFormForPassword(String email, String redisMemberKey) throws MessagingException {
 
+        UUID uuid = UUID.randomUUID();
+//        String LINK = "http://localhost:8000/admin/account/password/verify-code/"+email+"/"+uuid.toString();
 
+        MimeMessage message = mailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, email);
+        message.setSubject("The Sound Of Mind 패스워드 변경 인증");
+        message.setFrom(configEmail);
+
+        message.setContent(
+                "<h1 style=\"color: #5e9ca0;\">The Sound Of Mind 패스워드 변경 인증</h1><br>"
+                        + "<p>아래 인증번호를 Som 홈페이지 입력란에 입력해주세요:</p>"
+                        + "<p><strong>" + uuid.toString() + "</strong></p>",
+                "text/html; charset=utf-8"
+        );
+
+        redisUtil.setDataExpire(redisMemberKey, uuid.toString(), 60 * 30L);
+
+        return message;
+    }
+
+    public void findPassword(String email) throws MessagingException {
+
+        Member findMember = repository.findByEmail(email).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
+        String redisMemberKey = findMember.getId().toString();
+
+        if (redisUtil.existData(redisMemberKey)) {
+            redisUtil.deleteData(redisMemberKey);
+        }
+
+        MimeMessage emailForm = createEmailFormForPassword(email,redisMemberKey);
+
+        mailSender.send(emailForm);
+    }
+
+    public Boolean verifyEmailCodeForPassword(String userId, String code) {
+
+        String codeFoundByUserId = redisUtil.getData(userId);
+        if (codeFoundByUserId == null) {
+            throw new SomException(ResponseCode.CODE_EXPIRED);
+        }
+        if(codeFoundByUserId.equals(code)){
+            Optional<Member> findMember = repository.findById(Long.valueOf(userId));
+            if(findMember.isPresent()) {
+                findMember.get().active();
+            }
+        }
+        return true;
+    }
+
+    public void sendEmailForPassword(String toEmail, Long userId) throws MessagingException {
+        if (redisUtil.existData(userId.toString())) {
+            redisUtil.deleteData(userId.toString());
+        }
+
+//        MimeMessage emailForm = createEmailForm(toEmail);
+
+//        mailSender.send(emailForm);
+    }
+
+    public void vertifyCode(VertifyCodeDtoReq vertifyCodeDtoReq) {
+//        1. check signup email
+        String email = vertifyCodeDtoReq.getEmail();
+        String password = passwordEncoder.encode(vertifyCodeDtoReq.getPassword());
+        String code = vertifyCodeDtoReq.getCode();
+        Member member = repository.findByEmail(email).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
+
+        System.out.println("code = " + code);
+        System.out.println("redisUtil.getData(member.getId().toString()) = " + redisUtil.getData(member.getId().toString()));
+//        2. check code
+        if (!redisUtil.getData(member.getId().toString()).equals(code)) {
+            throw new SomException(ResponseCode.CODE_NOT_CONFIRMED);
+        }
+
+        member.changePassword(password);
+    }
 }
