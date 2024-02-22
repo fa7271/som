@@ -112,7 +112,7 @@ public class AccountService {
     private MimeMessage createEmailForm(String email, String redisMemberKey) throws MessagingException {
 
         UUID uuid = UUID.randomUUID();
-        String LINK = "http://localhost:8000/admin/account/verify-code/"+email+"/"+uuid.toString();
+        String LINK = "http://localhost:3000/email/verify?email="+email+"&code="+uuid.toString();
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
