@@ -5,8 +5,8 @@ import com.encore.post.domain.Post;
 import com.encore.post.dto.*;
 import com.encore.post.feign.admin.AdminInternalClient;
 import com.encore.post.repository.PostRepository;
+import com.encore.util.RedisUtil;
 import com.encore.views.Views;
-import com.encore.views.ViewsDto;
 import com.encore.views.ViewsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -29,6 +29,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,17 +37,19 @@ import java.time.LocalDate;
 
 @Service
 @Transactional
-public class PostService{
+public class PostService {
     private final PostRepository postRepository;
     private final ViewsRepository viewsRepository;
     private final AdminInternalClient adminInternalClient;
-
+    private final RedisUtil redisUtil;
     private final ObjectMapper objectMapper;
+
     @Autowired
-    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient, ObjectMapper objectMapper) {
+    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient, RedisUtil redisUtil, ObjectMapper objectMapper) {
         this.postRepository = postRepository;
         this.viewsRepository = viewsRepository;
         this.adminInternalClient = adminInternalClient;
+        this.redisUtil = redisUtil;
         this.objectMapper = objectMapper;
     }
 
@@ -65,7 +68,7 @@ public class PostService{
         return post;
     }
 
-    public List<PostResDto> findAll(Pageable pageable) {
+    public Page<PostResDto> findAll(Pageable pageable) {
         Specification<Post> spec = new Specification<Post>() {
             @Override
             public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -87,44 +90,59 @@ public class PostService{
         Page<Post> posts = postRepository.findAll(spec, pageable); // select * from post
         List<Post> postList = posts.getContent();
         List<MemberDto> list = new ArrayList<>();
-        if(!postList.isEmpty()) {
+        if (!postList.isEmpty()) {
             List<String> emailList = postList.stream()
                     .map(Post::getEmail).collect(Collectors.toList());
 
             MemberReqDto memberReqDto = new MemberReqDto();
             memberReqDto.setEmailList(emailList);
 
+
             //MemberDto memberDto = adminInternalClient.memberList(memberReqDto);
             ResponseEntity<Map<String,Object>> response = adminInternalClient.memberList(memberReqDto);
-
+          
             try {
-                list = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("rankingList")), new TypeReference<List<MemberDto>>() {});
+                list = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("rankingList")), new TypeReference<List<MemberDto>>() {
+                });
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
         }
+        return posts.map(p -> PostResDto.builder()
+                .id(p.getId())
+                .title(p.getTitle())
+                .contents(p.getContents())
+                .build());
 
-        List<PostResDto> postResDtos = new ArrayList<>();
-
-        List<MemberDto> finalList = list;
-        return postList.stream()
-                .map(post -> PostResDto.ToPostRestDto(post, finalList)).collect(Collectors.toList());
     }
 
     public PostDetailResDto findPostDetail(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 회원이 없습니다."));
-//        PostDetailResDto postDetailResDto = new PostDetailResDto();
-
+        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 게시글 없습니다."));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
-//        내가 쓴 게시글이 아닐경우
-        if (!post.getEmail().equals(userEmail)){
-            Views view = Views.builder()
-                    .post(post)
-                    .build();
-            viewsRepository.save(view);
-            post.getViews().add(view);
+        String viewCount = redisUtil.getData(userEmail); //17_16_13_ ...
+        if (viewCount == null) {
+            redisUtil.setDataExpire(userEmail, String.valueOf(id) + "_");
+            post.updateView();
+        }else {
+            String[] strArray = viewCount.split("_");
+            List<String> redisList = Arrays.asList(strArray);
+            boolean isView = false;
+
+            if (!redisList.isEmpty()) {
+                for (String redisListId : redisList) {
+                    if (String.valueOf(id).equals(redisListId)) {
+                        isView = true;
+                        break;
+                    }
+                }
+                if (!isView) {
+                    viewCount += id + "_";
+                    redisUtil.setDataExpire(userEmail, viewCount);
+                    post.updateView();
+                }
+            }
         }
         return PostDetailResDto.ToPostDto(post);
     }

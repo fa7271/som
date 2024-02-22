@@ -65,13 +65,14 @@ public class MemberService {
 
     }
 
-    public List<SignInResponse> findAll(String nickname, Pageable pageable) {
+    public Page<SignInResponse> findAll(String nickname, Pageable pageable) {
 
         Page<Member> members = repository.findAllByNicknameContainingOrderByCreatedAtDesc(nickname, pageable);
-        return members.stream().map(SignInResponse::of).collect(Collectors.toList());
+        return members.map(SignInResponse::of);
     }
 
     public SignInResponse findById(Long id) {
+
         Member member = repository.findById(id).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
         return SignInResponse.of(member);
     }
@@ -101,12 +102,12 @@ public class MemberService {
         return members;
     }
 
-    public MemberResponse findMyInfo() {
+    public SignInResponse findMyInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Member findmember = repository.findByEmail(email)
                 .orElseThrow(EntityNotFoundException::new);
-        return MemberResponse.from(findmember);
+        return SignInResponse.of(findmember);
 
 
     }

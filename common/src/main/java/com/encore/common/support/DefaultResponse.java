@@ -22,12 +22,14 @@ public class DefaultResponse<T> {
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class PagedResponse<T> {
 
+        private int totalPage;
         private Long count;
         //@Schema(required = true, example = "[]", description = "데이터")
         private List<T> data;
 
         @Builder
         public PagedResponse(Page<T> page) {
+            this.totalPage = page.getTotalPages();
             this.count = page.getTotalElements();
             this.data = page.getContent();
         }

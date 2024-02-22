@@ -54,6 +54,9 @@ public class Post {
 
     private String email;
 
+    @Builder.Default
+    private int view = 0;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -84,5 +87,8 @@ public class Post {
     }
     public static Post CreatePost(String title, String contents, String email) {
         return new Post(title, contents, email);
+    }
+    public void updateView() {
+        this.view += 1;
     }
 }
