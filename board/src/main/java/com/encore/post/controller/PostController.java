@@ -48,6 +48,7 @@ public class PostController {
     }
 
     @GetMapping("/list")
+
     public DefaultResponse.PagedResponse<PostResDto> postList(Pageable pageable) {
         return new DefaultResponse.PagedResponse<>(postService.findAll(pageable));
     }

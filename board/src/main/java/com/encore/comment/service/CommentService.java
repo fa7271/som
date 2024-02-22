@@ -4,6 +4,8 @@ import com.encore.comment.domain.Comment;
 import com.encore.comment.dto.CommentReqDto;
 import com.encore.comment.dto.CommentResDto;
 import com.encore.comment.repository.CommentRepository;
+import com.encore.common.support.ResponseCode;
+import com.encore.common.support.SomException;
 import com.encore.post.domain.Post;
 import com.encore.post.dto.PostResDto;
 import com.encore.post.repository.PostRepository;
@@ -35,22 +37,15 @@ public class CommentService {
         this.postRepository = postRepository;
     }
 
-    public Comment create(Long id, CommentReqDto commentReqDto) {
+    public void create(Long id, CommentReqDto commentReqDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Post not found"));
+        Post post = postRepository.findById(id).orElseThrow(() -> new SomException(ResponseCode.POST_NOT_FOUND));
 
-        Comment new_comment = Comment.builder()
-                .contents(commentReqDto.getContents())
-                .email(email)
-                .post(post)
-                .createdAt(commentReqDto.getCreatedAt())
-                .build();
-//        commentRepository.save(new_comment);
-//        Comment comment =
-        return commentRepository.save(new_comment);
-//        return comment;
+        Comment comment = Comment.CreateComment(commentReqDto.getContents(), email, post);
+        commentRepository.save(comment);
+
     }
 
     public List<CommentResDto> findAll(Long id) {

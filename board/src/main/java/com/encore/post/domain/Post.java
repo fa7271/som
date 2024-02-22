@@ -54,6 +54,9 @@ public class Post {
 
     private String email;
 
+    @Builder.Default
+    private int view = 0;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -76,7 +79,7 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Views> views = new ArrayList<>();
 
-//    factory Method
+    //    factory Method
     public Post(String title, String contents, String email) {
         this.title = title;
         this.contents = contents;
@@ -84,5 +87,8 @@ public class Post {
     }
     public static Post CreatePost(String title, String contents, String email) {
         return new Post(title, contents, email);
+    }
+    public void updateView() {
+        this.view += 1;
     }
 }

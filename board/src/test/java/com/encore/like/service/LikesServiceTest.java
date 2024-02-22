@@ -40,11 +40,7 @@ class LikesServiceTest {
     @DisplayName("Delete_Like")
     public void DeleteLike() {
         // given
-        Post post = Post.builder()
-                .id(1L) // Set ID for the post
-                .title("test title")
-                .contents("test contents")
-                .build();
+        Post post = Post.CreatePost("test title", "test ontents", "test@naver.com");
 
         Likes existingLike = Likes.builder()
                 .post(post)
@@ -67,11 +63,7 @@ class LikesServiceTest {
     public void AddLike() {
 
         // given
-        Post post = Post.builder()
-                .id(1L) // Set ID for the post
-                .title("test title")
-                .contents("test contents")
-                .build();
+        Post post = Post.CreatePost("test title", "test ontents", "fa7271@naver.com");
         when(postRepository.findById(1L)).thenReturn(java.util.Optional.of(post));
         when(likesRepository.findByPostAndEmail(post, "test@naver.com")).thenReturn(null);
 
