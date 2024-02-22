@@ -104,6 +104,40 @@ services:
       - "8002:8002"
     networks:
       - som_network
+#  batch:
+#    depends_on:
+#      - jdbc
+#    platform: linux/amd64
+#    container_name: batch
+#    build:
+#      context: ./batch
+#      dockerfile: Dockerfile
+#    #image:   # 이미지 이름과 태그를 여기에 명시
+#    restart: always
+#    environment:
+#      - TZ=Asia/Seoul
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 512M
+#    ports:
+#      - "8004:8004"
+#    networks:
+#      - som_network
+  front:
+    container_name: front
+    build:
+      context: ./som-front
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
+    networks:
+      - som_network
   jdbc: 	#service 이름
     image: mysql	#불러올 image
     container_name: som_db 	#container 이름 지정
