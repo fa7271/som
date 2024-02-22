@@ -87,7 +87,7 @@ public class PostService {
             }
         };
 
-        Page<Post> posts = postRepository.findAll(spec, pageable); // select * from post
+        Page<Post> posts = postRepository.findAllOrderByCreatedAtDesc(spec, pageable); // select * from post
         List<Post> postList = posts.getContent();
         List<MemberDto> list = new ArrayList<>();
         if (!postList.isEmpty()) {

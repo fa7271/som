@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class CommentResDto {
     private Long id;
     private String member_email;
-    private String contents;
+    private String comment;
 }

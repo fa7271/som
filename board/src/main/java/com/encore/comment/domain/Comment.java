@@ -20,8 +20,8 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class) //
 public class Comment  {
 
-    public Comment(String contents, String email, Post post) {
-        this.contents = contents;
+    public Comment(String comment, String email, Post post) {
+        this.comment = comment;
         this.email = email;
         this.post = post;
         this.delYn = "N";
@@ -30,13 +30,13 @@ public class Comment  {
     public void deleteComment(){ // item 삭제 시 호출
         this.delYn = "Y";
     }
-    public void update(String contents){
-        this.contents = contents;
+    public void update(String comment){
+        this.comment = comment;
     }
 
 
-    public static Comment CreateComment(String contents, String email, Post post) {
-        return new Comment(contents, email, post);
+    public static Comment CreateComment(String comment, String email, Post post) {
+        return new Comment(comment, email, post);
     }
 
     @Id
@@ -44,7 +44,7 @@ public class Comment  {
     private Long id;
 
     @Column(nullable = false)
-    private String contents; // 욕설 filter 때문에
+    private String comment; // 욕설 filter 때문에
 
     private String email;
 

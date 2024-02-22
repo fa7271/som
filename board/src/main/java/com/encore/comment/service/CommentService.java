@@ -43,7 +43,7 @@ public class CommentService {
 
         Post post = postRepository.findById(id).orElseThrow(() -> new SomException(ResponseCode.POST_NOT_FOUND));
 
-        Comment comment = Comment.CreateComment(commentReqDto.getContents(), email, post);
+        Comment comment = Comment.CreateComment(commentReqDto.getComment(), email, post);
         commentRepository.save(comment);
 
     }
@@ -55,14 +55,14 @@ public class CommentService {
                 .map(comment -> CommentResDto.builder()
                         .id(comment.getId())
                         .member_email(comment.getEmail())
-                        .contents(comment.getContents())
+                        .comment(comment.getComment())
                         .build())
                 .collect(Collectors.toList());
     }
 
     public Comment update(Long commentId, CommentReqDto commentReqDto) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("Comment not found"));
-        comment.update(commentReqDto.getContents());
+        comment.update(commentReqDto.getComment());
         return commentRepository.save(comment);
 
     }
