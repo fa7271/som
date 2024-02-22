@@ -34,7 +34,8 @@
 
     <div v-for="comment in commentList" :key="comment.id" class="comment-box">
         <div class="email-box">
-          <p>{{ comment.member_email }}</p>
+          <p v-if="userRole !== 'ADMIN'">익명</p>
+          <p v-if="userRole === 'ADMIN'">{{ comment.nickname }}</p>
         </div>
         <div class="comment-text-box">
           <p>{{ comment.comment }}</p>
@@ -71,6 +72,10 @@ export default {
     created(){
         this.loadPosts(this.id);
         this.loadComments();
+        if (localStorage.getItem("token")) {
+            this.isLogin = true;
+            this.userRole = localStorage.getItem("role");
+        }
     },
 
     methods: {

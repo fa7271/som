@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.cloud.loadbalancer.config.LoadBalancerCacheAutoConfiguration;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +22,14 @@ public class PostResDto {
     private String nickname;
     private Long rank;
     private String contents;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     public static PostResDto ToPostRestDto(Post post, List<MemberDto> memberDtos) {
         PostResDtoBuilder builder = PostResDto.builder();
         builder.id(post.getId())
                 .title(post.getTitle())
                 .contents(post.getContents())
-                .createdAt(post.getCreatedAt());
+                .createdAt(LocalDate.from(post.getCreatedAt())); // 날짜만 출력
 
         // post에 해당하는 member 정보를 찾기
         Optional<MemberDto> memberDtoOptional = memberDtos.stream()

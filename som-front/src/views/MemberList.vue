@@ -75,7 +75,7 @@ export default {
       return value.substr(0, length) + '...';
     },
     async searchPosts() {
-      this.currentPage = 1; // 검색을 하면 페이지를 다시 1페이지로 설정
+      this.currentPage = 0; // 검색을 하면 페이지를 다시 1페이지로 설정
       this.loadPosts();
     },
     async deleteMember(memberId) {
@@ -108,6 +108,7 @@ export default {
         this.memberList = response.data.data;
         this.totalPageCount = response.data.totalPage; // 전체 페이지 수 업데이트
         console.log(response.data.count)
+        console.log(this.memberList)
       } catch (error) {
         console.error("데이터 불러오기 오류:", error);
       }

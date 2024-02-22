@@ -11,6 +11,7 @@ import com.encore.views.ViewsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,7 @@ import java.time.LocalDate;
 
 @Service
 @Transactional
+@Slf4j
 public class PostService {
     private final PostRepository postRepository;
     private final ViewsRepository viewsRepository;
@@ -68,26 +70,9 @@ public class PostService {
         return post;
     }
 
-    public Page<PostResDto> findAll(Pageable pageable) {
-        Specification<Post> spec = new Specification<Post>() {
-            @Override
-            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates = new ArrayList<>(); //쿼리를 생성하기 위해서 predicates라는 리스트 생성
-                //                delYn 기본 N으로 설정
-                predicates.add(criteriaBuilder.equal(root.get("delYn"), "N"));
+    public Page<PostResDto> findAll(String title,Pageable pageable) {
 
-                //                리스트였던 predicates를 배열로 변환
-                Predicate[] predicateArr = new Predicate[predicates.size()];
-                for (int i = 0; i < predicates.size(); i++) {
-                    predicateArr[i] = predicates.get(i);
-                }
-
-                Predicate predicate = criteriaBuilder.and(predicateArr);
-                return predicate;
-            }
-        };
-
-        Page<Post> posts = postRepository.findAllOrderByCreatedAtDesc(spec, pageable); // select * from post
+        Page<Post> posts = postRepository.findAllByTitleContainingAndDelYnIsNotOrderByCreatedAtDesc(title,"Y",pageable); // select * from post
         List<Post> postList = posts.getContent();
         List<MemberDto> list = new ArrayList<>();
         if (!postList.isEmpty()) {

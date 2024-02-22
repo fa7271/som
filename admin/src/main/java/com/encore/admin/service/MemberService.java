@@ -68,6 +68,7 @@ public class MemberService {
     public Page<SignInResponse> findAll(String nickname, Pageable pageable) {
 
         Page<Member> members = repository.findAllByNicknameContainingOrderByCreatedAtDesc(nickname, pageable);
+        log.info("members.getContent().get(0).getRanking() {}",members.getContent().get(0).getRanking());
         return members.map(SignInResponse::of);
     }
 

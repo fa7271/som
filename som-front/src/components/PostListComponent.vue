@@ -4,10 +4,7 @@
         <div class="d-flex justify-content-between" style="margin-top:20px;">
             <form @submit.prevent="searchPosts" style="display: flex; align-items: center;">
                 <select v-model="searchType" style="width: auto; margin-right: 5px;">
-                    <option value="optional">선택</option>
-                    <option value="postid">게시글 번호</option>
                     <option value="title">제목</option>
-                    <option value="member">글쓴이</option>
                 </select>
                 <input v-model="searchValue" type="text"/>
                 <button type="submit">검색</button>
@@ -23,17 +20,18 @@
                     <th>작성일</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr v-for="post in postList" :key="post.postId">
-                    <td>{{post.id}}</td>
-                    <td>
-                        <a :href="`/posts/${post.id}/detail`">{{ truncate(post.title) }}</a>
-                    </td>
-                    <td>{{post.nickname + '(' + post.rank + ')'}}</td>
-                    <td>{{post.createdAt}}</td>
-                    <td v-if="isAdmin"><button @click="deletePost(post.id)" class="btn btn-secondary">삭제</button></td>
-                </tr>
-            </tbody>
+                <tbody>
+                    <tr v-for="post in filteredPosts" :key="post.postId" @click="goToDetail(post.id)">
+                        <td>{{post.id}}</td>
+                        <td>{{post.title}}</td>
+                        <!-- <td>
+                            <a :href="`/posts/${post.id}/detail`">{{ truncate(post.title) }}</a>
+                        </td> -->
+                        <td>{{post.nickname + '(' + post.rank + ')'}}</td>
+                        <td>{{post.createdAt}}</td>
+                        <td v-if="isAdmin"><button @click="deletePost(post.id)" class="btn btn-secondary">삭제</button></td>
+                    </tr>
+                </tbody>
         </table>
         <!-- 페이지네이션 컴포넌트 추가 -->
         <PaginationComponent :currentPage="currentPage" :totalPages="totalPageCount" @page-change="changePage" />
@@ -53,7 +51,7 @@ export default {
             postList: [],
             pageSize: 10, //페이지 당 목록 갯수
             currentPage: 0, //화면 페이지
-            searchType: 'optional', // 기본값 설정
+            searchType: 'title', // 기본값 설정
             searchValue: '',
             isLastPage: false,
             isLoading: false,
@@ -65,6 +63,12 @@ export default {
     },
 
     methods: {
+        goToDetail(postId) {
+        // postId를 사용하여 해당 게시물의 상세 페이지 경로를 생성
+        const detailPath = `/posts/${postId}/detail`;
+        // 생성된 경로로 페이지 이동
+        this.$router.push(detailPath);
+        },
         truncate(value, length = 10) {
             if (!value) return '';
             if (value.length <= length) return value;
@@ -73,7 +77,7 @@ export default {
 
         searchPosts(){
             this.postList = [];
-            this.currentPage = 1; // 검색을 하면 페이지를 다시 1페이지로 설정
+            this.currentPage = 0; // 검색을 하면 페이지를 다시 1페이지로 설정
             this.loadPosts();
         },
 
@@ -93,6 +97,7 @@ export default {
             const params = {
                 page: this.currentPage,
                 size: this.pageSize,
+                title: this.searchValue
                 // [this.searchType]: this.searchValue
             }
             if(this.searchType === "postid"){
@@ -110,11 +115,23 @@ export default {
             }catch(error){
                 console.error("데이터 불러오기 오류:", error); // 에러 콘솔에 표시
             }
+            this.isLoading = false;
         },
         changePage(pageNum) {
         this.currentPage = pageNum;
         this.loadPosts();
         }
+    },
+    computed: {
+    filteredPosts() {
+      return this.postList.filter(post => post.title.includes(this.searchValue));
     }
+  }
 }
 </script>
+
+<!-- <style scoped>
+tr:hover {
+  cursor: pointer;
+}
+</style> -->
