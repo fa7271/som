@@ -1,6 +1,8 @@
 <template>
     <div class="container">
-        <div class="page-header text-center" style="margin-top: 20px"><h1>{{pageTitle}}</h1></div>
+        <div class="page-header text-center " style="margin-top: 20px">
+            <span class="text-3xl font-bold mb-1">{{pageTitle}}</span>
+        </div>
         <div class="d-flex justify-content-between" style="margin-top:20px;">
             <form @submit.prevent="searchPosts" style="display: flex; align-items: center;">
                 <select v-model="searchType" style="width: auto; margin-right: 5px;">
@@ -11,7 +13,7 @@
             </form>
             <a href="/postcreate">
                 <button class="btn btn-outline-primary" type="submit" value="작성" style="margin-top: -3px; background-color: transparent; border-color: transparent; color: #007bff;">
-                    <i class="fas fa-pencil-alt" style="margin-right: 5px;"></i>게시글 작성
+                    <i class="fas fa-pencil-alt" style="margin-right: 5px;"></i><span class="text-3xs font-bold mb-1">게시글 작성</span>
                 </button>
             </a>
             
@@ -25,6 +27,7 @@
                     <th>제목</th>
                     <th>글쓴이(rank)</th>
                     <th>작성일</th>
+                    <th>조회수</th>
                 </tr>
             </thead>
                 <tbody>
@@ -36,6 +39,7 @@
                         </td> -->
                         <td>{{post.nickname + '(' + post.rank + ')'}}</td>
                         <td>{{post.createdAt}}</td>
+                        <td>{{post.view}}</td>
                         <td v-if="isAdmin"><button @click="deletePost(post.id)" class="btn btn-secondary">삭제</button></td>
                     </tr>
                 </tbody>

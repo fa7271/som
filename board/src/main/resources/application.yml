@@ -19,7 +19,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
   redis:
-    host: localhost
+    host: 192.168.0.216
     port: 6379
 eureka:
   client:

@@ -40,7 +40,7 @@ public class InitialDataLoader implements CommandLineRunner {
                         .nickname("test"+i)
                         .email("test"+i+"@test.com")
                         .password(passwordEncoder.encode("1234"))
-                        .ranking(0L + i)
+                        .ranking(0L)
                         .role(Role.USER)
                         .active(true)
                         .build();
