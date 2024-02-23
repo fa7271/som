@@ -149,7 +149,7 @@
 
 <div align="center">
 
-<img src="https://github.com/fa7271/som/assets/150704738/dec95846-474d-43d9-99e5-15a9ead76fc8)" width="800" height="600"/>
+<img src="https://github.com/fa7271/som/assets/150704738/7ac41841-1dc2-4717-bdd7-5461c26e08e8" width="800" height="600"/>
 
 </div>
 
