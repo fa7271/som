@@ -14,8 +14,8 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label for="verificationCode" class="form-label">인증번호</label>
-                  <input type="text" class="form-control" id="verificationCode" v-model="verificationCode" required>
+                  <label for="code" class="form-label">인증번호</label>
+                  <input type="text" class="form-control" id="code" v-model="code" required>
                 </div>
                 <div class="mb-3">
                   <label for="password" class="form-label">새 비밀번호</label>
@@ -36,7 +36,7 @@ export default {
     return {
       email: '',
       password: '',
-      verificationCode: ''
+      code: ''
     };
   },
   methods: {
@@ -44,14 +44,14 @@ export default {
         try {
         const requestData = {
           email: this.email,
-          verificationCode: this.verificationCode,
+          code: this.code,
           password: this.password
         };
 
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        await axios.get(`${process.env.VUE_APP_API_BASE_URL}/admin/account/password/verify-code/{email}/{code}`, requestData, { headers });
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/admin/account/vertifycode`, requestData, { headers });
 
         // 성공적으로 작성된 경우 리다이렉트 또는 다른 처리 수행
         // this.$router.push({ name: 'LoginComponent' });
@@ -64,7 +64,7 @@ export default {
       // 여기에 비밀번호 재설정 양식 제출에 대한 로직을 추가하세요.
       console.log('비밀번호 재설정 양식이 제출되었습니다.');
       console.log('Email:', this.email);
-      console.log('인증번호:', this.verificationCode);
+      console.log('인증번호:', this.code);
       console.log('새 비밀번호:', this.password);
     },
     async sendVerificationCode() {
