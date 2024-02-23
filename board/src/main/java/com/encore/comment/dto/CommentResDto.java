@@ -22,15 +22,15 @@ public class CommentResDto {
     private String nickname;
     private Long rank;
 
-    public static CommentResDto toCommentRestDto(Comment commnet, List<MemberDto> memberDtos) {
+    public static CommentResDto toCommentRestDto(Comment Comment, List<MemberDto> memberDtos) {
         CommentResDtoBuilder builder = CommentResDto.builder();
-        builder.id(commnet.getId())
-                .comment(commnet.getComment())
-                .nickname(commnet.getComment());
+        builder.id(Comment.getId())
+                .comment(Comment.getComment())
+                .nickname(Comment.getComment());
 
         // comment에 해당하는 member 정보를 찾기
         Optional<MemberDto> memberDtoOptional = memberDtos.stream()
-                .filter(memberDto -> memberDto.getEmail().equals(commnet.getEmail()))
+                .filter(memberDto -> memberDto.getEmail().equals(Comment.getEmail()))
                 .findFirst();
 
         // member 정보가 존재한다면 nickname과 rank를 설정

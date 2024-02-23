@@ -59,8 +59,8 @@ public class AccountController {
         return new DefaultResponse<>(ResponseCode.SUCCESS_CREATE_MEMBER);
     }
 
-    @PostMapping("/findPassword")
-    public DefaultResponse<ResponseCode> findPassword(@RequestParam String email) throws MessagingException {
+    @GetMapping("/findPassword/{email}")
+    public DefaultResponse<ResponseCode> findPassword(@PathVariable String email) throws MessagingException {
         service.findPassword(email);
         return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS_CREATE_MEMBER);
     }
@@ -71,7 +71,7 @@ public class AccountController {
             @PathVariable String code
     ) {
         service.verifyEmailCodeForPassword(email, code);
-        return new DefaultResponse<>(ResponseCode.SUCCESS_CREATE_MEMBER);
+        return new DefaultResponse<>(ResponseCode.SUCCESS);
     }
 
     @PostMapping("/vertifycode")

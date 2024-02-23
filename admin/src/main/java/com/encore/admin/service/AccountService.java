@@ -58,6 +58,7 @@ public class AccountService {
                 .nickname(signUpRequest.getNickname())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .ranking(0L)
+                .point(0L)
                 .active(false)
                 .build();
 
@@ -166,17 +167,16 @@ public class AccountService {
         mailSender.send(emailForm);
     }
 
-    public Boolean verifyEmailCodeForPassword(String userId, String code) {
+    public Boolean verifyEmailCodeForPassword(String email, String code) {
 
-        String codeFoundByUserId = redisUtil.getData(userId);
+        Member findMember = repository.findByEmail(email).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
+
+        String codeFoundByUserId = redisUtil.getData(findMember.getId().toString());
         if (codeFoundByUserId == null) {
             throw new SomException(ResponseCode.CODE_EXPIRED);
         }
-        if(codeFoundByUserId.equals(code)){
-            Optional<Member> findMember = repository.findById(Long.valueOf(userId));
-            if(findMember.isPresent()) {
-                findMember.get().active();
-            }
+        if(!codeFoundByUserId.equals(code)){
+            throw new SomException(ResponseCode.CODE_NOT_CONFIRMED);
         }
         return true;
     }
