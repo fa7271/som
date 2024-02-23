@@ -4,7 +4,7 @@
         <form @submit.prevent="postCreate">
             <div class="form-group">
                 <label>게시글 제목:</label>
-                <input type="text" v-model="title" class="form-control">
+                <input type="text" v-model="title" class="form-control" placeholder="제목을 입력하세요" style="height: 60px;">
             </div>
             <div class="form-group">
                 <label>게시글 내용:</label>
@@ -29,7 +29,7 @@ export default {
     data(){
         return{
             title:"",
-            contents:'<h3>내용을 입력하세요</h3>',
+            contents:"",
             editor: ClassicEditor,
             editorConfig: {
                     toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
