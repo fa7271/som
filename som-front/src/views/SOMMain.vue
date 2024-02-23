@@ -17,7 +17,7 @@
               <tr v-for="post in postList3" :key="post.postId" class="border-b border-gray-200 last:border-b-0">
                 <td class="py-2">{{ post.rank }}</td>
                 <td class="py-2">
-                  <a :href="`/board/${post.id}/detail`" class="text-blue-500">{{ truncate(post.title) }}</a>
+                  <a :href="`/posts/${post.postId}/detail`" class="text-blue-500">{{ truncate(post.title) }}</a>
                 </td>
               </tr>
             </tbody>
@@ -41,7 +41,7 @@
               <tr v-for="post in postList2" :key="post.postId" class="border-b border-gray-200 last:border-b-0">
                 <td class="py-2">{{ post.rank }}</td>
                 <td class="py-2">
-                  <a :href="`/board/${post.id}/detail`" class="text-blue-500">{{ truncate(post.title) }}</a>
+                  <a :href="`/posts/${post.postId}/detail`" class="text-blue-500">{{ truncate(post.title) }}</a>
                 </td>
               </tr>
             </tbody>
@@ -65,7 +65,7 @@
               <tr v-for="post in postList" :key="post.postId" class="border-b border-gray-200 last:border-b-0">
                 <td class="py-2">{{ post.rank }}</td>
                 <td class="py-2">
-                  <a :href="`/board/${post.id}/detail`" class="text-blue-500">{{ truncate(post.title) }}</a>
+                  <a :href="`/posts/${post.postId}/detail`" class="text-blue-500">{{ truncate(post.title) }}</a>
                 </td>
               </tr>
             </tbody>
@@ -82,11 +82,13 @@
             <thead>
               <tr>
                 <th class="border-b border-gray-300 py-2">순위</th>
+                <th class="border-b border-gray-300 py-2">유저</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="post in postList" :key="post.postId" class="border-b border-gray-200 last:border-b-0">
-                <td class="py-2">{{ post.rank }}</td>
+              <tr v-for="post in postList4" :key="post.email" class="border-b border-gray-200 last:border-b-0">
+                <td class="py-2">{{ post.ranking }}</td>
+                <td class="py-2">{{ post.nickname }}</td>
               </tr>
             </tbody>
           </table>
@@ -102,7 +104,8 @@
         posts: [],
         postList: [],
         postList2: [],
-        postList3: []
+        postList3: [],
+        postList4: []
       }
     },
     created() {
@@ -118,16 +121,18 @@
         try {
           const token = localStorage.getItem('token');
           const headers = token ? { Authorization: `Bearer ${token}` } : {};
-          const [response1, response2, response3] = await Promise.all([
+          const [response1, response2, response3,response4] = await Promise.all([
             axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/today`, { headers }),
             axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/week`, { headers }),
-            axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/month`, { headers })
+            axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/month`, { headers }),
+            axios.get(`${process.env.VUE_APP_API_BASE_URL}/admin/member/ranking/top10`, { headers })
           ]);
           this.postList = response1.data.data;
           this.postList2 = response2.data.data;
           this.postList3 = response3.data.data;
-          console.log(this.postList);
-          console.log(response1);
+          this.postList4 = response4.data.data.rankingList;
+          console.log(this.postList4);
+          console.log(response4);
         } catch (error) {
           console.error("데이터 불러오기 오류:", error);
           console.error("데이터 불러오기 오류:", error);

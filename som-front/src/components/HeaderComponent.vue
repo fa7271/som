@@ -4,37 +4,37 @@
       <div class="navbar-collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto" v-if="userRole === 'ADMIN'">
           <li class="nav-item">
-            <a class="nav-link" href="/members">회원관리</a>
+            <a class="nav-link text-3xs font-bold mb-1" href="/members">회원관리</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/posts/manage">게시글 관리</a>
+            <a class="nav-link text-3xs font-bold mb-1" href="/posts/manage">게시글 관리</a>
           </li>
         </ul>
       </div>
       <div class="mx-auto order-0">
-        <a class="mx-auto" href="/">
-          <img src="@/assets/som.png"/>
+        <a href="/">
+          <img style="width:300px" src="@/assets/som.png"/>
         </a>
       </div>
       <div class="navbar-collapse w-100 order-3 dual-collapse2">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="/posttest">테스트용 페이지</a>
-          </li>
+          </li> -->
           <li class="nav-item">
-            <a class="nav-link" href="/postlist">게시글 목록</a>
+            <a class="nav-link text-3xs font-bold mb-1" href="/postlist">게시글 목록</a>
           </li>
           <li class="nav-item" v-if="isLogin">
-            <a class="nav-link" href="/mypage">MyPage</a>
+            <a class="nav-link text-3xs font-bold mb-1" href="/mypage">MyPage</a>
           </li>
           <li class="nav-item" v-if="!isLogin">
-            <a class="nav-link" href="/member/create">회원가입</a>
+            <a class="nav-link text-3xs font-bold mb-1" href="/member/create">회원가입</a>
           </li>
           <li class="nav-item" v-if="!isLogin">
-            <a class="nav-link" href="/login">로그인</a>
+            <a class="nav-link text-3xs font-bold mb-1" href="/login">로그인</a>
           </li>
           <li class="nav-item" v-if="isLogin">
-            <a class="nav-link" href="/login" @click="doLogout">로그아웃</a>
+            <a class="nav-link text-3xs font-bold mb-1" href="/login" @click="doLogout">로그아웃</a>
           </li>
         </ul>
       </div>

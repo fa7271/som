@@ -23,7 +23,7 @@
             <th>휴면상태</th>
             <th>랭킹</th>
             <th>활성화</th>
-            <!-- <th>비활성화</th> -->
+            <th>비활성화</th>
           </tr>
         </thead>
         <tbody>
@@ -35,15 +35,15 @@
             </td>
             <td>{{ member.nickname }}</td>
             <td>{{ member.role }}</td>
-            <td>{{ member.active }}</td>
+            <td>{{ member.active===true?"활성화":"비활성화" }}</td>
             <td>{{ member.ranking }}</td>
-            <div>
+            <!-- <div>
               <toggle-component v-if="member.active == 1" :isToggled="true" @click="activeMember(member.id)"></toggle-component>
-              <!-- <toggle-component v-else :isToggled="true" @click="deleteMember(member.id)"></toggle-component> -->
-            </div>
+              <toggle-component v-else :isToggled="true" @click="deleteMember(member.id)"></toggle-component> 
+            </div> -->
             
-            <!-- <td><button @click="activeMember(member.id)" class="btn btn-outline-dark">활성화</button></td>
-            <td><button @click="deleteMember(member.id)" class="btn btn-outline-dark">비활성화</button></td> -->
+            <td><button @click="activeMember(member.id)" class="btn btn-outline-dark">활성화</button></td>
+            <td><button @click="deleteMember(member.id)" class="btn btn-outline-dark">비활성화</button></td>
           </tr>
         </tbody>
       </table>
@@ -56,12 +56,12 @@
 <script>
 import axios from 'axios';
 import PaginationComponent from '@/components/PaginationComponent.vue';
-import ToggleComponent from '@/components/ToggleComponent.vue'; // 토글 컴포넌트 추가
+// import ToggleComponent from '@/components/ToggleComponent.vue'; // 토글 컴포넌트 추가
 
 export default {
   components: {
     PaginationComponent,
-    ToggleComponent // 토글 컴포넌트 등록
+    // ToggleComponent // 토글 컴포넌트 등록
   },
   props: ['isAdmin', 'pageTitle', 'member'],
   data() {

@@ -63,7 +63,7 @@ export default {
             } catch (error) {
                 // 오류 발생 시 처리
                 console.error(error);
-                alert("입력값 확인 필요");
+                alert("게시글을 이미 5개 등록하셨습니다.");
             }
         }
     }

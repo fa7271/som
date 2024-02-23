@@ -1,10 +1,10 @@
 <template>
     <div class="container">
       <div class="page-header text-center" style="margin-top: 20px">
-        <h1>게시글</h1>
+        <h3>게시글</h3>
       </div>
       <!-- 게시글 제목 -->
-      <div class="post-title-container d-flex justify-content-between align-items-center">
+      <div class="post-title-container justify-content-between align-items-center">
         <div v-if="!isEditing">
           <label>게시글 제목:</label>
           <div class="post-title" v-html="title"></div>
@@ -13,9 +13,9 @@
           <label>게시글 제목:</label>
           <input type="text" class="form-control" v-model="editedTitle">
         </div>
-        <div>
+        <!-- <div>
           <button type="button" class="btn btn-outline-secondary" @click="toggleEditMode">수정</button>
-        </div>
+        </div> -->
       </div>
       <!-- 게시글 내용 -->
       <div class="post-content-container">
