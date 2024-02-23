@@ -20,10 +20,10 @@
 
 [**이혜선** 🐴](https://github.com/hyesunlee30)
 <br>
-[**신보석** 🐭](https://github.com/fa7271)
-<br>
 [**이창선** 🐷](https://github.com/keepself)
  <br>
+[**신보석** 🐭](https://github.com/fa7271)
+<br>
 [**장준혁** 🐰](https://github.com/GreatJang)
 
 
