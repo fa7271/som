@@ -60,6 +60,12 @@
 
 </div>
 
+## 프로젝트 관리
+
+![image](https://github.com/fa7271/som/assets/48422615/67dfd253-9f41-4da9-8950-bb7ff46f00d4)
+
+
+
 ##  📋ERD 
 
 <div align="center">
