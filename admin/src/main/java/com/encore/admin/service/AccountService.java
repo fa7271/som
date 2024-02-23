@@ -58,6 +58,7 @@ public class AccountService {
                 .nickname(signUpRequest.getNickname())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .ranking(0L)
+                .point(0L)
                 .active(false)
                 .build();
 
