@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,8 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -52,20 +58,22 @@ public class MemberService {
         repository.save(member);
     }
 
-    public void update(Long id ,MemberUpdateRequest memberUpdateRequest) {
+    public void update(Long id, MemberUpdateRequest memberUpdateRequest) {
         Member member = repository.findById(id).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
-        member.updateMember(memberUpdateRequest.getNickname(),passwordEncoder.encode(memberUpdateRequest.getPassword()));
+        member.updateMember(memberUpdateRequest.getNickname(), passwordEncoder.encode(memberUpdateRequest.getPassword()));
         repository.save(member);
 
     }
 
-    public List<SignInResponse> findAll(Pageable pageable) {
-        Page<Member> members = repository.findAll(pageable);
+    public Page<SignInResponse> findAll(String nickname, Pageable pageable) {
 
-        return members.stream().map(SignInResponse::of).collect(Collectors.toList());
+        Page<Member> members = repository.findAllByNicknameContainingOrderByCreatedAtDesc(nickname, pageable);
+        log.info("members.getContent().get(0).getRanking() {}",members.getContent().get(0).getRanking());
+        return members.map(SignInResponse::of);
     }
 
     public SignInResponse findById(Long id) {
+
         Member member = repository.findById(id).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
         return SignInResponse.of(member);
     }
@@ -95,14 +103,21 @@ public class MemberService {
         return members;
     }
 
-    public MemberResponse findMyInfo() {
+    public SignInResponse findMyInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Member findmember = repository.findByEmail(email)
                 .orElseThrow(EntityNotFoundException::new);
-        return MemberResponse.from(findmember);
+        return SignInResponse.of(findmember);
 
 
+    }
+
+    public void active(Long id) {
+
+        Member member = repository.findById(id).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
+        member.active();
+        System.out.println(member.isActive());
     }
 }
 

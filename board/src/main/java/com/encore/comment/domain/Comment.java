@@ -5,6 +5,7 @@ import com.encore.post.domain.Post;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,13 +17,26 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class) //
 public class Comment  {
+
+    public Comment(String comment, String email, Post post) {
+        this.comment = comment;
+        this.email = email;
+        this.post = post;
+        this.delYn = "N";
+    }
 
     public void deleteComment(){ // item 삭제 시 호출
         this.delYn = "Y";
     }
-    public void update(String contents){
-        this.contents = contents;
+    public void update(String comment){
+        this.comment = comment;
+    }
+
+
+    public static Comment CreateComment(String comment, String email, Post post) {
+        return new Comment(comment, email, post);
     }
 
     @Id
@@ -30,7 +44,7 @@ public class Comment  {
     private Long id;
 
     @Column(nullable = false)
-    private String contents; // 욕설 filter 때문에
+    private String comment; // 욕설 filter 때문에
 
     private String email;
 

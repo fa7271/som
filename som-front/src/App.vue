@@ -1,26 +1,24 @@
-<template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <template>
+  <HeaderComponent/>
+  <div>
+    <router-view/>
+  </div>
+  <FooterComponent/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+// 상대경로
+// import HomeComponent from "./components/HomeComponent.vue";
+// 절대경로 : @는 jsconfig의 경로 키워드로 선언
+import HeaderComponent from "@/components/HeaderComponent.vue";
+import FooterComponent from "@/components/FooterComponent.vue";
+// Vue.createApp( { /* options */ } ).use( CKEditor ).mount( /* DOM element */ );
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+    // 사용할 하위 컴포넌트 목록 나열
+    components:{
+      HeaderComponent,
+      FooterComponent,
+    }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

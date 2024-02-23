@@ -30,13 +30,14 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/comment") // comment create
-    public DefaultResponse<Comment> commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
-        String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
-        if (filteredContents != null) {
-            commentReqDto.setContents(filteredContents);
+    public DefaultResponse<ResponseCode> commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
+        String filteredComment = (String) httpServletRequest.getAttribute("filteredComments"); // 욕설 필터링
+        if (filteredComment != null) {
+            commentReqDto.setComment(filteredComment);
         }
-        Comment comment = commentService.create(id, commentReqDto);
-        return new DefaultResponse<Comment>(comment);
+        System.out.println(id);
+        commentService.create(id, commentReqDto);
+        return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS_CREATE_COMMENT);
     }
 
     @GetMapping("/{id}/comment/list")
@@ -48,7 +49,7 @@ public class CommentController {
     @GetMapping("/{id}/comment/{commentId}/update")
     public DefaultResponse<String> commentUpdate(@PathVariable Long commentId, CommentReqDto commentReqDto) {
         Comment comment = commentService.update(commentId, commentReqDto);
-        return new DefaultResponse<>(comment.getContents());
+        return new DefaultResponse<>(comment.getComment());
     }
 
     @GetMapping("/{id}/comment/{commentId}/delete")

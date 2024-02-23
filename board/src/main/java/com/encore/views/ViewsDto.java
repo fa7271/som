@@ -22,7 +22,7 @@ public class ViewsDto {
         builder
                 .postId(post.getId())
                 .title(post.getTitle())
-                .views(post.getViews().size())
+                .views(post.getView())
                 .createdAt(post.getCreatedAt())
                 .rank(rank)
                 .build();

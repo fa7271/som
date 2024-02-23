@@ -5,11 +5,13 @@ import com.encore.post.domain.Post;
 import com.encore.post.dto.*;
 import com.encore.post.feign.admin.AdminInternalClient;
 import com.encore.post.repository.PostRepository;
+import com.encore.util.RedisUtil;
 import com.encore.views.Views;
 import com.encore.views.ViewsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,17 +38,20 @@ import java.time.LocalDate;
 
 @Service
 @Transactional
-public class PostService{
+@Slf4j
+public class PostService {
     private final PostRepository postRepository;
     private final ViewsRepository viewsRepository;
     private final AdminInternalClient adminInternalClient;
-
+    private final RedisUtil redisUtil;
     private final ObjectMapper objectMapper;
+
     @Autowired
-    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient, ObjectMapper objectMapper) {
+    public PostService(PostRepository postRepository, ViewsRepository viewsRepository, AdminInternalClient adminInternalClient, RedisUtil redisUtil, ObjectMapper objectMapper) {
         this.postRepository = postRepository;
         this.viewsRepository = viewsRepository;
         this.adminInternalClient = adminInternalClient;
+        this.redisUtil = redisUtil;
         this.objectMapper = objectMapper;
     }
 
@@ -59,79 +65,66 @@ public class PostService{
             throw new IllegalArgumentException("하루 최대 포스팅 횟수를 넘겼습니다.");
         }
 
-
         Post post = Post.CreatePost(postReqDto.getTitle(), postReqDto.getContents(), email);
         postRepository.save(post);
         return post;
     }
 
-    public List<PostResDto> findAll(Pageable pageable) {
-        Specification<Post> spec = new Specification<Post>() {
-            @Override
-            public Predicate toPredicate(Root<Post> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates = new ArrayList<>(); //쿼리를 생성하기 위해서 predicates라는 리스트 생성
-                //                delYn 기본 N으로 설정
-                predicates.add(criteriaBuilder.equal(root.get("delYn"), "N"));
+    public Page<PostResDto> findAll(String title,Pageable pageable) {
 
-                //                리스트였던 predicates를 배열로 변환
-                Predicate[] predicateArr = new Predicate[predicates.size()];
-                for (int i = 0; i < predicates.size(); i++) {
-                    predicateArr[i] = predicates.get(i);
-                }
-
-                Predicate predicate = criteriaBuilder.and(predicateArr);
-                return predicate;
-            }
-        };
-
-        Page<Post> posts = postRepository.findAll(spec, pageable); // select * from post
+        Page<Post> posts = postRepository.findAllByTitleContainingAndDelYnIsNotOrderByCreatedAtDesc(title,"Y",pageable); // select * from post
         List<Post> postList = posts.getContent();
-        if(!postList.isEmpty()) {
+        List<MemberDto> list = new ArrayList<>();
+        if (!postList.isEmpty()) {
             List<String> emailList = postList.stream()
                     .map(Post::getEmail).collect(Collectors.toList());
 
             MemberReqDto memberReqDto = new MemberReqDto();
             memberReqDto.setEmailList(emailList);
+
+
             //MemberDto memberDto = adminInternalClient.memberList(memberReqDto);
             ResponseEntity<Map<String,Object>> response = adminInternalClient.memberList(memberReqDto);
+          
             try {
-                List<MemberDto> list = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("rankingList")), new TypeReference<List<MemberDto>>() {});
-                System.out.println(list.get(0));
+                list = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("rankingList")), new TypeReference<List<MemberDto>>() {
+                });
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-
-
         }
+        List<MemberDto> finalList = list;
+        return posts.map(p -> PostResDto.ToPostRestDto(p, finalList));
 
-        List<PostResDto> postResDtos = new ArrayList<>();
-        postResDtos = postList.stream()
-                .map(p -> PostResDto.builder()
-                        .id(p.getId())
-                        .title(p.getTitle())
-                        .contents(p.getContents())
-                        .member_email(p.getEmail())
-                        .build()).collect(Collectors.toList());
-
-//        Page<PostResDto> postResDtos
-//                = posts.map(p -> new PostResDto(p.getId(), p.getTitle(), p.getEmail()==null? "익명유저" : email));
-        return postResDtos;
     }
 
     public PostDetailResDto findPostDetail(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 회원이 없습니다."));
-//        PostDetailResDto postDetailResDto = new PostDetailResDto();
-
+        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("검색하신 ID의 게시글 없습니다."));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
-//        내가 쓴 게시글이 아닐경우
-        if (!post.getEmail().equals(userEmail)){
-            Views view = Views.builder()
-                    .post(post)
-                    .build();
-            viewsRepository.save(view);
-            post.getViews().add(view);
+        String viewCount = redisUtil.getData(userEmail); //17_16_13_ ...
+        if (viewCount == null) {
+            redisUtil.setDataExpire(userEmail, String.valueOf(id) + "_");
+            post.updateView();
+        }else {
+            String[] strArray = viewCount.split("_");
+            List<String> redisList = Arrays.asList(strArray);
+            boolean isView = false;
+
+            if (!redisList.isEmpty()) {
+                for (String redisListId : redisList) {
+                    if (String.valueOf(id).equals(redisListId)) {
+                        isView = true;
+                        break;
+                    }
+                }
+                if (!isView) {
+                    viewCount += id + "_";
+                    redisUtil.setDataExpire(userEmail, viewCount);
+                    post.updateView();
+                }
+            }
         }
         return PostDetailResDto.ToPostDto(post);
     }

@@ -1,14 +1,13 @@
-FROM node:12.18
+FROM node:18
+
 WORKDIR /som-front
 
-#download할 module목록
-COPY package.json .
-
-#현재 폴더에 있는 모든 폴더와 파일을 ADD 를 통해 가져옴
-ADD . .
-#package.json 에 정의한 moduel download
+# package.json과 package-lock.json 복사 후 의존성 설치
+COPY package*.json ./
 RUN npm install -g @vue/cli
-RUN npm install vue@3.2.13
-RUN npm install @vue/complier-sfc
-#최종적으로 실행할 command
+RUN npm install npm@latest -g
+RUN npm install -g @vue/cli-service
+RUN npm install @vue/babel-preset-app --save-dev
+
+# CMD 변경
 CMD ["npm", "run", "serve"]

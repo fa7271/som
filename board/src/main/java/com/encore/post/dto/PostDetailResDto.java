@@ -23,7 +23,7 @@ public class PostDetailResDto {
         builder
                 .id(post.getId())
                 .title(post.getTitle())
-                .views(post.getViews().size())
+                .views(post.getView())
                 .contents(post.getContents())
                 .createdAt(post.getCreatedAt())
                 .email(post.getEmail())

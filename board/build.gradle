@@ -39,9 +39,11 @@ dependencies {
 	//	Getter, Setter, Log 관련 의존
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'it.ozimov:embedded-redis:0.7.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.jsoup:jsoup:1.14.3'
 }
 
 tasks.named('test') {

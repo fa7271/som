@@ -8,13 +8,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
-@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Views {
+    protected Views(){
+
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,5 +25,14 @@ public class Views {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private Long ViewsCount;
+    private Long viewsCount;
+
+    public Views(Post post, Long viewsCount) {
+        this.post = post;
+        this.viewsCount = viewsCount;
+    }
+
+    public static Views Init(Post post, Long viewsCount) {
+        return new Views(post, viewsCount);
+    }
 }
