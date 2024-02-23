@@ -18,13 +18,13 @@
 
  ## ☁️팀원☁️
 
-[**이혜선** 🐴](https://github.com/hyesunlee30) 표준화개발팀
+[**이혜선** 🐴](https://github.com/hyesunlee30) (표준화개발)
 <br>
-[**이창선** 🐷](https://github.com/keepself) 표준화개발팀
+[**이창선** 🐷](https://github.com/keepself) (표준화개발)
  <br>
-[**신보석** 🐭](https://github.com/fa7271) 서비스개발팀
+[**신보석** 🐭](https://github.com/fa7271) (서비스개발)
 <br>
-[**장준혁** 🐰](https://github.com/GreatJang) 서비스개발팀
+[**장준혁** 🐰](https://github.com/GreatJang) (서비스개발)
 
 
 <br>
