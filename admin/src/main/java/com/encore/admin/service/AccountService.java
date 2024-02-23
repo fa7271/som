@@ -58,7 +58,6 @@ public class AccountService {
                 .nickname(signUpRequest.getNickname())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .ranking(0L)
-                .point(0L)
                 .active(false)
                 .build();
 
@@ -113,7 +112,7 @@ public class AccountService {
     private MimeMessage createEmailForm(String email, String redisMemberKey) throws MessagingException {
 
         UUID uuid = UUID.randomUUID();
-        String LINK = "http://localhost:3000/email/verify?email="+email+"&code="+uuid.toString();
+        String LINK = "http://localhost:8000/admin/account/verify-code/"+email+"/"+uuid.toString();
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);
@@ -167,16 +166,17 @@ public class AccountService {
         mailSender.send(emailForm);
     }
 
-    public Boolean verifyEmailCodeForPassword(String email, String code) {
+    public Boolean verifyEmailCodeForPassword(String userId, String code) {
 
-        Member findMember = repository.findByEmail(email).orElseThrow(() -> new SomException(ResponseCode.USER_NOT_FOUND));
-
-        String codeFoundByUserId = redisUtil.getData(findMember.getId().toString());
+        String codeFoundByUserId = redisUtil.getData(userId);
         if (codeFoundByUserId == null) {
             throw new SomException(ResponseCode.CODE_EXPIRED);
         }
-        if(!codeFoundByUserId.equals(code)){
-            throw new SomException(ResponseCode.CODE_NOT_CONFIRMED);
+        if(codeFoundByUserId.equals(code)){
+            Optional<Member> findMember = repository.findById(Long.valueOf(userId));
+            if(findMember.isPresent()) {
+                findMember.get().active();
+            }
         }
         return true;
     }
@@ -185,7 +185,6 @@ public class AccountService {
         if (redisUtil.existData(userId.toString())) {
             redisUtil.deleteData(userId.toString());
         }
-
 //        MimeMessage emailForm = createEmailForm(toEmail);
 
 //        mailSender.send(emailForm);
@@ -206,5 +205,6 @@ public class AccountService {
         }
 
         member.changePassword(password);
+        redisUtil.deleteData(member.getId().toString());
     }
 }
