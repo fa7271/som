@@ -58,6 +58,7 @@ public class AccountService {
                 .nickname(signUpRequest.getNickname())
                 .password(passwordEncoder.encode(signUpRequest.getPassword()))
                 .ranking(0L)
+                .point(0L)
                 .active(false)
                 .build();
 
@@ -185,7 +186,6 @@ public class AccountService {
         if (redisUtil.existData(userId.toString())) {
             redisUtil.deleteData(userId.toString());
         }
-
 //        MimeMessage emailForm = createEmailForm(toEmail);
 
 //        mailSender.send(emailForm);
@@ -206,5 +206,6 @@ public class AccountService {
         }
 
         member.changePassword(password);
+        redisUtil.deleteData(member.getId().toString());
     }
 }
