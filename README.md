@@ -102,6 +102,10 @@
 <details>
 <summary>자세히 보기(click)</summary>
 
+<div align="center">
+
+<img src="https://github.com/fa7271/som/assets/150704738/2d818350-b9fc-4613-9d8f-9d231432741d" width="800" height="600"/>
+</div>
 
 |구분|요구사항 명|요구사항 설명|
 |:---:|:---:|:---:|
