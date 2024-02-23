@@ -184,6 +184,10 @@ Post 테이블에서 가져오기 때문에 post 테이블의 Views 숫자와 �
 매일00시00분에 각 post에 조회수를 세서 디비에 postid 1개당 하나의 컬럼이 들어가고 일간,주간, 월간 조회수를 구할때 @query로 구해온다.
 
 ## 모놀로식에서 MSA 로!
+
+
+![image](https://github.com/fa7271/som/assets/48422615/20d7ed76-3ce5-4db8-9f69-0c8b20dff1ef)
+
 MSA 아키텍처 도입으로 프론트 vue(localhost:3000)에서 오는 요청은 게이트웨이를 통해 내부 서비스로 연결됩니다. 
 
 [localhost:8000](http://localhost:8000) 포트를 게이트웨이가 사용하게 되는데, 게이트웨이에서는 들어오는 요청의 path에 따라 discovery에 등록되어 있는 서비스로 요청을 돌려주게 됩니다. 
@@ -214,7 +218,7 @@ change 메서드: 이 메서드는 주어진 텍스트에서 대소문자를 무
 
 
 
-![image](https://github.com/fa7271/som/assets/48422615/20d7ed76-3ce5-4db8-9f69-0c8b20dff1ef)
+
 
 
 <br>
