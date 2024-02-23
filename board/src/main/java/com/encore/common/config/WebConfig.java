@@ -1,5 +1,6 @@
 package com.encore.common.config;
 
+import com.encore.common.config.BadWordIntercepter;
 import com.encore.common.filter.BadWordFiltering;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new BadWordIntercepter(badWordFiltering))
                 .addPathPatterns("/board/post/create")  // 인터셉터를 적용할 경로 패턴
                 .addPathPatterns("/board/post/*/update")
-                .addPathPatterns("/board/comment/create")
+                .addPathPatterns("/board/*/comment")
                 .excludePathPatterns("/css/**", "/fonts/**");
 
     }
