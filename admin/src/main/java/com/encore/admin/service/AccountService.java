@@ -186,7 +186,6 @@ public class AccountService {
         if (redisUtil.existData(userId.toString())) {
             redisUtil.deleteData(userId.toString());
         }
-
 //        MimeMessage emailForm = createEmailForm(toEmail);
 
 //        mailSender.send(emailForm);
@@ -207,5 +206,6 @@ public class AccountService {
         }
 
         member.changePassword(password);
+        redisUtil.deleteData(member.getId().toString());
     }
 }

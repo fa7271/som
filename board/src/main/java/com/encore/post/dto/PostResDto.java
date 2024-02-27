@@ -22,6 +22,7 @@ public class PostResDto {
     private String nickname;
     private Long rank;
     private String contents;
+    private int view;
     private LocalDate createdAt;
 
     public static PostResDto ToPostRestDto(Post post, List<MemberDto> memberDtos) {
@@ -29,6 +30,7 @@ public class PostResDto {
         builder.id(post.getId())
                 .title(post.getTitle())
                 .contents(post.getContents())
+                .view(post.getView())
                 .createdAt(LocalDate.from(post.getCreatedAt())); // 날짜만 출력
 
         // post에 해당하는 member 정보를 찾기
