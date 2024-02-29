@@ -6,10 +6,14 @@
                 <label>게시글 제목:</label>
                 <input type="text" v-model="title" class="form-control" placeholder="제목을 입력하세요" style="height: 60px;">
             </div>
-            <div class="form-group">
-                <label>게시글 내용:</label>
+            <!-- <div id="app" class="form-group">
+                <label for="editor">게시글 내용:</label>
                 <ckeditor :editor="editor" v-model="contents" :config="editorConfig"></ckeditor>
+            </div> -->
+            <div>
+              <textarea id="editor"></textarea>
             </div>
+          
             <div class="form-group">
                 <button type="submit" class="btn btn-primary mt-3">작성완료</button>
             </div>
@@ -17,60 +21,111 @@
     </div>
 </template>
 
+
 <script>
 import axios from 'axios';
-import CKEditor from '@ckeditor/ckeditor5-vue';
+// import CKEditor from '@ckeditor/ckeditor5-vue';
+// import Editor from 'ckeditor5-custom-build/build/ckeditor'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+  export default {
+    name: 'editorComponent',
+    // components: {
+        // Use the <ckeditor> component in this view.
+          // ckeditor: CKEditor.component
+    // },
+    props: ['isAdmin', 'pageTitle', 'id'],
+    data() {
+      return {
+        postList: [],
+        commentList: [],
+        title: '',
+        contents: '',
+        comment: '',
+        isLoading: false,
+        isEditing: false,
+        editedTitle: '',
+        // editedContent: '',
+        editor:null,
+        editorConfig: {
+          placeholder: "내용을 작성해 주세요",
+        }
 
-export default {
-    components: {
-    ckeditor: CKEditor.component
+
+        // editor: Editor,
+        // editorData: '<p>Content of the editor.</p>',
+        // editorConfig: {
+        //     placeholder: "내용을 작성해 주세요!",
+        //     ckfinder: {
+        //             uploadUrl: "http://localhost:8080/post/image/upload",
+        //             withCredentials: true,
+        //     }
+        // }
+      };
     },
-    data(){
-        return{
-            title:"",
-            contents:"",
-            editor: ClassicEditor,
-            editorConfig: {
-                    toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ],
-                    heading: {
-                        options: [
-                        { model: 'paragraph', title: '본문', class: 'ck-heading_paragraph' },
-                        { model: 'heading1', view: 'h1', title: '헤딩 1', class: 'ck-heading_heading1' },
-                        { model: 'heading2', view: 'h2', title: '헤딩 2', class: 'ck-heading_heading2' },
-                        { model: 'heading3', view: 'h3', title: '헤딩 3', class: 'ck-heading_heading3' },
-                        { model: 'heading4', view: 'h4', title: '헤딩 4', class: 'ck-heading_heading4' },
-                        { model: 'heading5', view: 'h5', title: '헤딩 5', class: 'ck-heading_heading5' },
-                        { model: 'heading6', view: 'h6', title: '헤딩 6', class: 'ck-heading_heading6' }
-                    ]
-                }
-            }
+    mounted(){
+      ClassicEditor.create(document.querySelector("#editor"), this.editorConfig).then(
+        editor => {
+          this.editor = editor;
+          this.editor.model.document.on("change", () => {
+            this.sendText();
+          });
         }
+      )
     },
-    methods:{
-        async postCreate(){
-            try {
-                const formData = new FormData();
-                formData.append('title', this.title);
-                formData.append('contents', this.contents);
-                
-                const token = localStorage.getItem('token');
-                const headers = token ? { Authorization: `Bearer ${token}` } : {};
-                console.log(formData)
-                await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/post/create`, formData, { headers });
-                // 성공적으로 작성된 경우 리다이렉트 또는 다른 처리 수행
-                this.$router.push({ name: 'PostList' });
-            } catch (error) {
-                // 오류 발생 시 처리
-                console.error(error);
-                alert("게시글을 이미 5개 등록하셨습니다.");
-            }
+    created() {
+      this.loadPosts(this.id);
+      this.loadComments();
+      if (localStorage.getItem("token")) {
+        this.isLogin = true;
+        this.userRole = localStorage.getItem("role");
+      }
+    },
+    methods: {
+      async loadPosts(id) {
+        this.isLoading = true;
+        try {
+          const token = localStorage.getItem('token');
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/${id}/detail`, { headers });
+          this.postList = response.data.data;
+          this.title = this.postList.title;
+          this.contents = this.postList.contents;
+        } catch (error) {
+          console.error("데이터 불러오기 오류:", error);
         }
+      },
+      async commentCreate() {
+        this.isLoading = true;
+        try {
+          const formData = new FormData();
+          formData.append('comment', this.comment);
+          const token = localStorage.getItem('token');
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/${this.id}/comment`, formData, { headers });
+          // 댓글이 등록된 후 댓글 목록을 다시 불러옴
+          await this.loadComments();
+          // 최신 댓글이 가장 위로 오도록 댓글 목록을 역순으로 정렬
+          this.commentList = this.commentList.reverse();
+          alert("댓글이 등록되었습니다.");
+        } catch (error) {
+          console.error(error);
+          alert("입력값 확인 필요");
+        }
+        this.isLoading = false;
+      },
+      async loadComments() {
+        this.isLoading = true;
+        try {
+          const token = localStorage.getItem('token');
+          const headers = token ? { Authorization: `Bearer ${token}` } : {};
+          const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/${this.id}/comment/list`, { headers });
+          this.commentList = response.data.data;
+        } catch (error) {
+          console.error("데이터 불러오기 오류:", error);
+        }
+      },
+
     }
-}
+  }
 </script>
 
-<style>
-.ck-editor__editable { height: 400px; }
-.ck-content { font-size: 12px; }
-</style>

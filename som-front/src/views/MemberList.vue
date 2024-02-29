@@ -56,12 +56,10 @@
 <script>
 import axios from 'axios';
 import PaginationComponent from '@/components/PaginationComponent.vue';
-// import ToggleComponent from '@/components/ToggleComponent.vue'; // 토글 컴포넌트 추가
 
 export default {
   components: {
     PaginationComponent,
-    // ToggleComponent // 토글 컴포넌트 등록
   },
   props: ['isAdmin', 'pageTitle', 'member'],
   data() {
