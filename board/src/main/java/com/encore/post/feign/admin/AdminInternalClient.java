@@ -2,7 +2,6 @@ package com.encore.post.feign.admin;
 
 
 import com.encore.common.support.DefaultResponse;
-import com.encore.post.dto.MemberDto;
 import com.encore.post.dto.MemberReqDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

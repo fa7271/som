@@ -40,19 +40,22 @@ services:
       - "8000:8000"
     networks:
       - som_network
-  jdbc: #service 이름
-    image: mysql    #불러올 image
-    container_name: som_db    #container 이름 지정
-    environment: # 환경 설정
+  jdbc:
+    container_name: som_db
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    environment:
       - MYSQL_DATABASE=som
-      - MYSQL_ROOT_HOST=root #%
+      - MYSQL_ROOT_HOST=root
       - MYSQL_ROOT_PASSWORD=1234
-    ports: #port 지정
+    ports:
       - 3306:3306
-    volumes: #볼륨 지정
-      - ./db/data:/var/lib/mysql
+    volumes:
+      - ./db/data:/var/lib/mysql:rw
     networks:
       - som_network
+
   redis:
     image: redis:alpine
     command: redis-server --port 6379
@@ -65,29 +68,8 @@ services:
       - 6379:6379
     networks:
       - som_network
-  common:
-    depends_on:
-      - jdbc
-    platform: linux/amd64
-    container_name: common
-    build:
-      context: ./common
-      dockerfile: Dockerfile
-    #image:   # 이미지 이름과 태그를 여기에 명시
-    restart: always
-    environment:
-      - TZ=Asia/Seoul
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-    ports:
-      - "8005:8005"
-    networks:
-      - som_network
   admin:
     depends_on:
-      - common
       - eureka
       - jdbc
       - redis
@@ -110,7 +92,6 @@ services:
       - som_network
   board:
     depends_on:
-      - common
       - eureka
       - jdbc
       - redis
@@ -131,7 +112,46 @@ services:
       - "8002:8002"
     networks:
       - som_network
+  front:
+    container_name: som-front
+    build:
+      context: ./som-front
+      dockerfile: Dockerfile
+    #image:   # 이미지 이름과 태그를 여기에 명시
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+    ports:
+      - "3000:3000"
+    networks:
+      - som_network
 
+  batch:
+    depends_on:
+      - eureka
+      - jdbc
+      - redis
+    platform: linux/amd64
+    container_name: batch
+    build:
+      context: ./batch
+      dockerfile: Dockerfile
+    #image:   # 이미지 이름과 태그를 여기에 명시
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    ports:
+      - "8003:8003"
+    networks:
+      - som_network
 
 
 networks:

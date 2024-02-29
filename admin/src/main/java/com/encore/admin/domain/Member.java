@@ -1,9 +1,8 @@
 package com.encore.admin.domain;
 
-import com.encore.admin.dto.MemberUpdateRequest;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import com.encore.common.support.Role;
+import com.encore.admin.common.support.Role;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

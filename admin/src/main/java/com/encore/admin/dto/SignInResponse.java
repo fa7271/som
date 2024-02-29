@@ -1,7 +1,7 @@
 package com.encore.admin.dto;
 
 import com.encore.admin.domain.Member;
-import com.encore.common.support.Role;
+import com.encore.admin.common.support.Role;
 import lombok.*;
 
 @Data
