@@ -1,6 +1,6 @@
 package com.encore.admin.dto;
 
-import com.encore.common.support.ResponseCode;
+import com.encore.admin.common.support.ResponseCode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

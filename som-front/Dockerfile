@@ -1,13 +1,9 @@
-FROM node:18
+FROM node:20
 
-WORKDIR /som-front
+WORKDIR /app
 
-# package.json과 package-lock.json 복사 후 의존성 설치
-COPY package*.json ./
-RUN npm install -g @vue/cli
-RUN npm install npm@latest -g
-RUN npm install -g @vue/cli-service
-RUN npm install @vue/babel-preset-app --save-dev
+COPY . .
 
-# CMD 변경
-CMD ["npm", "run", "serve"]
+RUN npm install
+
+CMD ["npm", "run","serve"]
