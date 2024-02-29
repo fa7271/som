@@ -8,9 +8,9 @@ import com.encore.admin.dto.VertifyCodeDtoReq;
 import com.encore.admin.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.encore.common.support.ResponseCode;
-import com.encore.common.support.Role;
-import com.encore.common.support.SomException;
+import com.encore.admin.common.support.ResponseCode;
+import com.encore.admin.common.support.Role;
+import com.encore.admin.common.support.SomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;

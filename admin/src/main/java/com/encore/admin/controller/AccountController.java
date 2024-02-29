@@ -7,11 +7,9 @@ import com.encore.admin.dto.SignInRequest;
 import com.encore.admin.dto.SignUpRequest;
 import com.encore.admin.dto.VertifyCodeDtoReq;
 import com.encore.admin.service.AccountService;
-import com.encore.common.support.DefaultResponse;
-import com.encore.common.support.ResponseCode;
-import com.encore.common.support.SomException;
+import com.encore.admin.common.support.DefaultResponse;
+import com.encore.admin.common.support.ResponseCode;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;

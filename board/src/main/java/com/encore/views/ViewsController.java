@@ -2,16 +2,11 @@ package com.encore.views;
 
 import com.encore.common.support.ResponseCode;
 import com.encore.common.support.SomException;
-import com.encore.post.domain.Post;
-import com.encore.post.dto.PostResDto;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/board/post")

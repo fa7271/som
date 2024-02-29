@@ -1,17 +1,10 @@
 package com.encore.admin.dto;
 
 import com.encore.admin.domain.Member;
-import com.encore.common.support.Role;
+import com.encore.admin.common.support.Role;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.http.HttpStatus;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter

@@ -2,7 +2,7 @@ package com.encore.admin.config;
 
 import com.encore.admin.domain.Member;
 import com.encore.admin.repository.MemberRepository;
-import com.encore.common.support.Role;
+import com.encore.admin.common.support.Role;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
