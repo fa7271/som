@@ -16,9 +16,7 @@
                     <i class="fas fa-pencil-alt" style="margin-right: 5px;"></i><span class="text-3xs font-bold mb-1">게시글 작성</span>
                 </button>
             </a>
-            
-            
-                    </div>
+        </div>
         <div class="table-container shadow-sm">
         <table class="table">
             <thead>
