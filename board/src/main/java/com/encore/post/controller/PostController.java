@@ -52,7 +52,7 @@ public class PostController {
         return new DefaultResponse<>(postDetailResDto);
     }
 
-    @PatchMapping("/{id}/update")
+    @PostMapping("/{id}/update")
     public DefaultResponse<Post> postUpdate(@PathVariable Long id, PostReqDto postReqDto, HttpServletRequest httpServletRequest) {
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {
