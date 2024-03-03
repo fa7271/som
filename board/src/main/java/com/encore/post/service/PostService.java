@@ -1,6 +1,8 @@
 package com.encore.post.service;
 
 
+import com.encore.common.support.ResponseCode;
+import com.encore.common.support.SomException;
 import com.encore.post.domain.Post;
 import com.encore.post.dto.*;
 import com.encore.post.feign.admin.AdminInternalClient;
@@ -62,7 +64,7 @@ public class PostService {
         LocalDate today = LocalDate.now();
         List<Post> pst = postRepository.findByEmailAndCreatedAtBetween(email, today.atStartOfDay(), today.atTime(23, 59, 59));
         if (pst.size() >= 5) {
-            throw new IllegalArgumentException("하루 최대 포스팅 횟수를 넘겼습니다.");
+            throw new SomException(ResponseCode.ENABLE_POST_CREATE_SIZE);
         }
 
         Post post = Post.CreatePost(postReqDto.getTitle(), postReqDto.getContents(), email);

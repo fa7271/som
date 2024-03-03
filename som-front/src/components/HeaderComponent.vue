@@ -20,7 +20,7 @@
         <ul class="navbar-nav ml-auto">
           <!-- <li class="nav-item">
             <a class="nav-link" href="/posttest">테스트용 페이지</a>
-          </li> -->
+          </li> --> 
           <li class="nav-item">
             <a class="nav-link text-3xs font-bold mb-1" href="/postlist">게시글 목록</a>
           </li>

@@ -21,7 +21,7 @@
       <div class="post-content-container">
         <label>게시글 내용:</label>
         <div v-if="!isEditing">
-          <div class="post-contents" v-html="contents"></div>
+          <textarea v-model="contents" class="form-control" rows="10" readonly></textarea>
         </div>
         <div v-else>
           <textarea class="form-control" v-model="editedContent"></textarea>
@@ -56,9 +56,9 @@
       </div>
     </div>
   </template>
+  
   <script>
   import axios from 'axios';
-  import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
   export default {
     props: ['isAdmin', 'pageTitle', 'id'],
     data() {
@@ -69,7 +69,6 @@
         contents: '',
         comment: '',
         isLoading: false,
-        editor: ClassicEditor,
         isEditing: false,
         editedTitle: '',
         editedContent: ''
@@ -85,11 +84,14 @@
     },
     methods: {
       async loadPosts(id) {
+        console.log(id)
         this.isLoading = true;
         try {
+          console.log("start")
           const token = localStorage.getItem('token');
           const headers = token ? { Authorization: `Bearer ${token}` } : {};
           const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/${id}/detail`, { headers });
+          console.log("통신 끝")
           this.postList = response.data.data;
           this.title = this.postList.title;
           this.contents = this.postList.contents;
