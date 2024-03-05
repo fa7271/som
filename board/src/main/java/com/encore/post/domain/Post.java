@@ -2,8 +2,7 @@ package com.encore.post.domain;
 
 import com.encore.comment.domain.Comment;
 import com.encore.like.domain.Likes;
-import com.encore.post.dto.PostDetailResDto;
-import com.encore.post.dto.PostReqDto;
+import com.encore.postreport.PostReport;
 import com.encore.views.Views;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -78,6 +77,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<Views> views = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostReport> postReports = new ArrayList<>();
 
     //    factory Method
     public Post(String title, String contents, String email) {

@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     #image: eureka:0.0.1-SNAPSHOT  # 이미지 이름과 태그를 여기에 명시
     privileged: true
-    restart: always
+    restart: on-failure
     environment:
       - TZ=Asia/Seoul
     deploy:
@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile
     #image:   # 이미지 이름과 태그를 여기에 명시
     privileged: true
-    restart: always
+    restart: on-failure
     environment:
       - TZ=Asia/Seoul
     deploy:
@@ -79,7 +79,7 @@ services:
       context: ./admin
       dockerfile: Dockerfile
     #image:   # 이미지 이름과 태그를 여기에 명시
-    restart: always
+    restart: on-failure
     environment:
       - TZ=Asia/Seoul
     deploy:
@@ -101,7 +101,7 @@ services:
       context: ./board
       dockerfile: Dockerfile
     #image:   # 이미지 이름과 태그를 여기에 명시
-    restart: always
+    restart: on-failure
     environment:
       - TZ=Asia/Seoul
     deploy:
@@ -118,7 +118,7 @@ services:
       context: ./som-front
       dockerfile: Dockerfile
     #image:   # 이미지 이름과 태그를 여기에 명시
-    restart: always
+    restart: on-failure
     environment:
       - TZ=Asia/Seoul
     deploy:
@@ -141,7 +141,7 @@ services:
       context: ./batch
       dockerfile: Dockerfile
     #image:   # 이미지 이름과 태그를 여기에 명시
-    restart: always
+    restart: on-failure
     environment:
       - TZ=Asia/Seoul
     deploy:

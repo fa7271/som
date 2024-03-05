@@ -26,7 +26,7 @@ spring:
       mail.smtp.ssl.trust: smtp.naver.com
 
   redis:
-    host: http://redis
+    host: http://redis_boot
     port: 6379
 
 eureka:

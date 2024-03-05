@@ -23,7 +23,7 @@
                 <tr>
                     <th>게시글 번호</th>
                     <th>제목</th>
-                    <th>글쓴이(rank)</th>
+                    <th>익명(rank)</th>
                     <th>작성일</th>
                     <th>조회수</th>
                 </tr>
@@ -35,7 +35,7 @@
                         <!-- <td>
                             <a :href="`/posts/${post.id}/detail`">{{ truncate(post.title) }}</a>
                         </td> -->
-                        <td>{{post.nickname + '(' + post.rank + ')'}}</td>
+                        <td>{{'익명(' + post.rank + ')'}}</td>
                         <td>{{post.createdAt}}</td>
                         <td>{{post.view}}</td>
                         <td v-if="isAdmin"><button @click="deletePost(post.id)" class="btn btn-secondary">삭제</button></td>
