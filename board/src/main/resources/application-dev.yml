@@ -13,7 +13,7 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: update #update
+      ddl-auto: create #update
     show-sql: true
 eureka:
   client:

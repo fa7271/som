@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class) //
+@EntityListeners(AuditingEntityListener.class)
 public class Comment  {
 
     public Comment(String comment, String email, Post post) {
