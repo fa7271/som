@@ -5,7 +5,7 @@ spring:
     name: board
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://som_db/som?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mariadb://som_db:3306/som # basic
     username: root
     password: 1234 # 1234
   jpa:
@@ -13,8 +13,14 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: create #update
+      ddl-auto: update #update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  redis:
+    host: http://redis_boot
+    port: 6379
 eureka:
   client:
     service-url:

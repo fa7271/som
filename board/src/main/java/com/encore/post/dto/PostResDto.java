@@ -40,8 +40,7 @@ public class PostResDto {
 
         // member 정보가 존재한다면 nickname과 rank를 설정
         memberDtoOptional.ifPresent(memberDto -> {
-            builder.nickname(memberDto.getNickname())
-                    .rank(memberDto.getRanking());
+            builder.rank(memberDto.getRanking());
         });
 
         return builder.build();

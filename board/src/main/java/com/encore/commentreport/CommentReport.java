@@ -27,8 +27,6 @@ public class CommentReport {
     @JoinColumn(nullable = false)
     private Comment comment;
 
-    private String reason;
-
     private String email;
 
     @CreatedDate

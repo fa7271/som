@@ -25,11 +25,11 @@ public class CommentReportService {
         this.commentRepository = commentRepository;
     }
 
-    public CommentReport save(CommentReportSaveRequest request) {
+    public CommentReport save(Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
-        Comment comment = commentRepository.findById(request.getCommentId()).orElseThrow(() -> new SomException(ResponseCode.COMMENT_NOT_FOUND));
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new SomException(ResponseCode.COMMENT_NOT_FOUND));
 
         List<CommentReport> commentReports = repository.findByEmail(email);
         if(!commentReports.isEmpty()) {
@@ -44,7 +44,6 @@ public class CommentReportService {
 
         CommentReport commentReport = CommentReport.builder()
                 .comment(comment)
-                .reason(request.getReason())
                 .build();
 
         return repository.save(commentReport);

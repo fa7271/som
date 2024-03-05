@@ -25,10 +25,10 @@ public class PostReportService {
         this.postRepository = postRepository;
     }
 
-    public PostReport save(PostReportSaveRequest request) {
+    public PostReport save(Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        Post post = postRepository.findById(request.getPostId()).orElseThrow(() ->new SomException(ResponseCode.POST_NOT_FOUND));
+        Post post = postRepository.findById(id).orElseThrow(() ->new SomException(ResponseCode.POST_NOT_FOUND));
 
         //같은 유저가 저장했을 경우 저장 안되도록
         List<PostReport> postReports = repository.findByEmail(email);
@@ -43,7 +43,6 @@ public class PostReportService {
 
         PostReport postReport = PostReport.builder()
                 .post(post)
-                .reason(request.getReason())
                 .build();
 
         return repository.save(postReport);

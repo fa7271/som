@@ -25,8 +25,6 @@ public class PostReport {
     @JoinColumn(nullable = false)
     private Post post;
 
-    private String reason;
-
     private String email;
 
     @CreatedDate

@@ -8,6 +8,9 @@
       <button @click="toggleEditMode" v-if="isAuthorLoggedIn" class="btn btn-outline-primary" type="submit" value="작성" style="margin-top: -3px; background-color: transparent; border-color: transparent; color: #007bff;">
         <i class="fas fa-pencil-alt" style="margin-right: 5px;"></i><span class="text-3xs font-bold mb-1">게시글 수정</span>
       </button>
+      <button @click="postReport" class="btn btn-outline-danger" type="submit" value="신고" style="margin-top: -3px; background-color: transparent; border-color: transparent; color: red;">
+        <i class="fa-solid fa-land-mine-on" style="margin-right: 5px;"></i><span class="text-3xs font-bold mb-1">게시글 신고</span>
+      </button>
     </div> <!-- 변경된 부분 -->
 
     <!-- 게시글 제목 -->
@@ -58,11 +61,13 @@
         <div v-for="comment in commentList" :key="comment.id" class="comment-box">
           <div class="email-box">
             <p v-if="userRole !== 'ADMIN'">익명</p>
-            <p v-if="userRole === 'ADMIN'">{{ comment.nickname }}</p>
           </div>
           <div class="comment-text-box">
             <p>{{ comment.comment }}</p>
           </div>
+          <button @click="commentReport(comment.id)" class="btn btn-outline-danger" type="submit" value="신고" style="margin-top: -3px; background-color: transparent; border-color: transparent; color: red;">
+            <i class="fa-solid fa-land-mine-on" style="margin-right: 5px;"></i><span class="text-3xs font-bold mb-1">댓글 신고</span>
+          </button>
         </div>
       </div>
     </div>
@@ -113,10 +118,10 @@ export default {
         }
         });
 
-        console.log("response2",response2) // response2.data.data.email로 로그인 계정 email 가져옴
-        console.log("local",localStorage)
-        console.log("response",response)
-        console.log(this.postList.email) // this.postList.email 해당 게시글 작성자 email 가져옴
+        // console.log("response2",response2) // response2.data.data.email로 로그인 계정 email 가져옴
+        // console.log("local",localStorage)
+        // console.log("response",response)
+        // console.log(this.postList.email) // this.postList.email 해당 게시글 작성자 email 가져옴
         if (response2.data.data.email === this.postList.email) { // email 비교해서 맞으면 true
           this.isAuthorLoggedIn = true;
         }
@@ -180,6 +185,16 @@ export default {
         window.location.reload();
       }
       this.isEditing = false; // 수정 모드 종료
+    },
+    async postReport() {
+      const token = localStorage.getItem('token');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/post/report/${this.id}`,{}, { headers });
+    },
+    async commentReport(commentId) {
+      const token = localStorage.getItem('token');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/comment/report/${commentId}`,{}, { headers });
     }
   }
 };
