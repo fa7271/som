@@ -19,14 +19,12 @@ import java.util.Optional;
 public class CommentResDto {
     private Long id;
     private String comment;
-    private String nickname;
     private Long rank;
 
     public static CommentResDto toCommentRestDto(Comment Comment, List<MemberDto> memberDtos) {
         CommentResDtoBuilder builder = CommentResDto.builder();
         builder.id(Comment.getId())
-                .comment(Comment.getComment())
-                .nickname(Comment.getComment());
+                .comment(Comment.getComment());
 
         // comment에 해당하는 member 정보를 찾기
         Optional<MemberDto> memberDtoOptional = memberDtos.stream()
@@ -35,8 +33,7 @@ public class CommentResDto {
 
         // member 정보가 존재한다면 nickname과 rank를 설정
         memberDtoOptional.ifPresent(memberDto -> {
-            builder.nickname(memberDto.getNickname())
-                    .rank(memberDto.getRanking());
+            builder.rank(memberDto.getRanking());
         });
 
         return builder.build();

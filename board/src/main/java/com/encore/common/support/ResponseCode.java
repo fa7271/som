@@ -18,6 +18,7 @@ public enum ResponseCode {
     PAYLOAD_INVALID("PAYLOAD_INVALID","입력값을 확인해주세요"),
     INAPPROPRIATE_PARAMETER_VALUE("INAPPROPRIATE_PARAMETER_VALUE", "잘못된 입력값입니다."),
     POST_NOT_FOUND("POST_NOT_FOUND", "게시글이 존재하지 않아 댓글을 저장할 수 없습니다."),
+    COMMENT_NOT_FOUND("COMMENT_NOT_FOUND", "댓글이 존재하지 않습니다."),
     SUCCESS_CREATE_COMMENT("SUCCESS_CREATE_COMMENT", "댓글을 성공적으로 저장했습니다."),
     ENABLE_POST_CREATE_SIZE("ENABLE_POST_CREATE_SIZE", "하루 최대 포스팅 횟수를 넘겼습니다."),
     ;

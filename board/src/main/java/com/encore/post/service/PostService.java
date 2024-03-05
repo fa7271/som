@@ -105,29 +105,13 @@ public class PostService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
-        String viewCount = redisUtil.getData(userEmail); //17_16_13_ ...
-        if (viewCount == null) {
-            redisUtil.setDataExpire(userEmail, String.valueOf(id) + "_");
+        String viewCount = redisUtil.getData(userEmail);
+        if (viewCount == null || !viewCount.contains(id + "_")) {
+            viewCount = (viewCount == null) ? id + "_" : viewCount + id + "_";
+            redisUtil.setDataExpire(userEmail, viewCount);
             post.updateView();
-        }else {
-            String[] strArray = viewCount.split("_");
-            List<String> redisList = Arrays.asList(strArray);
-            boolean isView = false;
-
-            if (!redisList.isEmpty()) {
-                for (String redisListId : redisList) {
-                    if (String.valueOf(id).equals(redisListId)) {
-                        isView = true;
-                        break;
-                    }
-                }
-                if (!isView) {
-                    viewCount += id + "_";
-                    redisUtil.setDataExpire(userEmail, viewCount);
-                    post.updateView();
-                }
-            }
         }
+
         return PostDetailResDto.ToPostDto(post);
     }
 
