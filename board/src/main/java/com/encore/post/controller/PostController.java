@@ -31,7 +31,7 @@ public class PostController {
     public DefaultResponse<Long> postCreate(@Valid PostReqDto postReqDto, HttpServletRequest httpServletRequest, BindingResult bindingResult){
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (bindingResult.hasErrors()) {
-            new SomException(ResponseCode.valueOf(bindingResult.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
+            throw new SomException(ResponseCode.valueOf(bindingResult.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }
         if (filteredContents != null) {
             postReqDto.setContents(filteredContents);

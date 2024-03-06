@@ -17,7 +17,7 @@ public enum ResponseCode {
     INVALID_PW("INVALID_PW", "비밀번호를 확인해주세요."),
     PAYLOAD_INVALID("PAYLOAD_INVALID","입력값을 확인해주세요"),
     INAPPROPRIATE_PARAMETER_VALUE("INAPPROPRIATE_PARAMETER_VALUE", "잘못된 입력값입니다."),
-    POST_NOT_FOUND("POST_NOT_FOUND", "게시글이 존재하지 않아 댓글을 저장할 수 없습니다."),
+    POST_NOT_FOUND("POST_NOT_FOUND", "게시글이 존재하지 않습니다."),
     SUCCESS_CREATE_COMMENT("SUCCESS_CREATE_COMMENT", "댓글을 성공적으로 저장했습니다.");
 
 

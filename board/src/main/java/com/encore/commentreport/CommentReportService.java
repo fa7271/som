@@ -31,7 +31,7 @@ public class CommentReportService {
 
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new SomException(ResponseCode.COMMENT_NOT_FOUND));
 
-        List<CommentReport> commentReports = repository.findByEmail(email);
+        List<CommentReport> commentReports = repository.findByCommentAndEmail(comment, email);
         if(!commentReports.isEmpty()) {
             throw new SomException(ResponseCode.EXISTING_RESOURCE);
         }
@@ -43,6 +43,7 @@ public class CommentReportService {
         }
 
         CommentReport commentReport = CommentReport.builder()
+                .email(email)
                 .comment(comment)
                 .build();
 
