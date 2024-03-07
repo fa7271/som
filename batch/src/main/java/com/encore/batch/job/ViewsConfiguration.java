@@ -12,8 +12,10 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.persistence.EntityNotFoundException;
@@ -37,19 +39,19 @@ public class ViewsConfiguration {
     public Job helloJob() throws Exception{
         String uniqueJobName = "scheduleViewsJob-" + System.currentTimeMillis();
         return jobBuilderFactory.get(uniqueJobName)
-                .start(simpleStep())
+                .start(simpleStep2())
                 .build();
     }
     @Bean
-    public Step simpleStep() {
+    public Step simpleStep2() {
         return this.stepBuilderFactory
-                .get("simple-step")
-                .tasklet(simpleTasklet())
+                .get("simple-step2")
+                .tasklet(simpleTasklet2())
                 .build();
     }
 
     @Bean
-    public Tasklet simpleTasklet() {
+    public Tasklet simpleTasklet2() {
         return(stepContribution, chunkContext) ->{
             try{
                 Set<String> AllViewEmail = stringRedisTemplate.keys("*@*.*");
