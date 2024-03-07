@@ -9,6 +9,7 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,10 +25,11 @@ import java.util.Map;
 @Component
 public class ViewsScheduler {
 
-    private final Job job;
+//    private final Job job;
 
     private final JobLauncher jobLauncher;
 
+    private final ApplicationContext context;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void startJob() {
@@ -43,6 +45,7 @@ public class ViewsScheduler {
 
             JobParameters parameters = new JobParameters(jobParametersMap);
 
+            Job job = context.getBean("helloJob", Job.class);
             JobExecution jobExecution = jobLauncher.run(job, parameters);
 
 
