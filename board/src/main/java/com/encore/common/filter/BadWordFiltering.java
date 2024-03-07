@@ -20,16 +20,6 @@ public class BadWordFiltering extends HashSet<String> implements BadWords {
         addAll(List.of(koreaWord1));
     }
 
-    public String pre_change(String text) {
-        Pattern pattern = Pattern.compile("[0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z\\s]");
-        Matcher matcher = pattern.matcher(text);
-
-        StringBuilder filteredTextBuilder = new StringBuilder();
-        while (matcher.find()) {
-            filteredTextBuilder.append(matcher.group());
-        }
-        return filteredTextBuilder.toString();
-    }
     public String change(String text) {
         for (String badWord : this) {
 //            대소문자를 무시하고 정규 표현식을 만듭니다.
