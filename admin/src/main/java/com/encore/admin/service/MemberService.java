@@ -84,7 +84,7 @@ public class MemberService {
 
     public RankingListResponse loadRankingListTop10() {
 
-        List<Member> members = repository.findTop10ByRoleAndPointIsNotOrderByRanking(Role.USER,0L);
+        List<Member> members = repository.findTop10ByRoleAndPointIsNotAndActiveOrderByRanking(Role.USER,0L, true);
         List<Ranking> rankingList = members.stream().map(Ranking::of).collect(Collectors.toList());
         return RankingListResponse.builder().rankingList(rankingList).build();
     }
