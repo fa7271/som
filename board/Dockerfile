@@ -17,4 +17,4 @@ COPY --from=build /board/build/libs/*.jar board.jar
 # 컨테이너가 시작될 때 애플리케이션을 실행합니다.
 
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "board.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "board.jar"]
