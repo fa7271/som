@@ -5,6 +5,9 @@
     </div>
 
     <div class="form-group text-right"> <!-- isAuthorLoggedIn true 이면 게시글 수정 버튼 생성 -->
+      <label style="border: 1px solid black; padding: 5px; background-color: transparent; border-color: transparent; color: #007bff;">
+        <i class="fas fa-eye" style="margin-right: 5px;"></i><span class="text-3xs font-bold mb-1">조회수: {{ views }}</span>
+      </label>
       <button @click="toggleEditMode" v-if="isAuthorLoggedIn" class="btn btn-outline-primary" type="submit" value="작성" style="margin-top: -3px; background-color: transparent; border-color: transparent; color: #007bff;">
         <i class="fas fa-pencil-alt" style="margin-right: 5px;"></i><span class="text-3xs font-bold mb-1">게시글 수정</span>
       </button>
@@ -24,8 +27,8 @@
         <label>게시글 제목:</label>
         <input type="text" class="form-control" v-model="editedTitle">
       </div>
-
     </div>
+    
     <!-- 게시글 내용 -->
     <div class="post-content-container">
       <label>게시글 내용:</label>
@@ -33,14 +36,22 @@
         <textarea v-model="contents" class="form-control" rows="10" readonly></textarea>
       </div>
       <div v-else>
-        <textarea class="form-control" v-model="editedContent"></textarea>
+        <textarea class="form-control" rows="10" v-model="editedContent"></textarea>
       </div>
     </div>
 
-    <!-- 수정한 내용 저장 버튼 -->
-    <div class="form-group text-right">
-      <button @click="saveChanges" v-if="isEditing" class="btn btn-primary">수정한 내용 저장</button>
-    </div>
+      <div class="form-group d-flex justify-content-between">
+        <button v-if="!isEditing" class="btn btn-secondary d-flex align-items-center" @click="likePost">
+          <i class="far fa-thumbs-up mr-1"></i> 좋아요
+        </button>
+        <button v-else class="btn btn-primary d-flex align-items-center" @click="likePost">
+          <i class="far fa-thumbs-up mr-1"></i> 좋아요
+        </button>
+        
+        
+        
+        <button @click="saveChanges" v-if="isEditing" class="btn btn-primary">수정한 내용 저장</button>
+      </div>
 
     <!-- 댓글 작성 폼과 댓글 목록 -->
     <div class="comment-section">
@@ -84,6 +95,7 @@ export default {
       commentList: [],
       title: '',
       contents: '',
+      views:'',
       comment: '',
       isLoading: false,
       isEditing: false,
@@ -110,6 +122,7 @@ export default {
         this.postList = response.data.data;
         this.title = this.postList.title;
         this.contents = this.postList.contents;
+        this.views= this.postList.views;
 
         //로그인 계정 email을 가져오기 위한 response2
         const response2 = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/admin/member/mypage`, {
@@ -138,11 +151,10 @@ export default {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
         await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/${this.id}/comment`, formData, { headers });
-        // 댓글이 등록된 후 댓글 목록을 다시 불러옴
-        await this.loadComments();
-        // 최신 댓글이 가장 위로 오도록 댓글 목록을 역순으로 정렬
-        this.commentList = this.commentList.reverse();
+
         alert("댓글이 등록되었습니다.");
+        window.location.reload();
+
       } catch (error) {
         console.error(error);
         alert("입력값 확인 필요");
@@ -155,11 +167,13 @@ export default {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
         const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/${this.id}/comment/list`, { headers });
-        this.commentList = response.data.data;
+        this.commentList = response.data.data.reverse();
+        // this.commentList = this.commentList.reverse();
       } catch (error) {
         console.error("데이터 불러오기 오류:", error);
       }
     },
+
     toggleEditMode() {
       this.isEditing = !this.isEditing;
       if (this.isEditing) {
@@ -185,6 +199,25 @@ export default {
         window.location.reload();
       }
       this.isEditing = false; // 수정 모드 종료
+    },
+    async likePost() {
+      try {
+        const formData = new FormData();
+        formData.append('title', this.editedTitle);
+        formData.append('contents', this.editedContent);
+
+        const token = localStorage.getItem('token');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/post/${this.id}/detail`, formData, { headers });
+        console.log(formData)
+        alert("좋아요를 눌렀습니다.");
+        // window.location.reload();
+
+      } catch (error) {
+        console.error("게시글 업데이트 오류:", error);
+        alert("게시글이 업데이트되었습니다(오류수정해야합니다).");
+        window.location.reload();
+      }
     },
     async postReport() {
       const token = localStorage.getItem('token');
@@ -226,6 +259,8 @@ export default {
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;
+  position: relative; /* 위치 지정 */
+  z-index: 1; /* 다른 요소보다 위에 위치하도록 설정 */
 }
 .email-box,
 .comment-text-box {
