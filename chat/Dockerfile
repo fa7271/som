@@ -7,6 +7,7 @@ COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 COPY src src
+RUN chmod +x ./gradlew
 
 RUN ./gradlew bootJar
 # 실제 실행할 이미지를 위한 새로운 단계를 시작합니다.
