@@ -29,22 +29,22 @@ spec:
             memory: "250Mi"
         # 런타임이라 db주입, github에 sercrets key에서 넣어주는게 아니라
         # 비밀번호를 내장 저장해서 사용한다.
-#        env:
-#          - name: DB_HOST
-#            valueFrom:
-#              secretKeyRef:
-#                name: db-infos
-#                key: DB_HOST
-#          - name: DB_USERNAME
-#            valueFrom:
-#              secretKeyRef:
-#                name: db-infos
-#                key: DB_USERNAME
-#          - name: DB_PASSWORD
-#            valueFrom:
-#              secretKeyRef:
-#                name: db-infos
-#                key: DB_PASSWORD
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: DB_HOST
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: DB_USERNAME
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: DB_PASSWORD
 ---
 apiVersion: v1
 kind: Service
