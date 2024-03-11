@@ -2,7 +2,7 @@ name: deploy SOM-Backend
 on:
   push:
     branches:
-      - feature/SOM-44
+      - main
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -69,15 +69,15 @@ jobs:
           -f ./batch/Dockerfile ./batch
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
-      - name: build image redis
-        env:
-          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-          REPOSITORY: som-redis # som-redis
-          IMAGE_TAG: latest
-        run: |
-          docker pull redis:latest
-          docker tag redis:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+#      - name: build image redis
+#        env:
+#          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
+#          REPOSITORY: som-redis # som-redis
+#          IMAGE_TAG: latest
+#        run: |
+#          docker pull redis:latest
+#          docker tag redis:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
+#          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
 
 ################ apply ################

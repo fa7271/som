@@ -22,9 +22,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-#  redis:
-#    host: http://redis-service
-#    port: 6379
+  redis:
+    host: http://redis-service
+    port: 6379
 
 #eureka:
 #  client:

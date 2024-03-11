@@ -18,6 +18,11 @@ spring:
   batch:
     jdbc:
       initialize-schema: ALWAYS
+
+
+  redis:
+    host: http://redis-service
+    port: 6379
 #eureka:
 #  client:
 #    service-url:
