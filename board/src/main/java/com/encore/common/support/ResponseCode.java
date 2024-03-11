@@ -21,6 +21,7 @@ public enum ResponseCode {
     COMMENT_NOT_FOUND("COMMENT_NOT_FOUND", "댓글이 존재하지 않습니다."),
     SUCCESS_CREATE_COMMENT("SUCCESS_CREATE_COMMENT", "댓글을 성공적으로 저장했습니다."),
     ENABLE_POST_CREATE_SIZE("ENABLE_POST_CREATE_SIZE", "하루 최대 포스팅 횟수를 넘겼습니다."),
+    ENABLE_COMMENT_SEND_EMAIL("ENABLE_COMMENT_SEND_EMAIL", "댓글 생성시 이메일을 전송하지 못했습니다."),
     ;
 
 

@@ -2,7 +2,7 @@ name: deploy SOM-Backend
 on:
   push:
     branches:
-      - test
+      - main
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -89,7 +89,7 @@ jobs:
 
       - name: eks kubectl board apply
         run: |
-          kubectl apply -f ./post/k8s/som-board-depl-serv.yml
+          kubectl apply -f ./board/k8s/som-board-depl-serv.yml
           kubectl rollout restart deployment board
 
       - name: eks kubectl batch apply
@@ -99,5 +99,5 @@ jobs:
 
       - name: eks kubectl redis apply
         run: |
-          kubectl apply -f ./post/k8s/som-redis-depl-serv.yml
+          kubectl apply -f ./board/k8s/som-redis-depl-serv.yml
           kubectl rollout restart deployment redis

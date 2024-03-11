@@ -18,8 +18,8 @@ spring:
   mail:
     host: smtp.naver.com
     port: 465
-    username: isky1990@naver.com
-    password: 1q2w3e4r!!
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
@@ -39,9 +39,11 @@ eureka:
 
 jwt:
   expiration: 30
-  secretKey: mysecret
+  secretKey: CE254B51A873FD7C90C9338C534787FFCDEA4DC217B49AF2CB7DA54661418349
 
 
 logging:
   level:
     root: info
+
+url: "http://localhost:8000"

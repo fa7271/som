@@ -10,6 +10,7 @@ import com.encore.common.support.SomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -24,12 +25,11 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/comment") // comment create
-    public DefaultResponse<ResponseCode> commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest){
+    public DefaultResponse<ResponseCode> commentCreate(@PathVariable Long id, CommentReqDto commentReqDto, HttpServletRequest httpServletRequest) throws MessagingException {
         String filteredComment = (String) httpServletRequest.getAttribute("filteredComments"); // 욕설 필터링
         if (filteredComment != null) {
             commentReqDto.setComment(filteredComment);
         }
-        System.out.println(id);
         commentService.create(id, commentReqDto);
         return new DefaultResponse<ResponseCode>(ResponseCode.SUCCESS_CREATE_COMMENT);
     }
@@ -52,4 +52,5 @@ public class CommentController {
         return new DefaultResponse<Long>(comment.getId());
 
     }
+
 }
