@@ -55,7 +55,7 @@ jobs:
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./post/Dockerfile ./post
+          -f ./board/Dockerfile ./board
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: build and push docker image to ecr (batch)
@@ -69,15 +69,15 @@ jobs:
           -f ./batch/Dockerfile ./batch
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
-#      - name: build and push docker image to ecr (redis) // redis 동작 고민
-#        env:
-#          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-#          REPOSITORY: som-redis # som-redis
-#          IMAGE_TAG: latest
-#        run: |
-#          docker build \
-#          ?????????????????
-#          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      - name: build image redis
+        env:
+          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
+          REPOSITORY: som-redis # som-redis
+          IMAGE_TAG: latest
+        run: |
+          docker pull redis:latest
+          docker tag redis:latest $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
 
 ################ apply ################
