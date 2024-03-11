@@ -35,7 +35,7 @@ public class RankingScheduler {
         this.job = job;
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 15000)
     public void startJob() {
         try {
             Map<String, JobParameter> jobParametersMap = new HashMap<>();
