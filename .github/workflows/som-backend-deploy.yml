@@ -89,7 +89,7 @@ jobs:
 
       - name: eks kubectl board apply
         run: |
-          kubectl apply -f ./post/k8s/som-board-depl-serv.yml
+          kubectl apply -f ./board/k8s/som-board-depl-serv.yml
           kubectl rollout restart deployment board
 
       - name: eks kubectl batch apply
@@ -97,7 +97,7 @@ jobs:
           kubectl apply -f ./batch/k8s/som-batch-depl-serv.yml
           kubectl rollout restart deployment batch-nginx-deployment
 
-      - name: eks kubectl redis apply
-        run: |
-          kubectl apply -f ./post/k8s/som-redis-depl-serv.yml
-          kubectl rollout restart deployment redis
+#      - name: eks kubectl redis apply
+#        run: |
+#          kubectl apply -f ./redis/k8s/som-redis-depl-serv.yml
+#          kubectl rollout restart deployment redis
