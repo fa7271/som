@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
@@ -46,7 +47,8 @@ public class TaskletRankingConfiguration {
     private final CommentRepository commentRepository;
 
 
-    @Bean
+    @Bean(name="monthRankingJob")
+    @Qualifier("monthRankingJob")
     public Job monthRankingJob() throws Exception {
 
 
@@ -72,11 +74,9 @@ public class TaskletRankingConfiguration {
     @Bean
     public Tasklet simpleTasklet() {
         return (stepContribution, chunkContext) -> {
-
             try {
-                log.info("Executing tasklet...");
+                System.out.println("rankig");
                 List<Member> members = memberRepository.findAll();
-
                 for (Member member : members) {
 
                     Long postCount = postRepository.countByCreatedAtBetweenAndEmail(
@@ -110,4 +110,3 @@ public class TaskletRankingConfiguration {
         };
     }
 }
-
