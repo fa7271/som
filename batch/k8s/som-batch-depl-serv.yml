@@ -58,4 +58,4 @@ spec:
     port: 80
     targetPort: 8003
   selector:
-    app: batch-nginx
+    app: batch
