@@ -55,7 +55,7 @@ jobs:
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./post/Dockerfile ./post
+          -f ./board/Dockerfile ./board
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: build and push docker image to ecr (batch)
