@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface PostReportRepository extends JpaRepository<PostReport, Long> {
 
-    List<PostReport> findByEmail(String email);
+    List<PostReport> findByPostAndEmail(Post post,String email);
 
     int countByPost(Post post);
 }
