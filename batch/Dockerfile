@@ -17,4 +17,4 @@ COPY --from=build /batch/build/libs/*.jar batch.jar
 # 컨테이너가 시작될 때 애플리케이션을 실행합니다.
 
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "batch.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "batch.jar"]
