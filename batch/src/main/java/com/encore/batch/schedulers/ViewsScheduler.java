@@ -31,7 +31,7 @@ public class ViewsScheduler {
         this.job = job;
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60000)
     public void startJob() {
         try {
             Map<String, JobParameter> jobParametersMap = new HashMap<>();
