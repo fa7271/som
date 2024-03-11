@@ -16,6 +16,7 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -27,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 
 @Configuration
 @Slf4j
@@ -44,7 +46,8 @@ public class TaskletRankingConfiguration {
     private final CommentRepository commentRepository;
 
 
-    @Bean
+    @Bean(name="monthRankingJob")
+    @Qualifier("monthRankingJob")
     public Job monthRankingJob() throws Exception {
 
 
@@ -71,11 +74,9 @@ public class TaskletRankingConfiguration {
     @Bean
     public Tasklet simpleTasklet() {
         return (stepContribution, chunkContext) -> {
-
             try {
-                log.info("Executing tasklet...");
+                System.out.println("rankig");
                 List<Member> members = memberRepository.findAll();
-
                 for (Member member : members) {
 
                     Long postCount = postRepository.countByCreatedAtBetweenAndEmail(
@@ -109,4 +110,3 @@ public class TaskletRankingConfiguration {
         };
     }
 }
-

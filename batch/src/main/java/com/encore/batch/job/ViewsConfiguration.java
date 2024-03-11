@@ -12,6 +12,7 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -33,27 +34,26 @@ public class ViewsConfiguration {
     private final ViewsRepository viewsRepository;
     private final StringRedisTemplate stringRedisTemplate;
 
-    @Bean
-    public Job helloJob() throws Exception{
+    @Bean(name = "ViewsJob")
+    @Qualifier("ViewsJob")
+    public Job helloJob2() throws Exception{
         String uniqueJobName = "scheduleViewsJob-" + System.currentTimeMillis();
         return jobBuilderFactory.get(uniqueJobName)
                 .start(simpleStep())
                 .build();
     }
-    @Bean
     public Step simpleStep() {
         return this.stepBuilderFactory
-                .get("simple-step")
+                .get("simple-step1")
                 .tasklet(simpleTasklet())
                 .build();
     }
 
-    @Bean
     public Tasklet simpleTasklet() {
         return(stepContribution, chunkContext) ->{
             try{
+                System.out.println("redis_scheduler");
                 Set<String> AllViewEmail = stringRedisTemplate.keys("*@*.*");
-                System.out.println("AllViewEmail = " + AllViewEmail);
                 Map<Long, Long> postIdAllUserIds = new HashMap<>();
 //        key = email, value = ViewdPostByEmail
                 for (String email : AllViewEmail) {

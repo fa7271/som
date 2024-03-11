@@ -1,9 +1,8 @@
 package com.encore.batch.schedulers;
 
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
@@ -19,17 +18,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@EnableScheduling
-@AllArgsConstructor
+@EnableScheduling // 스케쥴러 기능 활성화
 @Component
 public class ViewsScheduler {
 
+    @Qualifier("ViewsJob")
+    private final JobLauncher jobLauncher;
     private final Job job;
 
-    private final JobLauncher jobLauncher;
+    public ViewsScheduler(JobLauncher jobLauncher, @Qualifier("ViewsJob") Job job) {
+        this.jobLauncher = jobLauncher;
+        this.job = job;
+    }
 
-
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(fixedDelay = 3000)
     public void startJob() {
         try {
             Map<String, JobParameter> jobParametersMap = new HashMap<>();
@@ -45,14 +47,7 @@ public class ViewsScheduler {
 
             JobExecution jobExecution = jobLauncher.run(job, parameters);
 
-
-        } catch (JobExecutionAlreadyRunningException e) {
-            e.printStackTrace();
-        } catch (JobRestartException e) {
-            e.printStackTrace();
-        } catch (JobInstanceAlreadyCompleteException e) {
-            e.printStackTrace();
-        } catch (JobParametersInvalidException e) {
+        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
             e.printStackTrace();
         }
     }
