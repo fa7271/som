@@ -28,14 +28,12 @@ public class BadWordIntercepter implements HandlerInterceptor {
                 if (request.getParameter("contents") != null) {
                     String contents = request.getParameter("contents");
                     if (contents != null) {
-                        contents = badWordFiltering.pre_change(contents);
                         contents = badWordFiltering.change(contents);
                         request.setAttribute("filteredContents",contents);
                     }
                 } else if (request.getParameter("comment") != null) {
                     String comment = request.getParameter("comment");
                     if (comment != null) {
-                        comment = badWordFiltering.pre_change(comment);
                         comment = badWordFiltering.change(comment);
                         request.setAttribute("filteredComments",comment);
                     }

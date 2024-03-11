@@ -16,8 +16,10 @@ import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -46,7 +48,6 @@ public class TaskletRankingConfiguration {
 
     @Bean
     public Job monthRankingJob() throws Exception {
-
 
 
         String uniqueJobName = "scheduleRankingJob-" + System.currentTimeMillis();

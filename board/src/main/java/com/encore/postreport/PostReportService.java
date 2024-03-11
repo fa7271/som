@@ -31,7 +31,7 @@ public class PostReportService {
         Post post = postRepository.findById(id).orElseThrow(() ->new SomException(ResponseCode.POST_NOT_FOUND));
 
         //같은 유저가 저장했을 경우 저장 안되도록
-        List<PostReport> postReports = repository.findByEmail(email);
+        List<PostReport> postReports = repository.findByPostAndEmail(post,email);
         if(!postReports.isEmpty()) {
             throw new SomException(ResponseCode.EXISTING_RESOURCE);
         }
@@ -42,6 +42,7 @@ public class PostReportService {
         }
 
         PostReport postReport = PostReport.builder()
+                .email(email)
                 .post(post)
                 .build();
 

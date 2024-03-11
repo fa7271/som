@@ -51,6 +51,8 @@ public class CommentService {
         Comment comment = Comment.CreateComment(commentReqDto.getComment(), email, post);
         commentRepository.save(comment);
 
+
+
     }
 
     public List<CommentResDto> findAll(Long id) {
