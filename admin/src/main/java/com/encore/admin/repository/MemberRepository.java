@@ -17,7 +17,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findAllByEmailIn(List<String> email);
 
-    List<Member> findTop10ByRoleAndPointIsNotOrderByRanking(Role role, Long point);
+    List<Member> findTop10ByRoleAndPointIsNotAndActiveOrderByRanking(Role role, Long point, Boolean active);
 
     Page<Member> findAllByNicknameContainingOrderByCreatedAtDesc(String nickname , Pageable pageable);
 }

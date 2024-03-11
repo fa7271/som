@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -49,7 +50,6 @@ public class TaskletRankingConfiguration {
     @Bean(name="monthRankingJob")
     @Qualifier("monthRankingJob")
     public Job monthRankingJob() throws Exception {
-
 
 
         String uniqueJobName = "scheduleRankingJob-" + System.currentTimeMillis();
