@@ -39,7 +39,7 @@ jobs:
       - name: build and push docker image to ecr (admin)
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-          REPOSITORY: som-admin # som-admin
+          REPOSITORY: team6-admin # som-admin
           IMAGE_TAG: latest
         run: |
           docker build \
@@ -50,7 +50,7 @@ jobs:
       - name: build and push docker image to ecr (board)
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-          REPOSITORY: som-post # som-post
+          REPOSITORY: team6-board # som-post
           IMAGE_TAG: latest
         run: |
           docker build \
@@ -61,7 +61,7 @@ jobs:
       - name: build and push docker image to ecr (batch)
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-          REPOSITORY: som-batch # som-batch
+          REPOSITORY: team6-batch # som-batch
           IMAGE_TAG: latest
         run: |
           docker build \
@@ -72,7 +72,7 @@ jobs:
 #      - name: build and push docker image to ecr (redis) // redis 동작 고민
 #        env:
 #          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-#          REPOSITORY: som-redis # som-redis
+#          REPOSITORY: team6-redis # som-redis
 #          IMAGE_TAG: latest
 #        run: |
 #          docker build \
