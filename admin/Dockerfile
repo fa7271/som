@@ -17,4 +17,4 @@ COPY --from=build /admin/build/libs/*.jar admin.jar
 # 컨테이너가 시작될 때 애플리케이션을 실행합니다.
 
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "admin.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "admin.jar"]

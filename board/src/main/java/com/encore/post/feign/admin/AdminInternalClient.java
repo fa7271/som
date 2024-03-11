@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 
-@FeignClient(value = "admin")
+@FeignClient(url = "http://admin-server")
 public interface AdminInternalClient {
 
     @GetMapping("/admin")
