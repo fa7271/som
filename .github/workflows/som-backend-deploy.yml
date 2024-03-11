@@ -2,7 +2,7 @@ name: deploy SOM-Backend
 on:
   push:
     branches:
-      - test
+      - feature/SOM-38
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
