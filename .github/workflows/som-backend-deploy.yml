@@ -69,17 +69,6 @@ jobs:
           -f ./batch/Dockerfile ./batch
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
-#      - name: build and push docker image to ecr (redis) // redis 동작 고민
-#        env:
-#          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-#          REPOSITORY: team6-redis # som-redis
-#          IMAGE_TAG: latest
-#        run: |
-#          docker build \
-#          ?????????????????
-#          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-
-
 ################ apply ################
 
       - name: eks kubectl admin apply
@@ -96,8 +85,3 @@ jobs:
         run: |
           kubectl apply -f ./batch/k8s/som-batch-depl-serv.yml
           kubectl rollout restart deployment batch
-
-#      - name: eks kubectl redis apply
-#        run: |
-#          kubectl apply -f ./redis/k8s/som-redis-depl-serv.yml
-#          kubectl rollout restart deployment redis

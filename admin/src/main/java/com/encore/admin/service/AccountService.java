@@ -34,6 +34,9 @@ public class AccountService {
     @Value("${spring.mail.username}")
     private String configEmail;
 
+    @Value("${url}")
+    private String url;
+
     private final MemberRepository repository;
     private final PasswordEncoder passwordEncoder;
     @Autowired
