@@ -1,5 +1,6 @@
 server:
   port: 8001
+url: www.greatjang.shop
 spring:
   application:
     name: admin
@@ -35,7 +36,6 @@ spring:
 jwt:
   expiration: 30
   secretKey: mysecret
-
 
 logging:
   level:

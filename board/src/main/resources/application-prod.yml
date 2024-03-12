@@ -1,5 +1,6 @@
 server:
   port: 8002
+url: www.greatjang.shop
 spring:
   application:
     name: board
