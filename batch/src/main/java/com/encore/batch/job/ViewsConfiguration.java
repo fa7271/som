@@ -54,6 +54,7 @@ public class ViewsConfiguration {
             try{
                 System.out.println("redis_scheduler");
                 Set<String> AllViewEmail = stringRedisTemplate.keys("*@*.*");
+                System.out.println("AllViewEmail = " + AllViewEmail);
                 Map<Long, Long> postIdAllUserIds = new HashMap<>();
 //        key = email, value = ViewdPostByEmail
                 for (String email : AllViewEmail) {

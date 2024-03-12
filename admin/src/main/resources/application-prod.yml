@@ -16,27 +16,35 @@ spring:
       ddl-auto: update #create
     show-sql: true
   mail:
-    host: smtp.naver.com
-    port: 465
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    host: smtp.gmail.com
+    port: 587 # 2
+    username: ${GOOGLE_EMAIL}
+    password: ${GOOGLE_SMTP}
     properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true
-      mail.smtp.ssl.trust: smtp.naver.com
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 
   redis:
-    host: http://redis-service
+    host: ${REDIS_HOST}
     port: 6379
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    enabled: true
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
 
 jwt:
   expiration: 30
-  secretKey: CE254B51A873FD7C90C9338C534787FFCDEA4DC217B49AF2CB7DA54661418349
+  secretKey: mysecret
 
 
 logging:
   level:
     root: info
-
-url: "http://server.greatjang.shop"
