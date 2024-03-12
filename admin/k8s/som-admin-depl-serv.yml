@@ -29,6 +29,8 @@ spec:
             memory: "250Mi"
         # 런타임이라 db주입, github에 sercrets key에서 넣어주는게 아니라
         # 비밀번호를 내장 저장해서 사용한다.
+
+        ##### Kubectl secrets #####
         env:
           - name: DB_HOST
             valueFrom:

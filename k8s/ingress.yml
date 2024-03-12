@@ -42,11 +42,3 @@ spec:
                 name: batch-service
                 port:
                   number: 80
-                  
-          - path: /redis/(.*) #모든 url요청을 nginx-service로 라우팅 # 수정필요 - redis url은 필요없는데..??
-            pathType: Prefix
-            backend:
-              service:
-                name: redis-service
-                port:
-                  number: 80

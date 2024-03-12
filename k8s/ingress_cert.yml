@@ -41,6 +41,6 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: server.greatjang.shop # 수정 필요
+  commonName: server.greatjang.shop
   dnsNames:
-    - server.greatjang.shop # 수정 필요
+    - server.greatjang.shop
