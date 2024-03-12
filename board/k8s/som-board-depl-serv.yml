@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: board-backend
-        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-board:1 # ecr 주소 # 변경되면 수정 필요
+        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-board:last # ecr 주소 # 변경되면 수정 필요
         ports:
         - containerPort: 8002 # board port 확인 후 수정 필요
 
@@ -50,16 +50,16 @@ spec:
               secretKeyRef:
                 name: db-infos
                 key: REDIS_HOST
-          - name: GOOGLE_EMAIL
+          - name: NAVER_EMAIL
             valueFrom:
               secretKeyRef:
                 name: db-infos
-                key: GOOGLE_EMAIL
-          - name: GOOGLE_SMTP
+                key: NAVER_EMAIL
+          - name: NAVER_PW
             valueFrom:
               secretKeyRef:
                 name: db-infos
-                key: GOOGLE_SMTP
+                key: NAVER_PW
 ---
 apiVersion: v1
 kind: Service

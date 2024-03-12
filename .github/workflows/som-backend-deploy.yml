@@ -41,7 +41,7 @@ jobs:
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
           REPOSITORY: team6-admin # som-admin
-          IMAGE_TAG: 1
+          IMAGE_TAG: last
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
@@ -52,7 +52,7 @@ jobs:
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
           REPOSITORY: team6-board # som-post
-          IMAGE_TAG: 1
+          IMAGE_TAG: last
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
@@ -63,7 +63,7 @@ jobs:
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
           REPOSITORY: team6-batch # som-batch
-          IMAGE_TAG: 1
+          IMAGE_TAG: last
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
