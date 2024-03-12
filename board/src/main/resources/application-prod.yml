@@ -12,8 +12,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587 # 2
-    username: ${{ secrets.GOOGLE_EMAIL }}
-    password: ${{ secrets.GOOGLE_SMTP }}
+    username: ${GOOGLE_EMAIL}
+    password: ${GOOGLE_SMTP}
     properties:
       mail:
         smtp:
@@ -35,7 +35,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
   redis:
-    host: ${{ secrets.REDIS_HOST }}
+    host: ${REDIS_HOST}
     port: 6379
 
 #eureka:
