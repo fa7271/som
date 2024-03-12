@@ -75,7 +75,7 @@ export default {
             }
             const token = localStorage.getItem('token');
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
-            const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/${id}/detail`, {headers, params});
+            const response = await axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/${id}/detail`, {headers, params});
             this.postList = response.data.data;
             console.log(this.postList)
             console.log("어금지")
