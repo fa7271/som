@@ -19,7 +19,7 @@ spring:
     jdbc:
       initialize-schema: ALWAYS
   redis:
-    host: ${REDIS_HOST}
+    host: ${{ secrets.REDIS_HOST }}
     port: 6379
 #eureka:
 #  client:

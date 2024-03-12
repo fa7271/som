@@ -18,8 +18,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587 # 2
-    username: ${GOOGLE_EMAIL}
-    password: ${GOOGLE_SMTP}
+    username: ${{ secrets.GOOGLE_EMAIL }}
+    password: ${{ secrets.GOOGLE_SMTP }}
     properties:
       mail:
         smtp:
@@ -29,7 +29,7 @@ spring:
             enable: true
 
   redis:
-    host: ${REDIS_HOST}
+    host: ${{ secrets.REDIS_HOST }}
     port: 6379
 
 eureka:
