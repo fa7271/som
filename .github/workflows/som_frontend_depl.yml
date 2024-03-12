@@ -1,5 +1,4 @@
-name: Deploy to AWS S3
-
+name: deploy SOM-Frontend
 on:
   push:
     branches:

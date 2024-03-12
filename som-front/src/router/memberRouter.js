@@ -27,6 +27,11 @@ export const memberRoutes = [
         component: MemberListDetail,
         props:true
     },
+    {
+        path:'/admin/member/verify-code',
+        name : 'EmailVerify',
+        component: EmailVerify,
+    },
 
 
 ];
