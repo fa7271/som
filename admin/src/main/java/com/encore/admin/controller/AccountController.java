@@ -48,10 +48,10 @@ public class AccountController {
         return new DefaultResponse<Map<String, Object>>(memberInfo);
     }
 
-    @GetMapping("/verify-code/{email}/{code}")
+    @GetMapping("/verify-code")
     public DefaultResponse<ResponseCode> sendCodeVerify (
-            @PathVariable String email,
-            @PathVariable String code
+            @RequestParam String email,
+            @RequestParam String code
     ) {
         service.verifyEmailCode(email, code);
         return new DefaultResponse<>(ResponseCode.SUCCESS_CREATE_MEMBER);

@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.cloud.loadbalancer.config.LoadBalancerCacheAutoConfiguration;
+//import org.springframework.cloud.loadbalancer.config.LoadBalancerCacheAutoConfiguration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

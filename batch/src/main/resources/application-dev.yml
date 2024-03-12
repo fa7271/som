@@ -22,10 +22,10 @@ spring:
     jdbc:
       initialize-schema: ALWAYS
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://eureka-service:8761/eureka
-    enabled: true
-  instance:
-    instance-id: ${spring.application.name}:${random.value}
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://eureka-service:8761/eureka
+#    enabled: true
+#  instance:
+#    instance-id: ${spring.application.name}:${random.value}
