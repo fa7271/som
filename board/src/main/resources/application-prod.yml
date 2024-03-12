@@ -9,6 +9,18 @@ spring:
     url: jdbc:mariadb://${DB_HOST}:3306/som
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+  mail:
+    host: smtp.gmail.com
+    port: 587 # 2
+    username: ${GOOGLE_EMAIL}
+    password: ${GOOGLE_SMTP}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 
   jpa:
     database: mysql
