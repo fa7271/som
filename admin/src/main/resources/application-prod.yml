@@ -16,17 +16,20 @@ spring:
       ddl-auto: update #create
     show-sql: true
   mail:
-    host: smtp.naver.com
-    port: 465
-    username: isky1990@naver.com
-    password: 1q2w3e4r!!
+    host: smtp.gmail.com
+    port: 587 # 2
+    username: ${GOOGLE_EMAIL}
+    password: ${GOOGLE_SMTP}
     properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true
-      mail.smtp.ssl.trust: smtp.naver.com
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 
   redis:
-    host: team6-redis-ro.uoizyu.ng.0001.apn2.cache.amazonaws.com
+    host: ${{ secrets.AWS_RDS_HOST }}
     port: 6379
 
 eureka:

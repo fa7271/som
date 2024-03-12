@@ -19,7 +19,7 @@ spring:
     jdbc:
       initialize-schema: ALWAYS
   redis:
-    host: team6-redis-ro.uoizyu.ng.0001.apn2.cache.amazonaws.com
+    host: ${{ secrets.AWS_RDS_HOST }}
     port: 6379
 #eureka:
 #  client:
