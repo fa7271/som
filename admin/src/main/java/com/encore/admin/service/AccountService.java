@@ -117,7 +117,7 @@ public class AccountService {
 
         UUID uuid = UUID.randomUUID();
 
-        String LINK = url+"/"+email+"/"+uuid.toString();
+        String LINK = url+"/admin/member/verify-code?email="+email+"&code="+uuid.toString();
 
 
         MimeMessage message = mailSender.createMimeMessage();
