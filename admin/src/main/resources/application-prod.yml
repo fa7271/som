@@ -29,7 +29,7 @@ spring:
             enable: true
 
   redis:
-    host: ${ secrets.AWS_RDS_HOST }
+    host: ${AWS_RDS_HOST}
     port: 6379
 
 eureka:
