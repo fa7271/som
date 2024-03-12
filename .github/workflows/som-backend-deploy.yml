@@ -35,7 +35,7 @@ jobs:
 
 #      REPOSITORY
 #      container 의 image랑 맞추기
-#      som-xxxx:latest
+#      som-xxxx:latestss
 
       - name: build and push docker image to ecr (admin)
         env:
