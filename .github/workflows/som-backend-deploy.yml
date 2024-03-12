@@ -85,3 +85,4 @@ jobs:
         run: |
           kubectl apply -f ./batch/k8s/som-batch-depl-serv.yml
           kubectl rollout restart deployment batch
+
