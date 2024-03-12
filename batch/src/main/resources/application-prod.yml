@@ -19,7 +19,7 @@ spring:
     jdbc:
       initialize-schema: ALWAYS
   redis:
-    host: ${AWS_RDS_HOST}
+    host: ${REDIS_HOST}
     port: 6379
 #eureka:
 #  client:
