@@ -45,6 +45,24 @@ spec:
               secretKeyRef:
                 name: db-infos
                 key: DB_PASSWORD
+          - name: REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: REDIS_HOST
+          - name: GOOGLE_EMAIL
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: GOOGLE_EMAIL
+          - name: GOOGLE_SMTP
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: GOOGLE_SMTP
+
+
+
 ---
 apiVersion: v1
 kind: Service
