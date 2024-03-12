@@ -34,6 +34,9 @@ public class AccountService {
     @Value("${spring.mail.username}")
     private String configEmail;
 
+    @Value("${url}")
+    private String url;
+
     private final MemberRepository repository;
     private final PasswordEncoder passwordEncoder;
     @Autowired
@@ -113,7 +116,9 @@ public class AccountService {
     private MimeMessage createEmailForm(String email, String redisMemberKey) throws MessagingException {
 
         UUID uuid = UUID.randomUUID();
-        String LINK = "http://admin-service/account/verify-code/"+email+"/"+uuid.toString();
+
+        String LINK = url+"/"+email+"/"+uuid.toString();
+
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);

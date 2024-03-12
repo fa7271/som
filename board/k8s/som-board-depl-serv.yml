@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: board-backend
-        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/som-board:latest # ecr 주소 # 변경되면 수정 필요
+        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-board:latest # ecr 주소 # 변경되면 수정 필요
         ports:
         - containerPort: 8002 # board port 확인 후 수정 필요
 
@@ -29,22 +29,37 @@ spec:
             memory: "250Mi"
         # 런타임이라 db주입, github에 sercrets key에서 넣어주는게 아니라
         # 비밀번호를 내장 저장해서 사용한다.
-#        env:
-#          - name: DB_HOST
-#            valueFrom:
-#              secretKeyRef:
-#                name: db-infos
-#                key: DB_HOST
-#          - name: DB_USERNAME
-#            valueFrom:
-#              secretKeyRef:
-#                name: db-infos
-#                key: DB_USERNAME
-#          - name: DB_PASSWORD
-#            valueFrom:
-#              secretKeyRef:
-#                name: db-infos
-#                key: DB_PASSWORD
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: DB_HOST
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: DB_USERNAME
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: DB_PASSWORD
+          - name: REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: REDIS_HOST
+          - name: GOOGLE_EMAIL
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: GOOGLE_EMAIL
+          - name: GOOGLE_SMTP
+            valueFrom:
+              secretKeyRef:
+                name: db-infos
+                key: GOOGLE_SMTP
 ---
 apiVersion: v1
 kind: Service

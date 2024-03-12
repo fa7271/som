@@ -2,7 +2,7 @@ name: deploy SOM-Backend
 on:
   push:
     branches:
-      - test
+      - feature/SOM-38
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
       - name: build and push docker image to ecr (admin)
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-          REPOSITORY: som-admin # som-admin
+          REPOSITORY: team6-admin # som-admin
           IMAGE_TAG: latest
         run: |
           docker build \
@@ -50,35 +50,24 @@ jobs:
       - name: build and push docker image to ecr (board)
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-          REPOSITORY: som-post # som-post
+          REPOSITORY: team6-board # som-post
           IMAGE_TAG: latest
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
-          -f ./post/Dockerfile ./post
+          -f ./board/Dockerfile ./board
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: build and push docker image to ecr (batch)
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-          REPOSITORY: som-batch # som-batch
+          REPOSITORY: team6-batch # som-batch
           IMAGE_TAG: latest
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
           -f ./batch/Dockerfile ./batch
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-
-#      - name: build and push docker image to ecr (redis) // redis 동작 고민
-#        env:
-#          REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # 생성후 바꿔야함
-#          REPOSITORY: som-redis # som-redis
-#          IMAGE_TAG: latest
-#        run: |
-#          docker build \
-#          ?????????????????
-#          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-
 
 ################ apply ################
 
@@ -89,15 +78,11 @@ jobs:
 
       - name: eks kubectl board apply
         run: |
-          kubectl apply -f ./post/k8s/som-board-depl-serv.yml
+          kubectl apply -f ./board/k8s/som-board-depl-serv.yml
           kubectl rollout restart deployment board
 
       - name: eks kubectl batch apply
         run: |
           kubectl apply -f ./batch/k8s/som-batch-depl-serv.yml
-          kubectl rollout restart deployment batch-nginx-deployment
+          kubectl rollout restart deployment batch
 
-      - name: eks kubectl redis apply
-        run: |
-          kubectl apply -f ./post/k8s/som-redis-depl-serv.yml
-          kubectl rollout restart deployment redis
