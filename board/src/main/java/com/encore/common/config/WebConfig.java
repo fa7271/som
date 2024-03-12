@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -29,6 +30,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/board/post/*/update")
                 .addPathPatterns("/board/*/comment")
                 .excludePathPatterns("/css/**", "/fonts/**");
+    }
 
+    @Override
+    public void addCorsMappings(CorsRegistry registry){
+        registry.addMapping("/**")
+                .allowedOrigins("https://www.greatjang.shop") //Route53 레코드이름
+                .allowedOrigins("http://www.greatjang.shop") //Route53 레코드이름
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(true); //보안처리 관련 credentials
     }
 }

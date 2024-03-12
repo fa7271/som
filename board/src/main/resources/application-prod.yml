@@ -38,15 +38,6 @@ spring:
     host: ${REDIS_HOST}
     port: 6379
 
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://127.0.0.1:8761/eureka
-#    enabled: true
-#  instance:
-#    instance-id: ${spring.application.name}:${random.value}
-
-
 jwt:
   expiration: 30
   secretKey: mysecret
