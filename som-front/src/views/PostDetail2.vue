@@ -75,7 +75,7 @@
         try {
           const token = localStorage.getItem('token');
           const headers = token ? { Authorization: `Bearer ${token}` } : {};
-          const response = await axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/${id}/detail`, { headers });
+          const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/${id}/detail`, { headers });
           this.postList = response.data.data;
           this.title = this.postList.title;
           this.contents = this.postList.contents;
@@ -90,7 +90,7 @@
           formData.append('comment', this.comment);
           const token = localStorage.getItem('token');
           const headers = token ? { Authorization: `Bearer ${token}` } : {};
-          await axios.post(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/${this.id}/comment`, formData, { headers });
+          await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/${this.id}/comment`, formData, { headers });
           // 댓글이 등록된 후 댓글 목록을 다시 불러옴
           await this.loadComments();
           // 최신 댓글이 가장 위로 오도록 댓글 목록을 역순으로 정렬
@@ -107,7 +107,7 @@
         try {
           const token = localStorage.getItem('token');
           const headers = token ? { Authorization: `Bearer ${token}` } : {};
-          const response = await axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/${this.id}/comment/list`, { headers });
+          const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/${this.id}/comment/list`, { headers });
           this.commentList = response.data.data;
         } catch (error) {
           console.error("데이터 불러오기 오류:", error);

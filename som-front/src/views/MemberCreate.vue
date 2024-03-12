@@ -49,7 +49,7 @@ export default {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-        await axios.post(`${process.env.VUE_APP_API_BASE_ADMIN_URL}/admin/account/signup`, requestData, { headers });
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/admin/account/signup`, requestData, { headers });
 
         // 성공적으로 작성된 경우 리다이렉트 또는 다른 처리 수행
         alert("회원가입 완료되었습니다");

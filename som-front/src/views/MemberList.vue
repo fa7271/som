@@ -91,7 +91,7 @@ export default {
       if (confirm("비활성화 하시겠습니까?")) {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axios.delete(`${process.env.VUE_APP_API_BASE_ADMIN_URL}/admin/member/delete/${memberId}`, { headers });
+        await axios.delete(`${process.env.VUE_APP_API_BASE_URL}/admin/member/delete/${memberId}`, { headers });
         window.location.reload();
       }
     },
@@ -99,7 +99,7 @@ export default {
       if (confirm("활성화 하시겠습니까?")) {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axios.post(`${process.env.VUE_APP_API_BASE_ADMIN_URL}/admin/member/active/${memberId}`, {}, { headers });
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/admin/member/active/${memberId}`, {}, { headers });
         window.location.reload();
       }
     },
@@ -113,7 +113,7 @@ export default {
         }
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const response = await axios.get(`${process.env.VUE_APP_API_BASE_ADMIN_URL}/admin/member`, { headers, params });
+        const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/admin/member`, { headers, params });
         this.memberList = response.data.data;
         this.totalPageCount = response.data.totalPage;
         console.log(response.data.count)

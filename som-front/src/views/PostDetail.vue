@@ -114,13 +114,13 @@ export default {
       try {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const response = await axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/${id}/detail`, { headers });
+        const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/${id}/detail`, { headers });
         this.postList = response.data.data;
         this.title = this.postList.title;
         this.contents = this.postList.contents;
 
         //로그인 계정 email을 가져오기 위한 response2
-        const response2 = await axios.get(`${process.env.VUE_APP_API_BASE_ADMIN_URL}/admin/member/mypage`, {
+        const response2 = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/admin/member/mypage`, {
         headers: {
         Authorization: `Bearer ${token}`
         }
@@ -145,7 +145,7 @@ export default {
 
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axios.post(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/${this.id}/comment`, formData, { headers });
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/${this.id}/comment`, formData, { headers });
 
         alert("댓글이 등록되었습니다.");
         window.location.reload();
@@ -160,7 +160,7 @@ export default {
       try {
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        const response = await axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/${this.id}/comment/list`, { headers });
+        const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/${this.id}/comment/list`, { headers });
         this.commentList = response.data.data.reverse();
         // this.commentList = this.commentList.reverse();
       } catch (error) {
@@ -184,7 +184,7 @@ export default {
 
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axios.post(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/${this.id}/update`, formData, { headers });
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/post/${this.id}/update`, formData, { headers });
         alert("게시글이 업데이트되었습니다.");
         window.location.reload();
       } catch (error) {
@@ -202,7 +202,7 @@ export default {
 
         const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axios.post(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/${this.id}/detail`, formData, { headers });
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/post/${this.id}/detail`, formData, { headers });
         console.log(formData)
         alert("좋아요를 눌렀습니다.");
         window.location.reload();
@@ -215,12 +215,12 @@ export default {
     async postReport() {
       const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axios.post(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/report/${this.id}`,{}, { headers });
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/post/report/${this.id}`,{}, { headers });
     },
     async commentReport(commentId) {
       const token = localStorage.getItem('token');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
-        await axios.post(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/comment/report/${commentId}`,{}, { headers });
+        await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/comment/report/${commentId}`,{}, { headers });
     }
   }
 };
