@@ -29,15 +29,15 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/board/board/post/create")  // 인터셉터를 적용할 경로 패턴
                 .addPathPatterns("/board/board/post/*/update")
                 .addPathPatterns("/board/board/*/comment")
-                .excludePathPatterns("/board/board/post/list/**, /css/**", "/fonts/**");
+                .excludePathPatterns("/css/**", "/fonts/**");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedOrigins("http://www.greatjang.shop","https://www.greatjang.shop") //Route53 레코드이름
+                .allowedOrigins("*")
                 .allowedMethods("*")
                 .allowedHeaders("*")
-                .allowCredentials(true); //보안처리 관련 credentials
+                .allowCredentials(true);
     }
 }
