@@ -251,24 +251,26 @@ change 메서드: 이 메서드는 주어진 텍스트에서 대소문자를 무
 <summary>배포과정 보기(click)</summary>
 
 #로드맵
+
+
 ![image](https://github.com/fa7271/som/assets/150704738/45e88b81-c609-4f9e-bbef-bb283ac89341)
-
+---
 ![image](https://github.com/fa7271/som/assets/150704738/4846b3f0-9d36-4fe5-8a15-edb711c79f0b)
-
+---
 ![image](https://github.com/fa7271/som/assets/150704738/14fd025c-cf65-4ba7-8d11-b9d722cf3694)
-
+---
 ![image](https://github.com/fa7271/som/assets/150704738/e44f3a95-f2da-4848-a317-817b1d39cae3)
-
+---
 ![image](https://github.com/fa7271/som/assets/150704738/64e1b8f6-2386-4ad4-9a79-5306de008134)
-
+---
 ![image](https://github.com/fa7271/som/assets/150704738/81fe2771-9d0c-48d6-a622-bc4441b0b74d)
-
+---
 ![image](https://github.com/fa7271/som/assets/150704738/4b29e87c-6126-44e3-b4c8-227714ccb5a0)
-
+---
 ![image](https://github.com/fa7271/som/assets/150704738/63f25787-f06d-476f-b633-3b2a04254ce8)
-
+---
 ![image](https://github.com/fa7271/som/assets/150704738/2edd4f93-3695-451e-8027-b21348ee6b1a)
-
+---
 
 
 </details>
