@@ -18,6 +18,7 @@ import java.util.List;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @Entity
+@Table(name = "post")
 public class Post {
 //        author객체의 posts를 초기화시켜준 후,
 //        this.author.getPosts().add(this); // Author posts에 Setter를 사용하지 않고 사용하는 방법

@@ -2,6 +2,7 @@ package com.encore.common.config;
 
 
 import com.encore.common.filter.BadWordFiltering;
+import com.encore.common.filter.BadWordFiltering;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +22,10 @@ public class BadWordIntercepter implements HandlerInterceptor {
     }
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("request = " + request.getMethod());
+        if(request.getMethod().equals("OPTIONS")) {
+            return true;
+        }
         if (handler != null && handler instanceof HandlerMethod) {
             HandlerMethod hm = (HandlerMethod) handler;
             RequestMethod[] methods = hm.getMethodAnnotation(RequestMapping.class).method();

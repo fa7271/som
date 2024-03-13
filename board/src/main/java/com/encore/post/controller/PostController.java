@@ -29,7 +29,9 @@ public class PostController {
 
     @PostMapping("/create") // Post create
     public DefaultResponse<Long> postCreate(@Valid PostReqDto postReqDto, HttpServletRequest httpServletRequest, BindingResult bindingResult){
-        String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
+        System.out.println("filteredContents1 = " + httpServletRequest.getAttribute("filteredContents"));
+        String filteredContents = String.valueOf(httpServletRequest.getAttribute("filteredContents")); // 욕설 필터링
+        System.out.println("filteredContents = " + filteredContents);
         if (bindingResult.hasErrors()) {
             throw new SomException(ResponseCode.valueOf(bindingResult.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }

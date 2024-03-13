@@ -11,24 +11,21 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   mail:
-    host: smtp.gmail.com
-    port: 587 # 2
-    username: ${GOOGLE_EMAIL}
-    password: ${GOOGLE_SMTP}
+    host: smtp.naver.com
+    port: 465
+    username: ${NAVER_EMAIL}
+    password: ${NAVER_PW}
     properties:
-      mail:
-        smtp:
-          auth: true
-          timeout: 5000
-          starttls:
-            enable: true
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
 
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: update #update
+      ddl-auto: none #update
     show-sql: true
 
     properties:
