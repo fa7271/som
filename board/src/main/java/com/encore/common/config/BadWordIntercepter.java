@@ -1,7 +1,7 @@
 package com.encore.common.config;
 
 
-import com.encore.common.filter.BadWordFiltering;
+//import com.encore.common.filter.BadWordFiltering;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
