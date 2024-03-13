@@ -21,12 +21,12 @@ spec:
         resources:
           # container가 사용할 수 있는 리소스의 최대치
           limits:
-            cpu: "2"
-            memory: "1Gi"
-          # container가 시작될때 보장받아야 하는 최소 자원
-          requests:
             cpu: "1"
             memory: "500Mi"
+          # container가 시작될때 보장받아야 하는 최소 자원
+          requests:
+            cpu: "0.5"
+            memory: "250Mi"
         # 런타임이라 db주입, github에 sercrets key에서 넣어주는게 아니라
         # 비밀번호를 내장 저장해서 사용한다.
         env:
