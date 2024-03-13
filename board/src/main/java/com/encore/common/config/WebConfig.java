@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/board/board/post/create")  // 인터셉터를 적용할 경로 패턴
                 .addPathPatterns("/board/board/post/*/update")
                 .addPathPatterns("/board/board/*/comment")
-                .excludePathPatterns("/css/**", "/fonts/**");
+                .excludePathPatterns("/board/board/post/list","/css/**", "/fonts/**");
     }
 
     @Override
