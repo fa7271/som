@@ -37,7 +37,7 @@ jobs:
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # ECR주소
           REPOSITORY: team6-admin
-          IMAGE_TAG: v7
+          IMAGE_TAG: v8
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
@@ -48,7 +48,7 @@ jobs:
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # ECR주소
           REPOSITORY: team6-board
-          IMAGE_TAG: v7
+          IMAGE_TAG: v8
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \
@@ -59,7 +59,7 @@ jobs:
         env:
           REGISTRY: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com # ECR주소
           REPOSITORY: team6-batch
-          IMAGE_TAG: v7
+          IMAGE_TAG: v8
         run: |
           docker build \
           -t $REGISTRY/$REPOSITORY:$IMAGE_TAG \

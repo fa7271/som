@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: batch-backend
-        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-batch:v7 # ecr 주소 # 변경되면 수정 필요
+        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-batch:v8 # ecr 주소 # 변경되면 수정 필요
         ports:
         - containerPort: 8003
 
