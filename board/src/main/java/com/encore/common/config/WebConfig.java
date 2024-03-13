@@ -27,9 +27,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new BadWordIntercepter(badWordFiltering))
-                .addPathPatterns("/board/post/create")  // 인터셉터를 적용할 경로 패턴
-                .addPathPatterns("/board/post/*/update")
-                .addPathPatterns("/board/*/comment")
+                .addPathPatterns("/**/post/create")  // 인터셉터를 적용할 경로 패턴
+                .addPathPatterns("/**/post/*/update")
+                .addPathPatterns("/**/*/comment")
                 .excludePathPatterns("/board/post/list/**","/css/**", "/fonts/**");
     }
 
