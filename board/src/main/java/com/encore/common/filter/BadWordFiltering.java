@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
+//@Component
 public class BadWordFiltering extends HashSet<String> implements BadWords {
     private String substituteValue = "*";
 
