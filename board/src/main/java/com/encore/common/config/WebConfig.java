@@ -35,8 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedOrigins("https://www.greatjang.shop") //Route53 레코드이름
-                .allowedOrigins("http://www.greatjang.shop") //Route53 레코드이름
+                .allowedOrigins("http://www.greatjang.shop","https://www.greatjang.shop") //Route53 레코드이름
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true); //보안처리 관련 credentials
