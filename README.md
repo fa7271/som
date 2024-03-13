@@ -250,8 +250,6 @@ change 메서드: 이 메서드는 주어진 텍스트에서 대소문자를 무
 <details>
 <summary>배포과정 보기(click)</summary>
 
-![image](https://github.com/fa7271/som/assets/150704738/e8589b49-0d58-4d97-8661-aed2dffdbd9e)
----
 ![image](https://github.com/fa7271/som/assets/150704738/45e88b81-c609-4f9e-bbef-bb283ac89341)
 ---
 ![image](https://github.com/fa7271/som/assets/150704738/4846b3f0-9d36-4fe5-8a15-edb711c79f0b)
