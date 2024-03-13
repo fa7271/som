@@ -14,7 +14,7 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: create #update
+      ddl-auto: none #update
     show-sql: true
   mail:
     host: smtp.naver.com

@@ -1,6 +1,7 @@
 package com.encore.post.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,6 +42,7 @@ public class SecurityConfig {
                 .antMatchers("/*", "/board/board/list")
                 .permitAll()
                 .anyRequest().authenticated()
+//                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .and()
                 //session 안 쓰겠다
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
