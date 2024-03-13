@@ -51,7 +51,7 @@ const memberinfo = ref({});
 const fetchMember = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/admin/member/mypage`, {
+    const response = await axios.get(`${process.env.VUE_APP_API_BASE_ADMIN_URL}/admin/member/mypage`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

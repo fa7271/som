@@ -52,7 +52,7 @@ import axios from 'axios';
 
           const token = localStorage.getItem('token');
           const headers = token ? { Authorization: `Bearer ${token}` } : {};
-          await axios.post(`${process.env.VUE_APP_API_BASE_URL}/board/post/create`, formData, { headers });
+          await axios.post(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/create`, formData, { headers });
           console.log(formData);
 
           alert("게시글이 등록되었습니다.");

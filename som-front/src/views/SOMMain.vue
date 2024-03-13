@@ -122,10 +122,10 @@
           const token = localStorage.getItem('token');
           const headers = token ? { Authorization: `Bearer ${token}` } : {};
           const [response1, response2, response3,response4] = await Promise.all([
-            axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/today`, { headers }),
-            axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/week`, { headers }),
-            axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/month`, { headers }),
-            axios.get(`${process.env.VUE_APP_API_BASE_URL}/admin/member/ranking/top10`, { headers })
+            axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/today`, { headers }),
+            axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/week`, { headers }),
+            axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/month`, { headers }),
+            axios.get(`${process.env.VUE_APP_API_BASE_ADMIN_URL}/admin/member/ranking/top10`, { headers })
           ]);
           this.postList = response1.data.data;
           this.postList2 = response2.data.data;

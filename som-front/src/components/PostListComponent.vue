@@ -95,7 +95,7 @@ export default {
             if (confirm("정말 삭제 하시겠습니까?")) {
                 const token = localStorage.getItem('token');
                 const headers = token ? { Authorization: `Bearer ${token}` } : {};
-                await axios.delete(`${process.env.VUE_APP_API_BASE_URL}/board/post/${postId}/delete`, { headers });
+                await axios.delete(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/${postId}/delete`, { headers });
                 window.location.reload();
             }
         },
@@ -117,7 +117,7 @@ export default {
             }
             const token = localStorage.getItem('token');
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
-            const response = await axios.get(`${process.env.VUE_APP_API_BASE_URL}/board/post/list`, {headers, params});
+            const response = await axios.get(`${process.env.VUE_APP_API_BASE_BOARD_URL}/board/post/list`, {headers, params});
             this.postList = response.data.data;
             this.totalPageCount = response.data.totalPage; // 전체 페이지 수 업데이트
             console.log(this.postList)

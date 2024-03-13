@@ -54,7 +54,7 @@ export default {
         // 2. 200번대 상태값x -> 분기처리
       try{
         const loginData = {email:this.email, password:this.password};
-        const response = await axios.post(`${process.env.VUE_APP_API_BASE_URL}/admin/account/signin`,loginData);
+        const response = await axios.post(`${process.env.VUE_APP_API_BASE_ADMIN_URL}/admin/account/signin`,loginData);
         // axios.post(`http://localhost:8000/admin/account/signin`,loginData).then((value)=> {
         //   console.log(value)
         // })

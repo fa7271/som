@@ -1,9 +1,8 @@
-name: Deploy to AWS S3
-
+name: deploy SOM-Frontend
 on:
   push:
     branches:
-      - dev
+      - som-frontend
 
 jobs:
   # 작업의 이름 지정
@@ -18,11 +17,11 @@ jobs:
           node-version: '20'
 
       - name: npm install
-        working-directory: ./ordering-frontend
+        working-directory: ./som-front
         run: npm install
 
       - name: npm build
-        working-directory: ./ordering-frontend
+        working-directory: ./som-front
         run: npm run build
 
       - name: setup aws cli # aws user 세팅
@@ -34,4 +33,4 @@ jobs:
 
       - name: deploy to s3 # dist내용 s3 버킷에 복사 // recursive 파일체계
         run: |
-          aws s3 cp ./ordering-frontend/dist s3://order-vue/ --recursive
+          aws s3 cp ./som-front/dist s3://team6-som/ --recursive

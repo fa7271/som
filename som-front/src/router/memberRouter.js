@@ -4,6 +4,7 @@ import MemberList from '@/views/MemberList.vue';
 import MemberCreate from '@/views/MemberCreate.vue';
 import MyPage from '@/views/MyPage.vue';
 import MemberListDetail from '@/views/MemberDetail'
+import EmailVerify from '@/views/EmailVerify.vue'
 
 export const memberRoutes = [
     {   
@@ -26,6 +27,11 @@ export const memberRoutes = [
         name : 'MemberListDetail',
         component: MemberListDetail,
         props:true
+    },
+    {
+        path:'/admin/member/verify-code',
+        name : 'EmailVerify',
+        component: EmailVerify,
     },
 
 
