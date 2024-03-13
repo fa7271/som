@@ -76,7 +76,7 @@ public class CommentService {
     private MimeMessage createEmailForm(String email,Long postid)  {
 
 
-        String COMMENT_LINK = url+"/board/"+postid+"/comment/list";
+        String COMMENT_LINK = url+"/board/post/"+postid+"/detail";
 
         MimeMessage message = mailSender.createMimeMessage();
         try {
