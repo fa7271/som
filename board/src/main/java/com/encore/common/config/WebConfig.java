@@ -26,10 +26,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new BadWordIntercepter(badWordFiltering))
-                .addPathPatterns("/board/post/create")  // 인터셉터를 적용할 경로 패턴
-                .addPathPatterns("/board/post/*/update")
-                .addPathPatterns("/board/*/comment")
-                .excludePathPatterns("/css/**", "/fonts/**");
+                .addPathPatterns("/board/board/post/create")  // 인터셉터를 적용할 경로 패턴
+                .addPathPatterns("/board/board/post/*/update")
+                .addPathPatterns("/board/board/*/comment")
+                .excludePathPatterns("/board/board/post/list/**, /css/**", "/fonts/**");
     }
 
     @Override
