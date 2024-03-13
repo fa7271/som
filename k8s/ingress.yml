@@ -7,7 +7,7 @@ metadata:
   name: som-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$2 #첫번째 prefix제거 /jang 제거
+    nginx.ingress.kubernetes.io/rewrite-target: /$1 #첫번째 prefix제거 /jang 제거
     cert-manager.io/cluster-issuer: letsencrypt-prod
 
 spec:
@@ -40,13 +40,5 @@ spec:
             backend:
               service:
                 name: batch-service
-                port:
-                  number: 80
-                  
-          - path: /redis/(.*) #모든 url요청을 nginx-service로 라우팅 # 수정필요 - redis url은 필요없는데..??
-            pathType: Prefix
-            backend:
-              service:
-                name: redis-service
                 port:
                   number: 80

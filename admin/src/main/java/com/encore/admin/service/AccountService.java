@@ -83,6 +83,10 @@ public class AccountService {
         Member member = repository.findByEmail(signInRequest.getEmail()).orElseThrow(
                 ()->new IllegalArgumentException("존재하지 않는 이메일입니다."));
 
+        if(!member.isActive()) {
+            throw new IllegalArgumentException("활성화 되지 않은 계정입니다.");
+        }
+
         log.debug("member email {}",member.getEmail());;
         if(!passwordEncoder.matches(signInRequest.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("비밀번호 불일치");

@@ -1,5 +1,6 @@
 package com.encore.common.config;
 
+
 import com.encore.common.filter.BadWordFiltering;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,19 +27,18 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new BadWordIntercepter(badWordFiltering))
-                .addPathPatterns("/board/post/create")  // 인터셉터를 적용할 경로 패턴
-                .addPathPatterns("/board/post/*/update")
-                .addPathPatterns("/board/*/comment")
-                .excludePathPatterns("/css/**", "/fonts/**");
+                .addPathPatterns("/board/board/post/create")  // 인터셉터를 적용할 경로 패턴
+                .addPathPatterns("/board/board/post/*/update")
+                .addPathPatterns("/board/board/*/comment")
+                .excludePathPatterns("/board/board/post/list/**","/css/**", "/fonts/**");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedOrigins("https://www.greatjang.shop") //Route53 레코드이름
-                .allowedOrigins("http://www.greatjang.shop") //Route53 레코드이름
-                .allowedMethods("*")
+                .allowedOrigins("https://www.greatjang.shop","http://www.greatjang.shop")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true); //보안처리 관련 credentials
+                .allowCredentials(true);
     }
 }

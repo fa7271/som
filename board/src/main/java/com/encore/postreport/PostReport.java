@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "post_report")
 public class PostReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

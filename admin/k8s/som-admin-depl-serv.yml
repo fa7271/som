@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: admin-backend
-        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-admin:1 # ecr 주소 # 변경되면 수정 필요
+        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-admin:v6 # ecr 주소 # 변경되면 수정 필요
         ports:
         - containerPort: 8001 # admin port 확인
 
@@ -29,6 +29,8 @@ spec:
             memory: "250Mi"
         # 런타임이라 db주입, github에 sercrets key에서 넣어주는게 아니라
         # 비밀번호를 내장 저장해서 사용한다.
+
+        ##### Kubectl secrets #####
         env:
           - name: DB_HOST
             valueFrom:
@@ -50,16 +52,16 @@ spec:
               secretKeyRef:
                 name: db-infos
                 key: REDIS_HOST
-          - name: GOOGLE_EMAIL
+          - name: NAVER_EMAIL
             valueFrom:
               secretKeyRef:
                 name: db-infos
-                key: GOOGLE_EMAIL
-          - name: GOOGLE_SMTP
+                key: NAVER_EMAIL
+          - name: NAVER_PW
             valueFrom:
               secretKeyRef:
                 name: db-infos
-                key: GOOGLE_SMTP
+                key: NAVER_PW
 
 
 
