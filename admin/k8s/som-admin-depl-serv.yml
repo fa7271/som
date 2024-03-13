@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: admin-backend
-        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-admin:last # ecr 주소 # 변경되면 수정 필요
+        image: 346903264902.dkr.ecr.ap-northeast-2.amazonaws.com/team6-admin:latest # ecr 주소 # 변경되면 수정 필요
         ports:
         - containerPort: 8001 # admin port 확인
 
