@@ -1,7 +1,6 @@
 package com.encore.post.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,32 +21,31 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder () {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                // CORS 활성화
+                //cors 활성화
                 .cors().and()
-                // CSRF 비활성화
+                //csrf - cross site request forgery 사이트 간 요청 위조
+                //csrf.disable 하지 않겠다고 처리
                 .csrf().disable()
-                // JWT 인증 필터 추가
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                // 기본 인증 방식 비활성화
-                .httpBasic().disable()
+//                //기본 없에고 커스텀 하겠다.
+//                .httpBasic().disable()
                 .authorizeRequests()
-                // 특정 경로는 인증없이 허용
-                .antMatchers("/*", "/board/board/list").permitAll()
-                // 그 외의 모든 요청은 인증 필요
+                //** 뒤에 모든 경로, * 자식 경로
+                .antMatchers("/*", "/board/board/list")
+                .permitAll()
                 .anyRequest().authenticated()
-                // OPTIONS 요청 허용
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .and()
-                // 세션 관리 설정: Stateless로 설정하여 세션 사용하지 않음
+                //session 안 쓰겠다
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .build();
     }
 }
+
