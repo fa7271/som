@@ -3,7 +3,7 @@
 import PostCreate from '@/views/PostCreate.vue';
 import PostList from '@/views/PostList.vue';
 import PostListManage from '@/views/PostListManage.vue';
-import PostListDetail2 from '@/views/PostDetail2.vue'
+import PostListDetail1 from '@/views/PostDetail.vue'
 
 export const postRoutes = [
     {
@@ -24,7 +24,7 @@ export const postRoutes = [
     {
         path:'/posts/:id/detail',
         name : '',
-        component: PostListDetail2,
+        component: PostListDetail1,
         props:true
     },
 ];

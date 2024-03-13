@@ -1,6 +1,8 @@
 package com.encore.post.service;
 
 
+import com.encore.common.support.ResponseCode;
+import com.encore.common.support.SomException;
 import com.encore.post.domain.Post;
 import com.encore.post.dto.*;
 import com.encore.post.feign.admin.AdminInternalClient;
@@ -62,7 +64,7 @@ public class PostService {
         LocalDate today = LocalDate.now();
         List<Post> pst = postRepository.findByEmailAndCreatedAtBetween(email, today.atStartOfDay(), today.atTime(23, 59, 59));
         if (pst.size() >= 5) {
-            throw new IllegalArgumentException("하루 최대 포스팅 횟수를 넘겼습니다.");
+            throw new SomException(ResponseCode.ENABLE_POST_CREATE_SIZE);
         }
 
         Post post = Post.CreatePost(postReqDto.getTitle(), postReqDto.getContents(), email);
@@ -103,29 +105,13 @@ public class PostService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
 
-        String viewCount = redisUtil.getData(userEmail); //17_16_13_ ...
-        if (viewCount == null) {
-            redisUtil.setDataExpire(userEmail, String.valueOf(id) + "_");
+        String viewCount = redisUtil.getData(userEmail);
+        if (viewCount == null || !viewCount.contains(id + "_")) {
+            viewCount = (viewCount == null) ? id + "_" : viewCount + id + "_";
+            redisUtil.setDataExpire(userEmail, viewCount);
             post.updateView();
-        }else {
-            String[] strArray = viewCount.split("_");
-            List<String> redisList = Arrays.asList(strArray);
-            boolean isView = false;
-
-            if (!redisList.isEmpty()) {
-                for (String redisListId : redisList) {
-                    if (String.valueOf(id).equals(redisListId)) {
-                        isView = true;
-                        break;
-                    }
-                }
-                if (!isView) {
-                    viewCount += id + "_";
-                    redisUtil.setDataExpire(userEmail, viewCount);
-                    post.updateView();
-                }
-            }
         }
+
         return PostDetailResDto.ToPostDto(post);
     }
 

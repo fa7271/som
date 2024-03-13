@@ -1,0 +1,49 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: admin
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/som # basic
+    username: root
+    password: 1234 # 1234
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MariaDBDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update #create
+    show-sql: true
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
+
+  redis:
+    host: localhost
+    port: 6379
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+    enabled: true
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+
+jwt:
+  expiration: 30
+  secretKey: CE254B51A873FD7C90C9338C534787FFCDEA4DC217B49AF2CB7DA54661418349
+
+
+logging:
+  level:
+    root: info
+
+url: "http://localhost:8000"

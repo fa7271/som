@@ -4,30 +4,22 @@ package com.encore.admin.service;
 import com.encore.admin.domain.Member;
 import com.encore.admin.dto.*;
 import com.encore.admin.repository.MemberRepository;
-import com.encore.common.support.ResponseCode;
-import com.encore.common.support.Role;
-import com.encore.common.support.SomException;
+import com.encore.admin.common.support.ResponseCode;
+import com.encore.admin.common.support.Role;
+import com.encore.admin.common.support.SomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -92,7 +84,7 @@ public class MemberService {
 
     public RankingListResponse loadRankingListTop10() {
 
-        List<Member> members = repository.findTop10ByRoleAndPointIsNotOrderByRanking(Role.USER,0L);
+        List<Member> members = repository.findTop10ByRoleAndPointIsNotAndActiveOrderByRanking(Role.USER,0L, true);
         List<Ranking> rankingList = members.stream().map(Ranking::of).collect(Collectors.toList());
         return RankingListResponse.builder().rankingList(rankingList).build();
     }

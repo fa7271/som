@@ -32,6 +32,9 @@ const routes = [
         name : 'PasswordChange',
         component: PasswordChange,
     },
+
+
+
     // {
     //     path:'/email/verify',
     //     name : 'EmailVerify',

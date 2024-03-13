@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.cloud.loadbalancer.config.LoadBalancerCacheAutoConfiguration;
+//import org.springframework.cloud.loadbalancer.config.LoadBalancerCacheAutoConfiguration;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,8 +40,7 @@ public class PostResDto {
 
         // member 정보가 존재한다면 nickname과 rank를 설정
         memberDtoOptional.ifPresent(memberDto -> {
-            builder.nickname(memberDto.getNickname())
-                    .rank(memberDto.getRanking());
+            builder.rank(memberDto.getRanking());
         });
 
         return builder.build();

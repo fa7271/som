@@ -29,9 +29,11 @@ public class PostController {
 
     @PostMapping("/create") // Post create
     public DefaultResponse<Long> postCreate(@Valid PostReqDto postReqDto, HttpServletRequest httpServletRequest, BindingResult bindingResult){
-        String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
+        System.out.println("filteredContents1 = " + httpServletRequest.getAttribute("filteredContents"));
+        String filteredContents = String.valueOf(httpServletRequest.getAttribute("filteredContents")); // 욕설 필터링
+        System.out.println("filteredContents = " + filteredContents);
         if (bindingResult.hasErrors()) {
-            new SomException(ResponseCode.valueOf(bindingResult.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
+            throw new SomException(ResponseCode.valueOf(bindingResult.getAllErrors().get(0).getDefaultMessage()), HttpStatus.BAD_REQUEST);
         }
         if (filteredContents != null) {
             postReqDto.setContents(filteredContents);
@@ -52,7 +54,7 @@ public class PostController {
         return new DefaultResponse<>(postDetailResDto);
     }
 
-    @PatchMapping("/{id}/update")
+    @PostMapping("/{id}/update")
     public DefaultResponse<Post> postUpdate(@PathVariable Long id, PostReqDto postReqDto, HttpServletRequest httpServletRequest) {
         String filteredContents = (String) httpServletRequest.getAttribute("filteredContents"); // 욕설 필터링
         if (filteredContents != null) {

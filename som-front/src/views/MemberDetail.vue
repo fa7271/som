@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <div class="page-header text-center" style="margin-top: 20px"><h1>게시글</h1></div>
+      <div class="page-header text-center " style="margin-top: 20px"><h1>게시글</h1></div>
       <table class="table">
           <thead>
               <tr>

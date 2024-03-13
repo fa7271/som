@@ -8,9 +8,9 @@ import com.encore.admin.dto.VertifyCodeDtoReq;
 import com.encore.admin.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.encore.common.support.ResponseCode;
-import com.encore.common.support.Role;
-import com.encore.common.support.SomException;
+import com.encore.admin.common.support.ResponseCode;
+import com.encore.admin.common.support.Role;
+import com.encore.admin.common.support.SomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,6 +33,9 @@ public class AccountService {
 
     @Value("${spring.mail.username}")
     private String configEmail;
+
+    @Value("${url}")
+    private String url;
 
     private final MemberRepository repository;
     private final PasswordEncoder passwordEncoder;
@@ -80,6 +83,10 @@ public class AccountService {
         Member member = repository.findByEmail(signInRequest.getEmail()).orElseThrow(
                 ()->new IllegalArgumentException("존재하지 않는 이메일입니다."));
 
+        if(!member.isActive()) {
+            throw new IllegalArgumentException("활성화 되지 않은 계정입니다.");
+        }
+
         log.debug("member email {}",member.getEmail());;
         if(!passwordEncoder.matches(signInRequest.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("비밀번호 불일치");
@@ -113,7 +120,9 @@ public class AccountService {
     private MimeMessage createEmailForm(String email, String redisMemberKey) throws MessagingException {
 
         UUID uuid = UUID.randomUUID();
-        String LINK = "http://localhost:8000/admin/account/verify-code/"+email+"/"+uuid.toString();
+
+        String LINK = url+"/admin/member/verify-code?email="+email+"&code="+uuid.toString();
+
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email);

@@ -8,7 +8,7 @@
         <div class="post-content-container" >
             <label>게시글 내용:</label>
             <div v-if="!isEditing">
-                <div class="post-contents" v-html="contents" style="overflow-y"></div>
+              <textarea v-model="contents" class="form-control" rows="10" readonly></textarea>
             </div>
             <div v-else>
                 <textarea class="form-control" v-model="editedContent"></textarea>
@@ -46,7 +46,6 @@
 
 <script>
   import axios from 'axios';
-  import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
   export default {
     props: ['isAdmin', 'pageTitle', 'id'],
     data() {
@@ -57,7 +56,6 @@
         contents: '',
         comment: '',
         isLoading: false,
-        editor: ClassicEditor,
         isEditing: false,
         editedTitle: '',
         editedContent: ''

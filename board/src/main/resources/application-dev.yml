@@ -5,7 +5,7 @@ spring:
     name: board
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://som_db/som?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mariadb://som_db:3306/som # basic
     username: root
     password: 1234 # 1234
   jpa:
@@ -13,17 +13,34 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: create #update
+      ddl-auto: update #update
     show-sql: true
-eureka:
-  client:
-    service-url:
-      defaultZone: http://eureka-service:8761/eureka
-    enabled: true
-  instance:
-    instance-id: ${spring.application.name}:${random.value}
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
+  redis:
+    host: http://redis_boot
+    port: 6379
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://eureka-service:8761/eureka
+#    enabled: true
+#  instance:
+#    instance-id: ${spring.application.name}:${random.value}
 
 
 jwt:
   expiration: 30
-  secretKey: mysecret
+  secretKey: CE254B51A873FD7C90C9338C534787FFCDEA4DC217B49AF2CB7DA54661418349
+
+  url: "http://localhost:8000"
