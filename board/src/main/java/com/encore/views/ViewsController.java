@@ -16,17 +16,17 @@ public class ViewsController {
     public ViewsController(ViewsService viewsService) {
         this.viewsService = viewsService;
     }
-    @GetMapping("today")
+    @GetMapping("/today")
     public SomException getMostViewdTop10PostToday() {
         List<ViewsDto> postResDtos = viewsService.DailyMostTop10Viewd();
         return new SomException(ResponseCode.SUCCESS, postResDtos);
     }
-    @GetMapping("week")
+    @GetMapping("/week")
     public SomException getMostViewdTop10PostWeek() {
         List<ViewsDto> postResDtos = viewsService.WeekMostTop10Viewd();
         return new SomException(ResponseCode.SUCCESS, postResDtos);
     }
-    @GetMapping("month")
+    @GetMapping("/month")
     public SomException getMostViewdTop10PostMonth() {
         List<ViewsDto> postResDtos = viewsService.MonthMostTop10Viewd();
         return new SomException(ResponseCode.SUCCESS, postResDtos);
