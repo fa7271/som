@@ -1,10 +1,7 @@
 package com.encore.common.filter;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
+
+
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -12,7 +9,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//@Component
+@Component
 public class BadWordFiltering extends HashSet<String> implements BadWords {
     private String substituteValue = "*";
 
